@@ -1,12 +1,7 @@
-import {
-  Button,
-  ButtonGroup,
-  FormControl,
-  FormLabel,
-  Switch,
-} from '@chakra-ui/react';
+import { FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { useGoogleLogin } from 'react-google-login';
 import React from 'react';
+import { Api } from '../../../services/api';
 
 const AuthPage = () => {
   return (
@@ -36,10 +31,31 @@ const AuthPage = () => {
 };
 
 const GoogleContent = () => {
-  return (
-    <button className="button">
-      <img src="icons/google.svg" alt="google login" className="icon"></img>
+  const client_Id: any =
+    process.env.GOOGLE_CLIENT ||
+    '631449527453-ms6ep6ghv7ct2iu0o6qbk70lks8qo153.apps.googleusercontent.com';
 
+  const onSuccess = async (res: any) => {
+    if (res) {
+      let response = await Api.post('/v1/auth/google/', {
+        token: res?.tokenId,
+      });
+      // todo Toast Message and redirect
+    }
+  };
+
+  const onFailure = res => {
+    //Todo addition of Toast Message
+  };
+  const { signIn } = useGoogleLogin({
+    onSuccess,
+    onFailure,
+    clientId: client_Id,
+    accessType: 'offline',
+  });
+  return (
+    <button onClick={signIn} className="button">
+      <img src="icons/google.svg" alt="google login" className="icon"></img>
       <span className="buttonText">Sign in with Google</span>
     </button>
   );

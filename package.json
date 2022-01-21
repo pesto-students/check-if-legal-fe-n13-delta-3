@@ -23,6 +23,7 @@
     "@types/testing-library__jest-dom": "5.14.0",
     "@types/webpack": "5.28.0",
     "@types/webpack-env": "1.16.2",
+    "axios": "0.25.0",
     "chalk": "4.1.1",
     "cross-env": "7.0.3",
     "eslint-config-prettier": "8.3.0",
@@ -80,6 +81,7 @@
     "prettify": "prettier --write './src/**/*.+(js|jsx|ts|tsx|json|scss|md)'",
     "prepare": "husky install"
   },
+  "proxy": "http://localhost:4001",
   "browserslist": {
     "production": [
       ">0.2%",
