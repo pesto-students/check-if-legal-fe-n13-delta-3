@@ -1,10 +1,3 @@
-/**
- * index.tsx
- *
- * This is the entry file for the application, only setup and boilerplate
- * code.
- */
-
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 
@@ -27,6 +20,19 @@ import reportWebVitals from 'reportWebVitals';
 // Initialize languages
 import './locales/i18n';
 
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+
+// 2. Extend the theme to include custom colors, fonts, etc
+const colors = {
+  brand: {
+    900: '#FFFFFF',
+    800: '#153e75',
+    700: '#2a69ac',
+  },
+};
+
+const theme = extendTheme({ colors });
+
 const store = configureAppStore();
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
@@ -34,7 +40,9 @@ ReactDOM.render(
   <Provider store={store}>
     <HelmetProvider>
       <React.StrictMode>
-        <App />
+        <ChakraProvider theme={theme}>
+          <App />
+        </ChakraProvider>
       </React.StrictMode>
     </HelmetProvider>
   </Provider>,
