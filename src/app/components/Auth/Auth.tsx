@@ -1,9 +1,12 @@
 import { FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { useGoogleLogin } from 'react-google-login';
-import React from 'react';
-import { Api } from '../../../services/api';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUserData } from 'redux/actions/userAction';
 
 const AuthPage = () => {
+  const [user, Setuser] = useState<any>(true);
+  const dispatch = useDispatch();
   return (
     <React.Fragment>
       <div className="auth-layout">
@@ -15,14 +18,19 @@ const AuthPage = () => {
               <FormLabel htmlFor="user-login" mb="0">
                 User
               </FormLabel>
-              <Switch id="user-login" colorScheme="teal" size="lg" />
+              <Switch
+                id="user-login"
+                colorScheme="teal"
+                size="lg"
+                onChange={() => Setuser(!user)}
+              />
               <FormLabel htmlFor="user-login" mb="1" ml="3">
                 Lawyer
               </FormLabel>
             </FormControl>
           </div>
           <span className="button-group-google">
-            <GoogleContent />
+            <GoogleContent user={user} dispatch={dispatch} />
           </span>
         </div>
       </div>
@@ -30,22 +38,23 @@ const AuthPage = () => {
   );
 };
 
-const GoogleContent = () => {
+const GoogleContent = (props: any) => {
   const client_Id: any =
     process.env.GOOGLE_CLIENT ||
     '631449527453-ms6ep6ghv7ct2iu0o6qbk70lks8qo153.apps.googleusercontent.com';
 
   const onSuccess = async (res: any) => {
     if (res) {
-      let response = await Api.post('/v1/auth/google/', {
-        token: res?.tokenId,
-      });
-      // todo Toast Message and redirect
+      let Payload = {
+        idToken: res?.tokenId,
+        isLawyer: !props?.user,
+      };
+      props.dispatch(setUserData(Payload));
     }
   };
 
   const onFailure = res => {
-    //Todo addition of Toast Message
+    // Toast
   };
   const { signIn } = useGoogleLogin({
     onSuccess,
