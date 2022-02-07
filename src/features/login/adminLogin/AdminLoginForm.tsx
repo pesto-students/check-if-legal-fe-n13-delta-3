@@ -1,7 +1,10 @@
 import { Box, Button, Flex, FormControl, Heading, Input, Stack } from "@chakra-ui/react"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+import { ErrorText } from "../../../components/ui/ErrorText"
 import { InputLabel } from "../../../components/ui/InputLabel"
+import { adminLoginApi } from "./adminLoginApi"
 
 interface IFormData {
 	username: string
@@ -9,16 +12,22 @@ interface IFormData {
 }
 
 export const AdminLoginForm: FC = () => {
-	const {
-		register,
-		handleSubmit,
-		formState: { isSubmitting },
-	} = useForm<IFormData>({
+	const navigate = useNavigate()
+
+	const { register, handleSubmit, formState } = useForm<IFormData>({
 		defaultValues: { password: "", username: "" },
 	})
+	const [errorText, setErrorText] = useState<string>()
 
-	const onSubmit = handleSubmit((data) => {
-		console.log(data)
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await adminLoginApi(data)
+			navigate("/admin")
+		} catch (err) {
+			setErrorText(err instanceof Error ? err.message : "Unknown Error")
+		} finally {
+			return
+		}
 	})
 
 	return (
@@ -45,14 +54,16 @@ export const AdminLoginForm: FC = () => {
 						</FormControl>
 					</Flex>
 
+					{errorText && <ErrorText text={errorText} />}
+
 					<Box py="2">
 						{/* Submit Button */}
 						<Button
 							colorScheme={"blue"}
 							type="submit"
 							width={"full"}
-							isLoading={isSubmitting}
-							isDisabled={isSubmitting}
+							isLoading={formState.isSubmitting}
+							isDisabled={formState.isSubmitting}
 						>
 							Login
 						</Button>

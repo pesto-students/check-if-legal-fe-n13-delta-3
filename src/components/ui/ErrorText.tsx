@@ -1,10 +1,12 @@
 import { Box } from "@chakra-ui/react"
-import { FC } from "react"
+import { ComponentProps, FC } from "react"
 
-export const ErrorText: FC = ({ children }) => {
+type IProps = ComponentProps<typeof Box> & { text: string }
+
+export const ErrorText: FC<IProps> = ({ text, ...rest }) => {
 	return (
-		<Box fontSize="sm" color="red">
-			{children}
+		<Box fontSize="sm" color="red" {...rest}>
+			{text}
 		</Box>
 	)
 }
