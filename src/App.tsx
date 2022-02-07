@@ -1,9 +1,10 @@
-function App() {
-  return (
-    <div>
-      <div>Check If Legal</div>
-    </div>
-  );
-}
+import { BrowserRouter } from "react-router-dom"
+import { AppRoutes } from "./routes/AppRoutes"
 
-export default App;
+export function App() {
+	return (
+		<BrowserRouter>
+			<AppRoutes />
+		</BrowserRouter>
+	)
+}
