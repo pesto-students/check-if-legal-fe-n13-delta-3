@@ -3,11 +3,13 @@ import { AuthRole } from "../../../utils/enums"
 import { storage } from "../../../utils/storage"
 
 interface IResponseShape {
+	role: AuthRole
 	token: string
 }
 
-export async function adminLoginApi(payload: { username: string; password: string }) {
-	const httpApi = new HttpApi<IResponseShape>(HttpMethod.POST, "/admin/login")
+export async function userGoogleAuthApi(payload: { idToken: string; isLawyer: boolean }) {
+	const httpApi = new HttpApi<IResponseShape>(HttpMethod.POST, "/user/googleAuth")
 	const response = await httpApi.send({ body: payload })
-	storage.setAuth({ role: AuthRole.ADMIN, token: response.token })
+	storage.setAuth(response)
+	return response
 }

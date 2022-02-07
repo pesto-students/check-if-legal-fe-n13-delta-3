@@ -25,8 +25,6 @@ export const AdminLoginForm: FC = () => {
 			navigate("/admin")
 		} catch (err) {
 			setErrorText(err instanceof Error ? err.message : "Unknown Error")
-		} finally {
-			return
 		}
 	})
 
