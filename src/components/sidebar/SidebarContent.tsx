@@ -57,10 +57,10 @@ export const SidebarContent: FC<IProps> = ({ role, ...rest }) => {
 				aria-label="Main Navigation"
 				gap={1}
 			>
-				{navItems.map(({ name, icon, link }) => {
+				{navItems.map(({ name, icon, link }, i) => {
 					const isSelected = link === window.location.pathname
 					return (
-						<NavLink to={link}>
+						<NavLink to={link} key={i}>
 							{isSelected && <SelectedNavItem icon={icon}>{name}</SelectedNavItem>}
 							{!isSelected && <NavItem icon={icon}>{name}</NavItem>}
 						</NavLink>
