@@ -7,6 +7,7 @@ import { LawyerRegister } from "./features/lawyer/lawyerRegistration/LawyerRegis
 import { LawyerStatus } from "./features/lawyer/lawyerRegistration/LawyerStatus"
 import { AdminLogin } from "./features/login/adminLogin/AdminLogin"
 import { UserLogin } from "./features/login/userLogin/UserLogin"
+import { Logout } from "./features/logout/Logout"
 import { UserDashboard } from "./features/user/userDashboard/UserDashboard"
 import { AuthRole } from "./utils/enums"
 import { storage } from "./utils/storage"
@@ -16,6 +17,7 @@ export function AppRouter() {
 		<BrowserRouter>
 			<Routes>
 				<Route index element={<Landing />} />
+				<Route path="logout" element={<Logout />} />
 
 				<Route path="login" element={<Outlet />}>
 					<Route index element={<UserLogin />} />
