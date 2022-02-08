@@ -9,7 +9,7 @@ export const NavItem: FC<IProps> = ({ icon, children, ...rest }: IProps) => (
 		px="4"
 		mx="2"
 		rounded="md"
-		py="3"
+		py="2"
 		cursor="pointer"
 		color="whiteAlpha.700"
 		_hover={{ bg: "whiteAlpha.100", color: "whiteAlpha.900" }}

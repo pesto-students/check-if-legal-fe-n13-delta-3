@@ -17,6 +17,7 @@ import { IconType } from "react-icons/lib"
 import { NavLink } from "react-router-dom"
 import { AuthRole } from "../../utils/enums"
 import { NavItem } from "./NavItem"
+import { SelectedNavItem } from "./SelectedNavItem"
 
 type IProps = ComponentProps<typeof Box> & { role: AuthRole }
 
@@ -54,12 +55,17 @@ export const SidebarContent: FC<IProps> = ({ role, ...rest }) => {
 				fontSize="sm"
 				color="gray.600"
 				aria-label="Main Navigation"
+				gap={1}
 			>
-				{navItems.map(({ name, icon, link }) => (
-					<NavLink to={link}>
-						<NavItem icon={icon}>{name}</NavItem>
-					</NavLink>
-				))}
+				{navItems.map(({ name, icon, link }) => {
+					const isSelected = link === window.location.pathname
+					return (
+						<NavLink to={link}>
+							{isSelected && <SelectedNavItem icon={icon}>{name}</SelectedNavItem>}
+							{!isSelected && <NavItem icon={icon}>{name}</NavItem>}
+						</NavLink>
+					)
+				})}
 			</Flex>
 		</Box>
 	)
