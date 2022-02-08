@@ -48,7 +48,7 @@ export const CityAddDrawer: FC<IProps> = ({ states, onSuccess, ...rest }) => {
 			<Stack maxWidth={"sm"} marginX={"auto"}>
 				{/* Name */}
 				<FormControl>
-					<InputLabel label="City Name" />
+					<InputLabel label="Name" />
 					<Input isRequired autoFocus {...register("name")} />
 				</FormControl>
 				{/* Name */}
