@@ -79,7 +79,7 @@ function getNavItems(role: AuthRole) {
 			{ name: "Home", icon: AiFillHome, link: "/admin" },
 			{ name: "Languages", icon: IoLanguage, link: "/admin/language" },
 			{ name: "Paper Types", icon: MdCategory, link: "/admin/paperType" },
-			{ name: "Locations", icon: MdLocationCity, link: "/admin/location" },
+			{ name: "Cities", icon: MdLocationCity, link: "/admin/city" },
 			{ name: "Lawyers", icon: ImUserTie, link: "/admin/lawyer" },
 		)
 	} else if (role === AuthRole.USER) {

@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import { AdminDashboard } from "./features/admin/adminDashboard/AdminDashboard"
+import { AdminCity } from "./features/admin/adminCity/AdminCity"
 import { Landing } from "./features/landing/Landing"
 import { LawyerDashboard } from "./features/lawyer/lawyerDashboard/LawyerDashboard"
 import { LawyerRegister } from "./features/lawyer/lawyerRegistration/LawyerRegister"
@@ -26,6 +27,7 @@ export function AppRouter() {
 
 				<Route path="admin" element={<PrivateOutlet role={AuthRole.ADMIN} />}>
 					<Route index element={<AdminDashboard />} />
+					<Route path="city" element={<AdminCity />} />
 				</Route>
 
 				<Route path="user" element={<PrivateOutlet role={AuthRole.USER} />}>
