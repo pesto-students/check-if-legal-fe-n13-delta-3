@@ -3,14 +3,19 @@ import {
 	Drawer,
 	DrawerContent,
 	DrawerOverlay,
+	Flex,
+	Heading,
+	IconButton,
+	useColorModeValue,
 	useDisclosure,
 } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
+import { FiMenu } from "react-icons/fi"
 import { SidebarContent } from "./SidebarContent"
 
-type IProps = ComponentProps<typeof Box>
+type IProps = ComponentProps<typeof Box> & { headingText?: string }
 
-export const SidebarLayout: FC<IProps> = ({ children, ...rest }) => {
+export const SidebarLayout: FC<IProps> = ({ children, headingText, ...rest }) => {
 	const sidebar = useDisclosure()
 
 	return (
@@ -23,6 +28,27 @@ export const SidebarLayout: FC<IProps> = ({ children, ...rest }) => {
 				</DrawerContent>
 			</Drawer>
 			<Box ml={{ base: 0, md: 60 }} transition=".3s ease">
+				<Flex
+					as="header"
+					align="center"
+					justify="space-between"
+					w="full"
+					px="4"
+					bg={useColorModeValue("white", "gray.800")}
+					borderBottomWidth="1px"
+					borderColor="blackAlpha.300"
+					h="14"
+				>
+					<Heading size={"lg"}>{headingText ?? "Heading"}</Heading>
+					<IconButton
+						aria-label="Menu"
+						display={{ base: "inline-flex", md: "none" }}
+						onClick={sidebar.onOpen}
+						icon={<FiMenu />}
+						size="sm"
+					/>
+				</Flex>
+
 				<Box as="main" p="4" {...rest}>
 					{children}
 				</Box>
