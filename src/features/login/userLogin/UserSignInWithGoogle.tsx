@@ -26,7 +26,7 @@ export const UserSignInWithGoogle: FC = () => {
 		try {
 			const { tokenId } = response as GoogleLoginResponse
 			const { role } = await userGoogleAuthApi({ idToken: tokenId, isLawyer })
-			navigate(role)
+			navigate(`/${role}`)
 		} catch (err) {
 			setErrorText(err instanceof Error ? err.message : "Unknown Error")
 		}

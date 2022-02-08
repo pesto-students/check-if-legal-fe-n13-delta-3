@@ -1,9 +1,11 @@
 import { FC } from "react"
+import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
+import { AuthRole } from "../../../utils/enums"
 
 export const LawyerDashboard: FC = () => {
 	return (
-		<div>
-			<h1>Lawyer Dashboard</h1>
-		</div>
+		<SidebarLayout role={AuthRole.LAWYER} headingText="Dashboard">
+			<h1>Dashboard</h1>
+		</SidebarLayout>
 	)
 }

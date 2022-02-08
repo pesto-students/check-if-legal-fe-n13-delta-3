@@ -11,20 +11,21 @@ import {
 } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
 import { FiMenu } from "react-icons/fi"
+import { AuthRole } from "../../utils/enums"
 import { SidebarContent } from "./SidebarContent"
 
-type IProps = ComponentProps<typeof Box> & { headingText?: string }
+type IProps = ComponentProps<typeof Box> & { role: AuthRole; headingText?: string }
 
-export const SidebarLayout: FC<IProps> = ({ children, headingText, ...rest }) => {
+export const SidebarLayout: FC<IProps> = ({ children, role, headingText, ...rest }) => {
 	const sidebar = useDisclosure()
 
 	return (
 		<Box as="section" minH="100vh">
-			<SidebarContent display={{ base: "none", md: "unset" }} />
+			<SidebarContent role={role} display={{ base: "none", md: "unset" }} />
 			<Drawer isOpen={sidebar.isOpen} onClose={sidebar.onClose} placement="left">
 				<DrawerOverlay />
 				<DrawerContent>
-					<SidebarContent w="full" borderRight="none" />
+					<SidebarContent role={role} w="full" borderRight="none" />
 				</DrawerContent>
 			</Drawer>
 			<Box ml={{ base: 0, md: 60 }} transition=".3s ease">
