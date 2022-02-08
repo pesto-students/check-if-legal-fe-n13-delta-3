@@ -1,9 +1,10 @@
 import { FC } from "react"
+import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
 
 export const AdminDashboard: FC = () => {
 	return (
-		<div>
+		<SidebarLayout>
 			<h1>Admin Dashboard</h1>
-		</div>
+		</SidebarLayout>
 	)
 }
