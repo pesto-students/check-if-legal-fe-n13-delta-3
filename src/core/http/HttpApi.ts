@@ -27,8 +27,16 @@ export class HttpApi<ResponseShape = any> {
 			? { Authorization: `Bearer ${token}` }
 			: {}
 
+		console.log(headers)
+
 		try {
-			const response = await axios[this.method](url, body, { params: query, headers })
+			const response = await axios.request({
+				method: this.method,
+				url,
+				headers,
+				data: body,
+				params: query,
+			})
 			return response.data as ResponseShape
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
