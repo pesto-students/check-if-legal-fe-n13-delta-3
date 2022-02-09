@@ -1,40 +1,45 @@
 import { FormControl, Input, Stack } from "@chakra-ui/react"
+import { Select } from "chakra-react-select"
 import { ComponentProps, FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { DrawerForm } from "../../../../components/ui/DrawerForm"
 import { ErrorText } from "../../../../components/ui/ErrorText"
 import { InputLabel } from "../../../../components/ui/InputLabel"
-import { IState } from "../../../state/IState"
-import { cityAddApi } from "./cityAddApi"
-import { Select } from "chakra-react-select"
 import { useAdminAuth } from "../../useAdminAuth"
+import { useCityStore } from "../stores/useCityStore"
+import { useStateStore } from "../stores/useStateStore"
+import { cityAddApi } from "./cityAddApi"
 
-type IProps = Omit<ComponentProps<typeof DrawerForm>, "children"> & {
-	states: IState[]
-	onSuccess?: () => void
-}
+type IProps = Omit<ComponentProps<typeof DrawerForm>, "children">
 
 interface IFormData {
 	name: string
 	stateId: number
 }
 
-export const CityAddDrawer: FC<IProps> = ({ states, onSuccess, ...rest }) => {
+export const CityAddDrawer: FC<IProps> = (props) => {
 	const { token } = useAdminAuth()
-	const { register, handleSubmit, formState, setValue } = useForm<IFormData>({
+	const states = useStateStore((state) => state.states)
+	const fetchCities = useCityStore((state) => state.fetchCities)
+
+	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>({
 		defaultValues: { name: "" },
 	})
 	const [errorText, setErrorText] = useState<string>()
 
-	const onSubmit = handleSubmit(async (data) => {
-		try {
-			await cityAddApi(data, token)
-			onSuccess && onSuccess()
-			rest.onClose()
-		} catch (err) {
-			setErrorText(err instanceof Error ? err.message : "Unknown Error")
-		}
+	const onSubmit = handleSubmit((data) => {
+		cityAddApi(data, token)
+			.then(() => {
+				props.onClose()
+				reset()
+				fetchCities()
+			})
+			.catch((err) =>
+				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
+			)
 	})
+
+	if (!states) return null
 
 	return (
 		<DrawerForm
@@ -43,7 +48,7 @@ export const CityAddDrawer: FC<IProps> = ({ states, onSuccess, ...rest }) => {
 			onSubmit={onSubmit}
 			isSubmitting={formState.isSubmitting}
 			submitLabel={"Save"}
-			{...rest}
+			{...props}
 		>
 			<Stack maxWidth={"sm"} marginX={"auto"}>
 				{/* Name */}
@@ -59,9 +64,7 @@ export const CityAddDrawer: FC<IProps> = ({ states, onSuccess, ...rest }) => {
 							label: state.name,
 							value: state.id,
 						}))}
-						onChange={(selected) => {
-							selected && setValue("stateId", selected.value)
-						}}
+						onChange={(selected) => selected && setValue("stateId", selected.value)}
 					/>
 				</FormControl>
 

@@ -1,33 +1,25 @@
 import { Box, Button, useDisclosure } from "@chakra-ui/react"
-import { FC, useCallback, useEffect, useRef, useState } from "react"
+import { FC, useEffect } from "react"
 import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
-import { CenteredSpinner } from "../../../components/ui/CenterSpinner"
 import { AuthRole } from "../../../utils/enums"
-import { ICity } from "../../city/ICity"
-import { useFetchCities } from "../../city/useFetchCities"
-import { useFetchStates } from "../../state/useFetchStates"
 import { useAdminAuth } from "../useAdminAuth"
 import { CityAddDrawer } from "./cityAdd/CityAddDrawer"
 import { CityDeleteDialog } from "./cityDelete/CityDeleteDialog"
 import { CityListView } from "./CityListView"
+import { useCityStore } from "./stores/useCityStore"
+import { useStateStore } from "./stores/useStateStore"
 
 export const AdminCity: FC = () => {
 	useAdminAuth()
-	const { states, fetchStates } = useFetchStates()
-	const { cities, isLoading, fetchCities } = useFetchCities()
-
-	const cityAddDrawerDisclosure = useDisclosure()
-	const deleteCityRef = useRef<ICity>()
-	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+	const fetchCities = useCityStore((state) => state.fetchCities)
+	const fetchStates = useStateStore((state) => state.fetchStates)
 
 	useEffect(() => {
+		fetchCities()
 		fetchStates()
-		fetchCities()
-	}, [fetchStates, fetchCities])
+	}, [fetchCities, fetchStates])
 
-	const handleCityListRefresh = useCallback(() => {
-		fetchCities()
-	}, [fetchCities])
+	const cityAddDrawerDisclosure = useDisclosure()
 
 	return (
 		<SidebarLayout role={AuthRole.ADMIN} headingText="Cities">
@@ -42,36 +34,11 @@ export const AdminCity: FC = () => {
 					</Button>
 				</Box>
 
-				{/* City List */}
-				{isLoading && <CenteredSpinner />}
-				{cities && (
-					<CityListView
-						cities={cities}
-						onDelete={(city) => {
-							deleteCityRef.current = city
-							setIsDeleteDialogOpen(true)
-						}}
-					/>
-				)}
+				<CityListView />
 			</Box>
 
-			{/* Drawers */}
-			{states && (
-				<CityAddDrawer
-					states={states}
-					onSuccess={handleCityListRefresh}
-					{...cityAddDrawerDisclosure}
-				/>
-			)}
-
-			{deleteCityRef.current && (
-				<CityDeleteDialog
-					city={deleteCityRef.current}
-					isOpen={isDeleteDialogOpen}
-					setIsOpen={setIsDeleteDialogOpen}
-					onSuccess={handleCityListRefresh}
-				/>
-			)}
+			<CityAddDrawer {...cityAddDrawerDisclosure} />
+			<CityDeleteDialog />
 		</SidebarLayout>
 	)
 }

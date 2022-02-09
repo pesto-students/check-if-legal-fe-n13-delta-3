@@ -1,42 +1,42 @@
 import { FC, useState } from "react"
 import DeleteItemDialog from "../../../../components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
-import { ICity } from "../../../city/ICity"
 import { useAdminAuth } from "../../useAdminAuth"
+import { useCityDeleteStore } from "../stores/useCityDeleteStore"
+import { useCityStore } from "../stores/useCityStore"
 import { cityDeleteApi } from "./cityDeleteApi"
 
-type IProps = {
-	city: ICity
-	isOpen: boolean
-	setIsOpen: (isOpen: boolean) => void
-	onSuccess?: () => void
-}
-
-export const CityDeleteDialog: FC<IProps> = ({ city, isOpen, setIsOpen, onSuccess }) => {
+export const CityDeleteDialog: FC = () => {
 	const { token } = useAdminAuth()
+
+	const fetchCities = useCityStore((state) => state.fetchCities)
+	const { selectedCity, isDeleteDialogOpen, setIsDeleteDialogOpen } =
+		useCityDeleteStore()
+
 	const [isLoading, setIsLoading] = useState(false)
 	const [errorMessage, setErrorMessage] = useState<string>()
 
-	const handleCityDelete = async () => {
-		try {
-			setIsLoading(true)
-			await cityDeleteApi({ id: city.id }, token)
-			setIsOpen(false)
-			onSuccess && onSuccess()
-		} catch (err) {
-			console.log(err)
-			setErrorMessage(getErrorMessage(err))
-		} finally {
-			setIsLoading(false)
-		}
+	if (!selectedCity) return null
+
+	const handleCityDelete = () => {
+		setIsLoading(true)
+		cityDeleteApi({ id: selectedCity.id }, token)
+			.then(() => {
+				setIsDeleteDialogOpen(false)
+				fetchCities()
+			})
+			.catch((error) => setErrorMessage(getErrorMessage(error)))
+			.finally(() => setIsLoading(false))
 	}
+
+	if (!selectedCity) return null
 
 	return (
 		<DeleteItemDialog
-			title={`Delete City: ${city.name}`}
-			isOpen={isOpen}
+			title={`Delete City: ${selectedCity.name}`}
+			isOpen={isDeleteDialogOpen}
 			onCancel={() => {
-				setIsOpen(false)
+				setIsDeleteDialogOpen(false)
 				setErrorMessage(undefined)
 			}}
 			onDelete={handleCityDelete}
