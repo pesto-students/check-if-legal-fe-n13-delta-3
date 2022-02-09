@@ -11,7 +11,6 @@ interface IStoreState {
 export const useCityUpdateStore = create<IStoreState>((set) => {
 	return {
 		setSelectedCity: (city: ICity) => set({ selectedCity: city }),
-		isDeleteDialogOpen: false,
 		isDrawerOpen: false,
 		setIsDrawerOpen: (isOpen: boolean) => set({ isDrawerOpen: isOpen }),
 	}

@@ -37,7 +37,6 @@ export const CityUpdateDrawer: FC = () => {
 	}
 
 	const onSubmit = handleSubmit((data) => {
-		console.log(data)
 		cityUpdateApi({ ...data, id: selectedCity.id }, token)
 			.then(() => {
 				onDrawerClose()
@@ -67,8 +66,8 @@ export const CityUpdateDrawer: FC = () => {
 					<Input
 						isRequired
 						autoFocus
+						defaultValue={selectedCity.name}
 						{...register("name")}
-						value={selectedCity.name}
 					/>
 				</FormControl>
 
