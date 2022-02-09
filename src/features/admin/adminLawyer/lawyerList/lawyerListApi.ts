@@ -1,4 +1,4 @@
-import { HttpApi, HttpMethod } from "../../../core/http"
+import { HttpApi, HttpMethod } from "../../../../core/http"
 import { ILawyer } from "./ILawyer"
 
 export async function lawyerListApi({

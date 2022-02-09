@@ -3,7 +3,7 @@ import { FC } from "react"
 import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
 import { AuthRole } from "../../../utils/enums"
 import { useAdminAuth } from "../useAdminAuth"
-import { LawyerListView } from "./LawyerListView"
+import { LawyerListView } from "./lawyerList/LawyerListView"
 
 export const AdminLawyer: FC = () => {
 	useAdminAuth()

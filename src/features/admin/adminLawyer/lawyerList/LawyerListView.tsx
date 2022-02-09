@@ -11,9 +11,10 @@ import {
 	Tr,
 } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
-import { CenteredSpinner } from "../../../components/ui/CenterSpinner"
-import { normalizeDateTime } from "../../../utils/helpers"
-import { useAdminAuth } from "../useAdminAuth"
+import { CenteredSpinner } from "../../../../components/ui/CenterSpinner"
+import { normalizeDateTime } from "../../../../utils/helpers"
+import { useAdminAuth } from "../../useAdminAuth"
+import { VerifyLawyerButton } from "../lawyerVerify/VerifyLawyerButton"
 import { useLawyerStore } from "./useLawyerStore"
 
 export const LawyerListView: FC = () => {
@@ -54,11 +55,11 @@ export const LawyerListView: FC = () => {
 							</Flex>
 						</Td>
 						<Td>{lawyer.city.name}</Td>
-						<Td>
+						<Td onClick={(e) => e.stopPropagation()}>
 							{lawyer.isVerified ? (
 								<Badge colorScheme="green">Verified</Badge>
 							) : (
-								<Badge>Unverified</Badge>
+								<VerifyLawyerButton lawyer={lawyer} />
 							)}
 						</Td>
 						<Td>{normalizeDateTime(lawyer.updatedAt)}</Td>

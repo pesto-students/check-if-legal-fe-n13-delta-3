@@ -1,5 +1,5 @@
 import create from "zustand"
-import { getErrorMessage } from "../../../utils/helpers"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { ILawyer } from "./ILawyer"
 import { lawyerListApi } from "./lawyerListApi"
 
