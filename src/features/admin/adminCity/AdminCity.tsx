@@ -6,8 +6,9 @@ import { useAdminAuth } from "../useAdminAuth"
 import { CityAddDrawer } from "./cityAdd/CityAddDrawer"
 import { CityDeleteDialog } from "./cityDelete/CityDeleteDialog"
 import { CityListView } from "./CityListView"
-import { useCityStore } from "./stores/useCityStore"
-import { useStateStore } from "./stores/useStateStore"
+import { useCityStore } from "../../city/useCityStore"
+import { useStateStore } from "../../state/useStateStore"
+import { CityUpdateDrawer } from "./cityUpdate/CityUpdateDrawer"
 
 export const AdminCity: FC = () => {
 	useAdminAuth()
@@ -39,6 +40,7 @@ export const AdminCity: FC = () => {
 
 			<CityAddDrawer {...cityAddDrawerDisclosure} />
 			<CityDeleteDialog />
+			<CityUpdateDrawer />
 		</SidebarLayout>
 	)
 }

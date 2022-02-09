@@ -3,12 +3,16 @@ import { FC, useEffect } from "react"
 import { CenteredSpinner } from "../../../components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../../components/ui/DeleteIconButton"
 import { EditIconButton } from "../../../components/ui/EditIconButton"
-import { useCityDeleteStore } from "./stores/useCityDeleteStore"
-import { useCityStore } from "./stores/useCityStore"
+import { useCityDeleteStore } from "./cityDelete/useCityDeleteStore"
+import { useCityStore } from "../../city/useCityStore"
+import { useCityUpdateStore } from "./cityUpdate/useCityUpdateStore"
 
 export const CityListView: FC = () => {
 	const { cities, isCitiesLoading, fetchCities } = useCityStore()
-	const { setSelectedCity, setIsDeleteDialogOpen } = useCityDeleteStore()
+	const { setSelectedCity: setSelectedCityForDelete, setIsDeleteDialogOpen } =
+		useCityDeleteStore()
+	const { setSelectedCity: setSelectedCityForUpdate, setIsDrawerOpen } =
+		useCityUpdateStore()
 
 	useEffect(() => {
 		fetchCities()
@@ -35,10 +39,15 @@ export const CityListView: FC = () => {
 						<Td fontWeight={"semibold"}>{city.name}</Td>
 						<Td>{city.state.name}</Td>
 						<Td isNumeric onClick={(e) => e.stopPropagation()}>
-							<EditIconButton onClick={() => {}} />
+							<EditIconButton
+								onClick={() => {
+									setSelectedCityForUpdate(city)
+									setIsDrawerOpen(true)
+								}}
+							/>
 							<DeleteIconButton
 								onClick={() => {
-									setSelectedCity(city)
+									setSelectedCityForDelete(city)
 									setIsDeleteDialogOpen(true)
 								}}
 							/>

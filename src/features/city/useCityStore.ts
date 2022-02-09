@@ -1,7 +1,7 @@
 import create from "zustand"
-import { getErrorMessage } from "../../../../utils/helpers"
-import { cityListApi } from "../../../city/cityListApi"
-import { ICity } from "../../../city/ICity"
+import { getErrorMessage } from "../../utils/helpers"
+import { cityListApi } from "./cityListApi"
+import { ICity } from "./ICity"
 
 interface IStoreState {
 	cities?: ICity[]

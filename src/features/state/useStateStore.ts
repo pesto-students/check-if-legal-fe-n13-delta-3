@@ -1,7 +1,7 @@
 import create from "zustand"
-import { getErrorMessage } from "../../../../utils/helpers"
-import { IState } from "../../../state/IState"
-import { stateListApi } from "../../../state/stateListApi"
+import { getErrorMessage } from "../../utils/helpers"
+import { IState } from "./IState"
+import { stateListApi } from "./stateListApi"
 
 interface IStoreState {
 	states?: IState[]
