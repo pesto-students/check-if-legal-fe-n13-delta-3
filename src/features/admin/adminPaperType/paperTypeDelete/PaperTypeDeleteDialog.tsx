@@ -33,7 +33,7 @@ export const PaperTypeDeleteDialog: FC = () => {
 
 	return (
 		<DeleteItemDialog
-			title={`Delete PaperType: ${selectedPaperType.name}`}
+			title={`Delete Paper Type: ${selectedPaperType.name}`}
 			isOpen={isDeleteDialogOpen}
 			onCancel={() => {
 				setIsDeleteDialogOpen(false)

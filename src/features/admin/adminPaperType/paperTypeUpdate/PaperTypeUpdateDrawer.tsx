@@ -46,7 +46,7 @@ export const PaperTypeUpdateDrawer: FC = () => {
 	return (
 		<DrawerForm
 			size={"sm"}
-			headingText="Update PaperType"
+			headingText="Update Paper Type"
 			onSubmit={onSubmit}
 			isSubmitting={formState.isSubmitting}
 			submitLabel={"Save"}

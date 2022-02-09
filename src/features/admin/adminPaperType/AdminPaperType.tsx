@@ -20,7 +20,7 @@ export const AdminPaperType: FC = () => {
 	const cityAddDrawerDisclosure = useDisclosure()
 
 	return (
-		<SidebarLayout role={AuthRole.ADMIN} headingText="Cities">
+		<SidebarLayout role={AuthRole.ADMIN} headingText="Paper Types">
 			<Box>
 				<Box m={4}>
 					<Button
@@ -28,7 +28,7 @@ export const AdminPaperType: FC = () => {
 						colorScheme="blue"
 						onClick={() => cityAddDrawerDisclosure.onOpen()}
 					>
-						Add PaperType
+						Add Paper Type
 					</Button>
 				</Box>
 
