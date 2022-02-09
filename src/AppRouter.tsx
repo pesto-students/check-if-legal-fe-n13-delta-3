@@ -2,6 +2,7 @@ import { FC } from "react"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import { AdminCity } from "./features/admin/adminCity/AdminCity"
 import { AdminDashboard } from "./features/admin/adminDashboard/AdminDashboard"
+import { AdminLanguage } from "./features/admin/adminLanguage/AdminLanguage"
 import { AdminPaperType } from "./features/admin/adminPaperType/AdminPaperType"
 import { Landing } from "./features/landing/Landing"
 import { LawyerDashboard } from "./features/lawyer/lawyerDashboard/LawyerDashboard"
@@ -30,6 +31,7 @@ export function AppRouter() {
 					<Route index element={<AdminDashboard />} />
 					<Route path="city" element={<AdminCity />} />
 					<Route path="paperType" element={<AdminPaperType />} />
+					<Route path="language" element={<AdminLanguage />} />
 				</Route>
 
 				<Route path="user" element={<PrivateOutlet role={AuthRole.USER} />}>
