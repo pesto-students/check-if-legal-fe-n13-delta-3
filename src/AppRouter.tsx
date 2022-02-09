@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { AdminCity } from "./features/admin/adminCity/AdminCity"
 import { AdminDashboard } from "./features/admin/adminDashboard/AdminDashboard"
 import { AdminLanguage } from "./features/admin/adminLanguage/AdminLanguage"
+import { AdminLawyer } from "./features/admin/adminLawyer/AdminLawyer"
 import { AdminPaperType } from "./features/admin/adminPaperType/AdminPaperType"
 import { Landing } from "./features/landing/Landing"
 import { LawyerDashboard } from "./features/lawyer/lawyerDashboard/LawyerDashboard"
@@ -32,6 +33,7 @@ export function AppRouter() {
 					<Route path="city" element={<AdminCity />} />
 					<Route path="paperType" element={<AdminPaperType />} />
 					<Route path="language" element={<AdminLanguage />} />
+					<Route path="lawyer" element={<AdminLawyer />} />
 				</Route>
 
 				<Route path="user" element={<PrivateOutlet role={AuthRole.USER} />}>
