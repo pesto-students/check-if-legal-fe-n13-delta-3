@@ -57,10 +57,10 @@ export const SidebarContent: FC<IProps> = ({ role, ...rest }) => {
 				aria-label="Main Navigation"
 				gap={1}
 			>
-				{navItems.map(({ name, icon, link }) => {
+				{navItems.map(({ name, icon, link }, i) => {
 					const isSelected = link === window.location.pathname
 					return (
-						<NavLink to={link}>
+						<NavLink to={link} key={i}>
 							{isSelected && <SelectedNavItem icon={icon}>{name}</SelectedNavItem>}
 							{!isSelected && <NavItem icon={icon}>{name}</NavItem>}
 						</NavLink>
@@ -79,7 +79,7 @@ function getNavItems(role: AuthRole) {
 			{ name: "Home", icon: AiFillHome, link: "/admin" },
 			{ name: "Languages", icon: IoLanguage, link: "/admin/language" },
 			{ name: "Paper Types", icon: MdCategory, link: "/admin/paperType" },
-			{ name: "Locations", icon: MdLocationCity, link: "/admin/location" },
+			{ name: "Cities", icon: MdLocationCity, link: "/admin/city" },
 			{ name: "Lawyers", icon: ImUserTie, link: "/admin/lawyer" },
 		)
 	} else if (role === AuthRole.USER) {

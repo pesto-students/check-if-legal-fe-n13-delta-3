@@ -40,7 +40,7 @@ export const UserSignInWithGoogle: FC = () => {
 	return (
 		<Box textAlign={"center"}>
 			<Box width={"lg"} bgColor={"gray.100"} p={4} borderRadius={"lg"}>
-				<Flex direction={"column"} gap={4}>
+				<Flex direction={"column"} gap={4} alignItems="center">
 					<Title p={4}>Sign in to your Account</Title>
 					<Text mt={8} mb={2}>
 						Continue as
@@ -61,12 +61,11 @@ export const UserSignInWithGoogle: FC = () => {
 						clientId={GOOGLE_CLIENT_ID}
 						render={(renderProps) => (
 							<Button
-								w={"full"}
+								width={"sm"}
 								backgroundColor={"white"}
 								variant={"outline"}
 								leftIcon={<FcGoogle />}
-								onClick={renderProps.onClick}
-								disabled={renderProps.disabled}
+								{...renderProps}
 							>
 								<Center>
 									<Text>Sign in with Google</Text>

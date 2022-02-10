@@ -50,7 +50,7 @@ export const SidebarLayout: FC<IProps> = ({ children, role, headingText, ...rest
 					/>
 				</Flex>
 
-				<Box as="main" p="4" {...rest}>
+				<Box as="main" {...rest}>
 					{children}
 				</Box>
 			</Box>

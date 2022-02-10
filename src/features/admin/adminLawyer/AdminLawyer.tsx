@@ -1,13 +1,17 @@
+import { Box } from "@chakra-ui/react"
 import { FC } from "react"
 import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
 import { AuthRole } from "../../../utils/enums"
 import { useAdminAuth } from "../useAdminAuth"
+import { LawyerListView } from "./lawyerList/LawyerListView"
 
-export const AdminDashboard: FC = () => {
+export const AdminLawyer: FC = () => {
 	useAdminAuth()
 	return (
-		<SidebarLayout role={AuthRole.ADMIN} headingText="Dashboard">
-			<h1>Dashboard</h1>
+		<SidebarLayout role={AuthRole.ADMIN} headingText="Lawyers">
+			<Box>
+				<LawyerListView />
+			</Box>
 		</SidebarLayout>
 	)
 }
