@@ -3,12 +3,12 @@ import { AuthRole } from "../../utils/enums"
 import { storage } from "../../utils/storage"
 import { IAuthPayload } from "../../utils/types"
 
-export function useAdminAuth() {
+export function useUserAuth() {
 	const navigate = useNavigate()
 	const authPayload = storage.getAuth()
 
-	if (!authPayload) navigate("/login/admin")
-	if (authPayload?.role !== AuthRole.ADMIN) navigate("/login")
+	if (!authPayload) navigate("/login")
+	if (authPayload?.role !== AuthRole.USER) navigate("/login")
 
 	return authPayload as IAuthPayload
 }
