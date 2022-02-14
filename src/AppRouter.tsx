@@ -12,6 +12,7 @@ import { LawyerStatus } from "./features/lawyer/lawyerRegistration/LawyerStatus"
 import { AdminLogin } from "./features/login/adminLogin/AdminLogin"
 import { UserLogin } from "./features/login/userLogin/UserLogin"
 import { Logout } from "./features/logout/Logout"
+import { Offering } from "./features/offering/Offering"
 import { UserDashboard } from "./features/user/userDashboard/UserDashboard"
 import { UserReview } from "./features/user/userReview/UserReview"
 import { AuthRole } from "./utils/enums"
@@ -23,6 +24,7 @@ export function AppRouter() {
 			<Routes>
 				<Route index element={<Landing />} />
 				<Route path="logout" element={<Logout />} />
+				<Route path="offering" element={<Offering />} />
 
 				<Route path="login" element={<Outlet />}>
 					<Route index element={<UserLogin />} />
