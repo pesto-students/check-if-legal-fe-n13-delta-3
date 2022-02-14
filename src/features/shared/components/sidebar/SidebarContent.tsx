@@ -15,7 +15,7 @@ import { RiSecurePaymentFill } from "react-icons/ri"
 import { ImUserTie } from "react-icons/im"
 import { IconType } from "react-icons/lib"
 import { NavLink } from "react-router-dom"
-import { AuthRole } from "../../utils/enums"
+import { AuthRole } from "../../../../utils/enums"
 import { NavItem } from "./NavItem"
 import { SelectedNavItem } from "./SelectedNavItem"
 

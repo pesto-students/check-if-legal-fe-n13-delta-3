@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
 import { AuthRole } from "../../../utils/enums"
 
 export const LawyerDashboard: FC = () => {

@@ -1,7 +1,7 @@
 import create from "zustand"
 import { getErrorMessage } from "../../../utils/helpers"
-import { reviewListApi } from "../../review/reviewListApi"
-import { IReview } from "../../review/IReview"
+import { reviewListApi } from "../../shared/review/reviewListApi"
+import { IReview } from "../../shared/review/IReview"
 
 interface IStoreState {
 	reviews?: IReview[]

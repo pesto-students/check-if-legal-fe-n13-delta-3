@@ -1,9 +1,9 @@
 import { FC, useState } from "react"
-import DeleteItemDialog from "../../../../components/ui/DeleteItemDialog"
+import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { useAdminAuth } from "../../useAdminAuth"
 import { usePaperTypeDeleteStore } from "./usePaperTypeDeleteStore"
-import { usePaperTypeStore } from "../../../paperType/usePaperTypeStore"
+import { usePaperTypeStore } from "../../../shared/paperType/usePaperTypeStore"
 import { paperTypeDeleteApi } from "./paperTypeDeleteApi"
 
 export const PaperTypeDeleteDialog: FC = () => {

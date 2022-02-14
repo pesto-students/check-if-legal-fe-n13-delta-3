@@ -1,9 +1,9 @@
 import { FC, useState } from "react"
-import DeleteItemDialog from "../../../../components/ui/DeleteItemDialog"
+import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { useAdminAuth } from "../../useAdminAuth"
 import { useCityDeleteStore } from "./useCityDeleteStore"
-import { useCityStore } from "../../../city/useCityStore"
+import { useCityStore } from "../../../shared/city/useCityStore"
 import { cityDeleteApi } from "./cityDeleteApi"
 
 export const CityDeleteDialog: FC = () => {

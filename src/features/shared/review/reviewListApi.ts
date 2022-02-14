@@ -1,4 +1,4 @@
-import { HttpApi, HttpMethod } from "../../core/http"
+import { HttpApi, HttpMethod } from "../../../core/http"
 import { IReview } from "./IReview"
 
 export async function reviewListApi({

@@ -2,8 +2,8 @@ import { Box, Button, Flex, FormControl, Heading, Input, Stack } from "@chakra-u
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { ErrorText } from "../../../components/ui/ErrorText"
-import { InputLabel } from "../../../components/ui/InputLabel"
+import { ErrorText } from "../../shared/components/ui/ErrorText"
+import { InputLabel } from "../../shared/components/ui/InputLabel"
 import { adminLoginApi } from "./adminLoginApi"
 
 interface IFormData {

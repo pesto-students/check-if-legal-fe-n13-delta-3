@@ -1,5 +1,5 @@
 import create from "zustand"
-import { ILanguage } from "../../../language/ILanguage"
+import { ILanguage } from "../../../shared/language/ILanguage"
 
 interface IStoreState {
 	selectedLanguage?: ILanguage

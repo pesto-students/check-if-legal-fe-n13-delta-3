@@ -1,5 +1,5 @@
 import create from "zustand"
-import { IPaperType } from "../../../paperType/IPaperType"
+import { IPaperType } from "../../../shared/paperType/IPaperType"
 
 interface IStoreState {
 	selectedPaperType?: IPaperType

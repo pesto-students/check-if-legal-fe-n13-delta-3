@@ -1,4 +1,4 @@
-import { HttpApi, HttpMethod } from "../../core/http"
+import { HttpApi, HttpMethod } from "../../../core/http"
 import { ILanguage } from "./ILanguage"
 
 export async function languageListApi() {

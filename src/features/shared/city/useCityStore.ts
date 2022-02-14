@@ -1,5 +1,5 @@
 import create from "zustand"
-import { getErrorMessage } from "../../utils/helpers"
+import { getErrorMessage } from "../../../utils/helpers"
 import { cityListApi } from "./cityListApi"
 import { ICity } from "./ICity"
 

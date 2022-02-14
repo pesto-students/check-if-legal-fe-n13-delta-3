@@ -1,5 +1,5 @@
 import create from "zustand"
-import { getErrorMessage } from "../../utils/helpers"
+import { getErrorMessage } from "../../../utils/helpers"
 import { languageListApi } from "./languageListApi"
 import { ILanguage } from "./ILanguage"
 

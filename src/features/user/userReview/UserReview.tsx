@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react"
 import { FC } from "react"
-import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
 import { AuthRole } from "../../../utils/enums"
 import { useUserAuth } from "../useUserAuth"
 import { ReviewListView } from "./ReviewListView"

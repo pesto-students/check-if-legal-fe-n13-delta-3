@@ -11,7 +11,7 @@ import {
 	Tr,
 } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
-import { CenteredSpinner } from "../../../../components/ui/CenterSpinner"
+import { CenteredSpinner } from "../../../shared/components/ui/CenterSpinner"
 import { normalizeDateTime } from "../../../../utils/helpers"
 import { useAdminAuth } from "../../useAdminAuth"
 import { VerifyLawyerButton } from "../lawyerVerify/VerifyLawyerButton"

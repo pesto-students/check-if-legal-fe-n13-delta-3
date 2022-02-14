@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
 import { FiMenu } from "react-icons/fi"
-import { AuthRole } from "../../utils/enums"
+import { AuthRole } from "../../../../utils/enums"
 import { SidebarContent } from "./SidebarContent"
 
 type IProps = ComponentProps<typeof Box> & { role: AuthRole; headingText?: string }

@@ -1,6 +1,6 @@
 import { Avatar, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
-import { CenteredSpinner } from "../../../components/ui/CenterSpinner"
+import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { normalizeDateTime } from "../../../utils/helpers"
 import { useUserAuth } from "../useUserAuth"
 import { useReviewStore } from "./useReviewStore"

@@ -1,6 +1,6 @@
-import { ILawyer } from "../admin/adminLawyer/lawyerList/ILawyer"
+import { ILawyer } from "../../admin/adminLawyer/lawyerList/ILawyer"
 import { IPaperType } from "../paperType/IPaperType"
-import { IUser } from "../user/IUser"
+import { IUser } from "../../user/IUser"
 
 export interface IReview {
 	id: number

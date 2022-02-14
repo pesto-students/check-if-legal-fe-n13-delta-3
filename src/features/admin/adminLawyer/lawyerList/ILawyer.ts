@@ -1,4 +1,4 @@
-import { ICity } from "../../../city/ICity"
+import { ICity } from "../../../shared/city/ICity"
 
 export interface ILawyer {
 	id: number

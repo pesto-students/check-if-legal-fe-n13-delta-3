@@ -1,5 +1,5 @@
 import create from "zustand"
-import { ICity } from "../../../city/ICity"
+import { ICity } from "../../../shared/city/ICity"
 
 interface IStoreState {
 	selectedCity?: ICity
