@@ -15,6 +15,7 @@ import { Logout } from "./features/logout/Logout"
 import { Offering } from "./features/offering/Offering"
 import { UserDashboard } from "./features/user/userDashboard/UserDashboard"
 import { UserReview } from "./features/user/userReview/UserReview"
+import { UserReviewDetails } from "./features/user/userReviewDetails/UserReviewDetails"
 import { AuthRole } from "./utils/enums"
 import { storage } from "./utils/storage"
 
@@ -42,6 +43,7 @@ export function AppRouter() {
 				<Route path="user" element={<PrivateOutlet role={AuthRole.USER} />}>
 					<Route index element={<UserDashboard />} />
 					<Route path="review" element={<UserReview />} />
+					<Route path="review/:id/details" element={<UserReviewDetails />} />
 				</Route>
 
 				<Route path="lawyer" element={<PrivateOutlet role={AuthRole.LAWYER} />}>

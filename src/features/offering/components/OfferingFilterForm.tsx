@@ -2,13 +2,13 @@ import { Box, Button, Center, FormControl, Heading, Stack } from "@chakra-ui/rea
 import { Select } from "chakra-react-select"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useCityStore } from "../shared/city/useCityStore"
-import { CenteredSpinner } from "../shared/components/ui/CenterSpinner"
-import { ErrorText } from "../shared/components/ui/ErrorText"
-import { InputLabel } from "../shared/components/ui/InputLabel"
-import { useLanguageStore } from "../shared/language/useLanguageStore"
-import { usePaperTypeStore } from "../shared/paperType/usePaperTypeStore"
-import { useOfferingStore } from "./useOfferingStore"
+import { useCityStore } from "../../shared/city/useCityStore"
+import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { ErrorText } from "../../shared/components/ui/ErrorText"
+import { InputLabel } from "../../shared/components/ui/InputLabel"
+import { useLanguageStore } from "../../shared/language/useLanguageStore"
+import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
+import { useOfferingStore } from "../useOfferingStore"
 
 interface IFormData {
 	cityId: number
