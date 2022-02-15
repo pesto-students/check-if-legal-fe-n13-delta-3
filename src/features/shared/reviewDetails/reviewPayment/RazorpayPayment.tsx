@@ -6,9 +6,11 @@ import { useUserAuth } from "../../../user/useUserAuth"
 import { ErrorText } from "../../components/ui/ErrorText"
 import { useReviewDetailsStore } from "../useReviewDetailsStore"
 import { reviewPaymentIntentGetApi } from "./reviewPaymentIntentGetApi"
+import { useReviewPaymentStore } from "./useReviewPaymentStore"
 
 export const RazorpayPayment: FC = () => {
-	const { review } = useReviewDetailsStore()
+	const { review, fetchReview } = useReviewDetailsStore()
+	const { fetchPayment } = useReviewPaymentStore()
 	const { token } = useUserAuth()
 	const Razorpay = useRazorpay()
 	const [errorText, setErrorText] = useState<string>()
@@ -30,16 +32,17 @@ export const RazorpayPayment: FC = () => {
 				currency,
 				name,
 				description,
-				handler: async (response) => {
-					if (response.razorpay_payment_id) {
-					}
+				handler: () => {
+					fetchPayment({ reviewId: review.id, token }, () => {
+						fetchReview({ id: review.id, token })
+					})
 				},
 			})
 			razorpayInstance.open()
 		} catch (err) {
 			setErrorText(getErrorMessage(err))
 		}
-	}, [review, token, Razorpay])
+	}, [review, token, Razorpay, fetchPayment, fetchReview])
 
 	if (!review) return null
 

@@ -19,8 +19,8 @@ export const ReviewDocumentList: FC = () => {
 		>
 			<Table size={"sm"}>
 				<Tbody>
-					{documents?.map((el) => (
-						<Tr>
+					{documents?.map((el, i) => (
+						<Tr key={i}>
 							<Td>
 								<Flex gap={2}>
 									<BsFileEarmarkImage />
