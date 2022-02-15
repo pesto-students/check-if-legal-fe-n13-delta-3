@@ -50,16 +50,16 @@ export const UploadDocumentsForm: FC = () => {
 				</Text>
 			)}
 			<form onSubmit={onSubmit}>
-				<Input type={"file"} {...register("documents")} />
+				<Input type={"file"} multiple {...register("documents")} />
 				<Button
 					type={"submit"}
 					mt={2}
 					size="sm"
-					colorScheme={"blue"}
+					colorScheme={_.isEmpty(documents) ? "blue" : undefined}
 					isLoading={isLoading}
 					isDisabled={isLoading}
 				>
-					Upload Documents
+					{_.isEmpty(documents) ? "Upload Documents" : "Upload More Documents"}
 				</Button>
 				{errorText && <ErrorText text={errorText} />}
 			</form>

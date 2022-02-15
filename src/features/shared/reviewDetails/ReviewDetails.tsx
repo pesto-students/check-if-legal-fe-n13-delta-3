@@ -7,6 +7,7 @@ import { CenteredSpinner } from "../components/ui/CenterSpinner"
 import { ReviewCancel } from "./reviewCancel/ReviewCancel"
 import { ReviewDocuments } from "./reviewDocuments/ReviewDocuments"
 import { ReviewNote } from "./reviewNote/ReviewNote"
+import { ReviewPayment } from "./reviewPayment/ReviewPayment"
 import { useReviewDetailsStore } from "./useReviewDetailsStore"
 
 interface IProps {
@@ -41,6 +42,8 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 			<ReviewNote />
 			<br />
 			<ReviewDocuments />
+			<br />
+			<ReviewPayment />
 			<br />
 			<ReviewCancel />
 		</Box>

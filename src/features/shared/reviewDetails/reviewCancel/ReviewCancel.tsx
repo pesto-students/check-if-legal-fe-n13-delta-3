@@ -1,4 +1,4 @@
-import { Box, Button, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { FC, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "../../../../utils/helpers"
@@ -41,7 +41,17 @@ export const ReviewCancel: FC = () => {
 
 	return (
 		<Box>
-			<Button size={"sm"} colorScheme={"red"} onClick={() => disclosure.onOpen()}>
+			<Heading size={"md"}>Review Cancellation</Heading>
+			<Text maxW={"md"}>
+				You will be taken to online payment gateway, once payment completes it will be
+				sent for the review
+			</Text>
+			<Button
+				mt={1}
+				size={"sm"}
+				colorScheme={"red"}
+				onClick={() => disclosure.onOpen()}
+			>
 				Cancel Review
 			</Button>
 			<Dialog
