@@ -14,7 +14,7 @@ export function normalizeDateTime(date: string | number) {
 	const d = new Date(date)
 	return `${d.getDate()}-${
 		d.getMonth() + 1
-	}-${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
+	}-${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`
 }
 
 export function cityLabel(city: ICity) {

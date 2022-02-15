@@ -1,19 +1,19 @@
 import { Box, Flex, Text } from "@chakra-ui/react"
 import _ from "lodash"
 import { ComponentProps, FC } from "react"
-import { AiFillHome, AiFillBank } from "react-icons/ai"
+import { AiFillBank, AiFillHome } from "react-icons/ai"
+import { GoSignOut } from "react-icons/go"
+import { ImUserTie } from "react-icons/im"
+import { IoLanguage } from "react-icons/io5"
+import { IconType } from "react-icons/lib"
 import {
-	MdDocumentScanner,
 	MdCategory,
+	MdDocumentScanner,
+	MdLocalOffer,
 	MdLocationCity,
 	MdReviews,
-	MdLocalOffer,
 } from "react-icons/md"
-import { GoSignOut } from "react-icons/go"
-import { IoLanguage, IoSettingsSharp } from "react-icons/io5"
 import { RiSecurePaymentFill } from "react-icons/ri"
-import { ImUserTie } from "react-icons/im"
-import { IconType } from "react-icons/lib"
 import { NavLink } from "react-router-dom"
 import { AuthRole } from "../../../../utils/enums"
 import { NavItem } from "./NavItem"
@@ -84,11 +84,9 @@ function getNavItems(role: AuthRole) {
 		)
 	} else if (role === AuthRole.USER) {
 		items.push(
-			{ name: "Home", icon: AiFillHome, link: "/user" },
-			{ name: "Reviews", icon: MdDocumentScanner, link: "/user/review" },
+			{ name: "Reviews", icon: MdDocumentScanner, link: "/user" },
 			{ name: "Payments", icon: RiSecurePaymentFill, link: "/user/payment" },
 			{ name: "Rating", icon: MdReviews, link: "/user/rating" },
-			{ name: "Settings", icon: IoSettingsSharp, link: "/user/setting" },
 		)
 	} else if (role === AuthRole.LAWYER) {
 		items.push(
@@ -97,7 +95,6 @@ function getNavItems(role: AuthRole) {
 			{ name: "Payments", icon: RiSecurePaymentFill, link: "/lawyer/payment" },
 			{ name: "Banks", icon: AiFillBank, link: "/lawyer/bank" },
 			{ name: "Offerings", icon: MdLocalOffer, link: "/lawyer/offering" },
-			{ name: "Settings", icon: IoSettingsSharp, link: "/lawyer/setting" },
 		)
 	}
 

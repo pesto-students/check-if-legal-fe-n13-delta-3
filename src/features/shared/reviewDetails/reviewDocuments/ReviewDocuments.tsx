@@ -2,13 +2,13 @@ import { Box, Text } from "@chakra-ui/react"
 import _ from "lodash"
 import { FC } from "react"
 import { useReviewDetailsStore } from "../useReviewDetailsStore"
-import { UploadDocuments } from "./UploadDocuments"
+import { UploadDocumentsForm } from "./UploadDocumentsForm"
 
 export const ReviewDocuments: FC = () => {
 	const { documents } = useReviewDetailsStore()
 	if (_.isUndefined(documents)) return null
 
-	if (_.isEmpty(documents)) return <UploadDocuments />
+	if (_.isEmpty(documents)) return <UploadDocumentsForm />
 
 	return (
 		<Text>

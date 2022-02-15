@@ -1,7 +1,7 @@
 import { Avatar, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { normalizeDateTime } from "../../../utils/helpers"
+import { formatInr, normalizeDateTime } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { useUserAuth } from "../useUserAuth"
 import { useReviewStore } from "./useReviewStore"
@@ -24,7 +24,8 @@ export const ReviewListView: FC = () => {
 					<Th>Paper Type</Th>
 					<Th>Lawyer</Th>
 					<Th>Status</Th>
-					<Th>Last Modified</Th>
+					<Th isNumeric>Price (INR)</Th>
+					<Th isNumeric>Last Modified</Th>
 				</Tr>
 			</Thead>
 			<Tbody>
@@ -45,7 +46,8 @@ export const ReviewListView: FC = () => {
 							</Flex>
 						</Td>
 						<Td>{review.status.toUpperCase()}</Td>
-						<Td>{normalizeDateTime(review.updatedAt)}</Td>
+						<Td isNumeric>{formatInr(review.price)}</Td>
+						<Td isNumeric>{normalizeDateTime(review.updatedAt)}</Td>
 					</Tr>
 				))}
 			</Tbody>
