@@ -1,8 +1,8 @@
 import create from "zustand"
-import { getErrorMessage } from "../../../../utils/helpers"
-import { IReview } from "../IReview"
-import { reviewDocumentListApi } from "../reviewDocumentListApi"
-import { reviewGetApi } from "../reviewGetApi"
+import { getErrorMessage } from "../../../utils/helpers"
+import { IReview } from "../review/IReview"
+import { reviewDocumentListApi } from "./reviewDocumentListApi"
+import { reviewGetApi } from "./reviewGetApi"
 
 interface IStoreState {
 	isLawyer?: boolean
@@ -28,7 +28,6 @@ export const useReviewDetailsStore = create<IStoreState>((set) => {
 				.then((review) => {
 					set({ review })
 					return reviewDocumentListApi({ reviewId: id, token }).then((documents) => {
-						console.log(documents)
 						set({ documents })
 					})
 				})

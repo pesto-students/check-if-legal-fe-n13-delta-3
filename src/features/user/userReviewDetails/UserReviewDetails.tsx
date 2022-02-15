@@ -3,7 +3,7 @@ import { FC } from "react"
 import { useParams } from "react-router-dom"
 import { AuthRole } from "../../../utils/enums"
 import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
-import { ReviewDetails } from "../../shared/review/reviewDetails/ReviewDetails"
+import { ReviewDetails } from "../../shared/reviewDetails/ReviewDetails"
 import { useUserAuth } from "../useUserAuth"
 
 export const UserReviewDetails: FC = () => {

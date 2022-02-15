@@ -1,7 +1,6 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react"
 import { FC } from "react"
 import { useReviewDetailsStore } from "../useReviewDetailsStore"
-import { AddReviewNoteBox } from "./AddReviewNote"
 import { ReviewNoteUpdateDrawer } from "./updateReviewNote/ReviewNoteUpdateDrawer"
 import { useReviewNoteUpdateStore } from "./updateReviewNote/useReviewNoteUpdateStore"
 
@@ -10,8 +9,6 @@ export const ReviewNote: FC = () => {
 	const { isLawyer, review } = useReviewDetailsStore()
 	if (!review) return null
 
-	if (!review.userNote) return <AddReviewNoteBox />
-
 	return (
 		<Box>
 			<Heading size={"md"}>Review Note</Heading>
@@ -19,10 +16,18 @@ export const ReviewNote: FC = () => {
 			{review.userNote ? (
 				<Text maxW={"xl"}>{review.userNote}</Text>
 			) : (
-				<AddReviewNoteBox />
+				<Box>
+					<Text maxW={"sm"}>
+						Add more info in words regarding papers review, it will help lawyer to
+						understand better.
+					</Text>
+					<Button mt={2} size="sm" onClick={() => setIsDrawerOpen(true)}>
+						Add Review Note
+					</Button>
+				</Box>
 			)}
 
-			{!isLawyer && (
+			{review.userNote && !isLawyer && (
 				<Button mt={2} size="sm" onClick={() => setIsDrawerOpen(true)}>
 					Update Note
 				</Button>
