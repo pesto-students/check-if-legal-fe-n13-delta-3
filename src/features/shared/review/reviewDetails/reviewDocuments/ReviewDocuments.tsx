@@ -1,13 +1,21 @@
-import { Text } from "@chakra-ui/react"
+import { Box, Text } from "@chakra-ui/react"
+import _ from "lodash"
 import { FC } from "react"
 import { useReviewDetailsStore } from "../useReviewDetailsStore"
 import { UploadDocuments } from "./UploadDocuments"
 
 export const ReviewDocuments: FC = () => {
-	const { review } = useReviewDetailsStore()
-	if (!review) return null
+	const { documents } = useReviewDetailsStore()
+	if (_.isUndefined(documents)) return null
 
-	if (!review.userNote) return <UploadDocuments />
+	if (_.isEmpty(documents)) return <UploadDocuments />
 
-	return <Text>{review.userNote}</Text>
+	return (
+		<Text>
+			{documents.length}
+			{documents.map((el) => (
+				<Box>{el}</Box>
+			))}
+		</Text>
+	)
 }

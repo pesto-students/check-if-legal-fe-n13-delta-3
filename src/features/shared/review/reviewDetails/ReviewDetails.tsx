@@ -4,6 +4,7 @@ import { formatInr, normalizeDate } from "../../../../utils/helpers"
 import { ILawyer } from "../../../admin/adminLawyer/lawyerList/ILawyer"
 import { IUser } from "../../../user/IUser"
 import { CenteredSpinner } from "../../components/ui/CenterSpinner"
+import { ReviewCancel } from "./reviewCancel/ReviewCancel"
 import { ReviewDocuments } from "./reviewDocuments/ReviewDocuments"
 import { ReviewNote } from "./reviewNote/ReviewNote"
 import { useReviewDetailsStore } from "./useReviewDetailsStore"
@@ -15,10 +16,12 @@ interface IProps {
 }
 
 export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
-	const { review, isReviewLoading, fetchReview } = useReviewDetailsStore()
+	const { review, isReviewLoading, fetchReview, setIsLawyer } = useReviewDetailsStore()
+
 	useEffect(() => {
+		setIsLawyer(isLawyer)
 		fetchReview({ id: reviewId, token })
-	}, [fetchReview, reviewId, token])
+	}, [fetchReview, reviewId, token, isLawyer, setIsLawyer])
 
 	if (!review || isReviewLoading) return <CenteredSpinner />
 
@@ -35,12 +38,14 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 			</Flex>
 			<br />
 
-			<Heading size={"md"}>Review Note</Heading>
 			<ReviewNote />
 
 			<br />
 			<Heading size={"md"}>Documents</Heading>
 			<ReviewDocuments />
+
+			<br />
+			<ReviewCancel />
 		</Box>
 	)
 }

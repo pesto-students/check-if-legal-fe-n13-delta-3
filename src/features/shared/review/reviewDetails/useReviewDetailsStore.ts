@@ -5,6 +5,9 @@ import { reviewDocumentListApi } from "../reviewDocumentListApi"
 import { reviewGetApi } from "../reviewGetApi"
 
 interface IStoreState {
+	isLawyer?: boolean
+	setIsLawyer: (isLawyer: boolean) => void
+
 	review?: IReview
 	documents?: string[]
 	fetchReviewError?: string
@@ -14,6 +17,8 @@ interface IStoreState {
 
 export const useReviewDetailsStore = create<IStoreState>((set) => {
 	return {
+		setIsLawyer: (isLawyer: boolean) => set({ isLawyer }),
+
 		isReviewLoading: false,
 		fetchReview: ({ id, token }) => {
 			set({ isReviewLoading: true })
@@ -22,9 +27,10 @@ export const useReviewDetailsStore = create<IStoreState>((set) => {
 			reviewGetApi({ id, token })
 				.then((review) => {
 					set({ review })
-					return reviewDocumentListApi({ reviewId: id, token }).then((documents) =>
-						set({ documents }),
-					)
+					return reviewDocumentListApi({ reviewId: id, token }).then((documents) => {
+						console.log(documents)
+						set({ documents })
+					})
 				})
 				.catch((err) => set({ fetchReviewError: getErrorMessage(err) }))
 				.finally(() => set({ isReviewLoading: false }))
