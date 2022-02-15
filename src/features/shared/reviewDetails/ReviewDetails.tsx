@@ -39,11 +39,8 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 			<br />
 
 			<ReviewNote />
-
 			<br />
-			<Heading size={"md"}>Documents</Heading>
 			<ReviewDocuments />
-
 			<br />
 			<ReviewCancel />
 		</Box>

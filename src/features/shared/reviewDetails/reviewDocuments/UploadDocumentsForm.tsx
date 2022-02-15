@@ -1,4 +1,5 @@
 import { Box, Button, Input, Text } from "@chakra-ui/react"
+import _ from "lodash"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { getErrorMessage } from "../../../../utils/helpers"
@@ -13,7 +14,7 @@ interface IFormData {
 
 export const UploadDocumentsForm: FC = () => {
 	const { token } = useUserAuth()
-	const { review, fetchReview } = useReviewDetailsStore()
+	const { review, fetchReview, documents } = useReviewDetailsStore()
 	const { register, handleSubmit } = useForm<IFormData>()
 	const [isLoading, setIsLoading] = useState(false)
 	const [errorText, setErrorText] = useState<string>()
@@ -41,11 +42,13 @@ export const UploadDocumentsForm: FC = () => {
 	})
 
 	return (
-		<Box>
-			<Text maxW={"sm"}>
-				Upload all the necessary documents required for the review process in image or
-				PDF format
-			</Text>
+		<Box mt={2} maxW={"xl"}>
+			{_.isEmpty(documents) && (
+				<Text maxW={"sm"}>
+					Upload all the necessary documents required for the review process in image
+					or PDF format
+				</Text>
+			)}
 			<form onSubmit={onSubmit}>
 				<Input type={"file"} {...register("documents")} />
 				<Button
