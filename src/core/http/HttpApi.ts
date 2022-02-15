@@ -7,10 +7,12 @@ import { HttpMethod } from "./enums"
 export class HttpApi<ResponseShape = any> {
 	readonly endpoint: string
 	readonly method: HttpMethod
+	readonly isFormData: boolean
 
-	constructor(method: HttpMethod, endpoint: string) {
+	constructor(method: HttpMethod, endpoint: string, options?: { isFormData?: boolean }) {
 		this.endpoint = endpoint
 		this.method = method
+		this.isFormData = options?.isFormData ?? false
 	}
 
 	async send({
@@ -23,12 +25,15 @@ export class HttpApi<ResponseShape = any> {
 		token?: string
 	} = {}): Promise<ResponseShape> {
 		const url = `${API_URL}${this.endpoint}`
-		const headers: AxiosRequestHeaders = token
-			? { Authorization: `Bearer ${token}` }
-			: {}
+
+		const headers: AxiosRequestHeaders = {
+			...(token ? { Authorization: `Bearer ${token}` } : {}),
+			...(this.isFormData ? { "Content-Type": `multipart/form-data;` } : {}),
+			// ? { "Content-Type": `multipart/form-data; boundary=${body._boundary}` }
+		}
 
 		try {
-			const response = await axios.request({
+			const response = await axios({
 				method: this.method,
 				url,
 				headers,
@@ -37,9 +42,7 @@ export class HttpApi<ResponseShape = any> {
 			})
 			return response.data as ResponseShape
 		} catch (err) {
-			if (axios.isAxiosError(err)) {
-				throw this.httpError(err)
-			}
+			if (axios.isAxiosError(err)) throw this.httpError(err)
 			console.log(err)
 			throw err
 		}
