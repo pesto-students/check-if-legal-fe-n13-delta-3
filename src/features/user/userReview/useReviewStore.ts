@@ -17,7 +17,7 @@ export const useReviewStore = create<IStoreState>((set) => {
 			set({ isReviewsLoading: true })
 			set({ fetchReviewsError: undefined })
 
-			reviewListApi({ include: { lawyer: true }, token })
+			reviewListApi({ token })
 				.then((reviews) => set({ reviews }))
 				.catch((err) => set({ fetchReviewsError: getErrorMessage(err) }))
 				.finally(() => set({ isReviewsLoading: false }))

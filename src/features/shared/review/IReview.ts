@@ -1,4 +1,4 @@
-import { ILawyer } from "../../admin/adminLawyer/lawyerList/ILawyer"
+import { ILawyer } from "../../lawyer/ILawyer"
 import { IPaperType } from "../paperType/IPaperType"
 import { IUser } from "../../user/IUser"
 

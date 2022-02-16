@@ -1,4 +1,4 @@
-import { ILawyer } from "../admin/adminLawyer/lawyerList/ILawyer"
+import { ILawyer } from "../lawyer/ILawyer"
 import { ILanguage } from "../shared/language/ILanguage"
 import { IPaperType } from "../shared/paperType/IPaperType"
 

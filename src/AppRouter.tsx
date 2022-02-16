@@ -59,5 +59,5 @@ const PrivateOutlet: FC<{ role: AuthRole }> = ({ role }) => {
 	if (authPayload && authPayload.role === role) return <Outlet />
 
 	if (role === AuthRole.ADMIN) return <Navigate to="admin/login" />
-	return <Navigate to="login" />
+	return <Navigate to="/login" />
 }

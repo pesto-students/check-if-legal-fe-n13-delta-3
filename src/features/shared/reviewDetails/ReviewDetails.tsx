@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import { normalizeDate, formatInr } from "../../../utils/helpers"
-import { ILawyer } from "../../admin/adminLawyer/lawyerList/ILawyer"
+import { ILawyer } from "../../lawyer/ILawyer"
 import { IUser } from "../../user/IUser"
 import { CenteredSpinner } from "../components/ui/CenterSpinner"
 import { ReviewCancel } from "./reviewCancel/ReviewCancel"
