@@ -1,5 +1,6 @@
 import create from "zustand"
 import { getErrorMessage } from "../../utils/helpers"
+import { storage } from "../../utils/storage"
 import { ILawyer } from "./ILawyer"
 import { lawyerSelfGetApi } from "./lawyerSelfGetApi"
 
@@ -18,7 +19,10 @@ export const useLawyerStore = create<IStoreState>((set) => {
 			set({ fetchLawyerError: undefined })
 
 			lawyerSelfGetApi({ token })
-				.then((lawyer) => set({ lawyer }))
+				.then((lawyer) => {
+					storage.setIsVerified(lawyer?.isVerified ?? false)
+					set({ lawyer })
+				})
 				.catch((err) => set({ fetchLawyerError: getErrorMessage(err) }))
 				.finally(() => set({ isLawyerLoading: false }))
 		},

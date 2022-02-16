@@ -12,6 +12,10 @@ export const storage = {
 	setAuth: (payload: IAuthPayload) => {
 		window.localStorage.setItem("token", JSON.stringify(payload))
 	},
+	setIsVerified: (isVerified: boolean) => {
+		const payload = storage.getAuth()
+		window.localStorage.setItem("token", JSON.stringify({ ...payload, isVerified }))
+	},
 	clearAuth: () => {
 		window.localStorage.removeItem("token")
 	},
