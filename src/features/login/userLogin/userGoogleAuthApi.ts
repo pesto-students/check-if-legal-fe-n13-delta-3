@@ -5,6 +5,7 @@ import { storage } from "../../../utils/storage"
 interface IResponseShape {
 	role: AuthRole
 	token: string
+	isVerified: boolean
 }
 
 export async function userGoogleAuthApi(payload: { idToken: string; isLawyer: boolean }) {

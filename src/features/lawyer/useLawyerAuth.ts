@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { AuthRole } from "../../utils/enums"
 import { storage } from "../../utils/storage"
+import { IAuthPayload } from "../../utils/types"
 
 export function useLawyerAuth() {
 	const navigate = useNavigate()
@@ -9,5 +10,5 @@ export function useLawyerAuth() {
 	if (!authPayload) navigate("/login")
 	if (authPayload?.role !== AuthRole.LAWYER) navigate("/login")
 
-	return authPayload?.token as string
+	return authPayload as IAuthPayload
 }

@@ -6,6 +6,7 @@ export const storage = {
 		return JSON.parse(window.localStorage.getItem("token") as string) as {
 			token: string
 			role: AuthRole
+			isVerified: boolean
 		} | null
 	},
 	setAuth: (payload: IAuthPayload) => {
