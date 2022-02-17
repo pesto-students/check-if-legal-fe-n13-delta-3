@@ -6,6 +6,7 @@ import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
 import { useVerifiedLawyerAuth } from "../useVerifiedLawyerAuth"
 import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
 import { OfferingAddDrawer } from "./offeringAdd/OfferingAddDrawer"
+import { OfferingDeleteDialog } from "./offeringDelete/OfferingDeleteDialog"
 
 export const LawyerOffering: FC = () => {
 	const { token } = useVerifiedLawyerAuth()
@@ -34,7 +35,7 @@ export const LawyerOffering: FC = () => {
 			</Box>
 
 			<OfferingAddDrawer {...offeringAddDrawerDisclosure} />
-			{/* <CityDeleteDialog /> */}
+			<OfferingDeleteDialog />
 			{/* <CityUpdateDrawer /> */}
 		</SidebarLayout>
 	)

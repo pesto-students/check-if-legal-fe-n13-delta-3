@@ -4,12 +4,13 @@ import { formatInr } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
 import { EditIconButton } from "../../shared/components/ui/EditIconButton"
+import { useOfferingDeleteStore } from "./offeringDelete/useCityDeleteStore"
 import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
 
 export const OfferingList: FC = () => {
 	const { offerings, isOfferingsLoading } = useLawyerOfferingStore()
-	// const { setSelectedOffering: setSelectedOfferingForDelete, setIsDeleteDialogOpen } =
-	// 	useOfferingDeleteStore()
+	const { setSelectedOffering: setSelectedOfferingForDelete, setIsDeleteDialogOpen } =
+		useOfferingDeleteStore()
 	// const { setSelectedOffering: setSelectedOfferingForUpdate, setIsDrawerOpen } =
 	// 	useOfferingUpdateStore()
 
@@ -50,8 +51,8 @@ export const OfferingList: FC = () => {
 							/>
 							<DeleteIconButton
 								onClick={() => {
-									// setSelectedOfferingForDelete(offering)
-									// setIsDeleteDialogOpen(true)
+									setSelectedOfferingForDelete(offering)
+									setIsDeleteDialogOpen(true)
 								}}
 							/>
 						</Td>
