@@ -10,6 +10,7 @@ import { LawyerBank } from "./features/lawyer/lawyerBank/LawyerBank"
 import { LawyerDashboard } from "./features/lawyer/lawyerDashboard/LawyerDashboard"
 import { LawyerOffering } from "./features/lawyer/lawyerOffering/LawyerOffering"
 import { LawyerRegister } from "./features/lawyer/lawyerRegister/LawyerRegister"
+import { LawyerReview } from "./features/lawyer/lawyerReview/LawyerReview"
 import { LawyerStatus } from "./features/lawyer/lawyerStatus/LawyerStatus"
 import { AdminLogin } from "./features/login/adminLogin/AdminLogin"
 import { UserLogin } from "./features/login/userLogin/UserLogin"
@@ -52,6 +53,7 @@ export function AppRouter() {
 					<Route path="status" element={<LawyerStatus />} />
 					<Route path="offering" element={<LawyerOffering />} />
 					<Route path="bank" element={<LawyerBank />} />
+					<Route path="review" element={<LawyerReview />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
