@@ -1,10 +1,11 @@
-import { Avatar, Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react"
 import _ from "lodash"
 import { FC, useEffect } from "react"
 import { Navigate, NavLink } from "react-router-dom"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { useLawyerAuth } from "../useLawyerAuth"
 import { useLawyerStore } from "../useLawyerStore"
+import { LawyerProfilePicture } from "./lawyerProfilePicture/LawyerProfilePicture"
 import { LawyerProofs } from "./lawyerProofs/LawyerProofs"
 
 export const LawyerStatus: FC = () => {
@@ -28,12 +29,7 @@ export const LawyerStatus: FC = () => {
 					a telephone verification call on provided contact number.
 				</Text>
 				<Flex mt={8} p={4} gap={6} bgColor="gray.200" borderRadius={"lg"}>
-					<Flex direction={"column"}>
-						<Avatar size={"2xl"} />
-						<Button size={"xs"} mt={3} colorScheme="blackAlpha">
-							Update Profile Picture
-						</Button>
-					</Flex>
+					<LawyerProfilePicture />
 					<Box textAlign={"left"}>
 						<Heading size={"md"}>{lawyer.name}</Heading>
 						<Text>{lawyer.description}</Text>
