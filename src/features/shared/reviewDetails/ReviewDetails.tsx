@@ -4,7 +4,9 @@ import { formatInr, normalizeDate } from "../../../utils/helpers"
 import { ILawyer } from "../../lawyer/ILawyer"
 import { IUser } from "../../user/IUser"
 import { CenteredSpinner } from "../components/ui/CenterSpinner"
+import { ReviewStatus } from "../review/IReview"
 import { ReviewCancel } from "./reviewCancel/ReviewCancel"
+import { ReviewClose } from "./reviewClose/ReviewClose"
 import { ReviewDocuments } from "./reviewDocuments/ReviewDocuments"
 import { ReviewNote } from "./reviewNote/ReviewNote"
 import { ReviewPayment } from "./reviewPayment/ReviewPayment"
@@ -32,6 +34,7 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 			<br />
 
 			<Flex gap={"16"}>
+				<StatusBox status={review.status} />
 				{!isLawyer && review.lawyer && <LawyerBox lawyer={review.lawyer} />}
 				{isLawyer && review.user && <UserBox user={review.user} />}
 				<DateBox date={review.createdAt} />
@@ -46,9 +49,20 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 			{!isLawyer && <ReviewPayment />}
 			<br />
 			{!isLawyer && <ReviewCancel />}
+			{isLawyer && <ReviewClose />}
 		</Box>
 	)
 }
+
+const StatusBox: FC<{ status: ReviewStatus }> = ({ status }) => (
+	<Box>
+		<Text>Status</Text>
+		<Text fontSize="xl" fontWeight={"semibold"}>
+			{" "}
+			{status}
+		</Text>
+	</Box>
+)
 
 const LawyerBox: FC<{ lawyer: ILawyer }> = ({ lawyer }) => (
 	<Box>
