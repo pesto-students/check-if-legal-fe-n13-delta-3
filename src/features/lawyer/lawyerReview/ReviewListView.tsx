@@ -1,4 +1,4 @@
-import { Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { Avatar, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { formatInr, normalizeDateTime } from "../../../utils/helpers"
@@ -41,6 +41,7 @@ export const ReviewListView: FC = () => {
 						<Td fontWeight={"semibold"}>{review.paperType.name}</Td>
 						<Td>
 							<Flex alignItems={"center"} gap="2">
+								<Avatar name={review.user?.name} size="sm" />
 								<Text>{review.user?.name || "Unknown User"}</Text>
 							</Flex>
 						</Td>

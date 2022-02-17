@@ -54,6 +54,9 @@ export const OfferingList: FC = () => {
 								<Text maxW={"xl"}>
 									{offering.description ?? offering.lawyer.description}
 								</Text>
+								<Text maxW={"xl"}>
+									{offering.expectedTimeInHours} hours expected for review
+								</Text>
 
 								<Button
 									as={Button}
