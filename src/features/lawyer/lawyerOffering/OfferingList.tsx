@@ -5,18 +5,15 @@ import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
 import { EditIconButton } from "../../shared/components/ui/EditIconButton"
 import { useOfferingDeleteStore } from "./offeringDelete/useCityDeleteStore"
+import { useOfferingUpdateStore } from "./offeringUpdate/useOfferingUpdateStore"
 import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
 
 export const OfferingList: FC = () => {
 	const { offerings, isOfferingsLoading } = useLawyerOfferingStore()
 	const { setSelectedOffering: setSelectedOfferingForDelete, setIsDeleteDialogOpen } =
 		useOfferingDeleteStore()
-	// const { setSelectedOffering: setSelectedOfferingForUpdate, setIsDrawerOpen } =
-	// 	useOfferingUpdateStore()
-
-	// useEffect(() => {
-	// 	fetchOfferings()
-	// }, [fetchOfferings])
+	const { setSelectedOffering: setSelectedOfferingForUpdate, setIsDrawerOpen } =
+		useOfferingUpdateStore()
 
 	if (isOfferingsLoading || !offerings) return <CenteredSpinner />
 
@@ -28,6 +25,7 @@ export const OfferingList: FC = () => {
 					<Th>Language</Th>
 					<Th isNumeric>Expected Duration</Th>
 					<Th isNumeric>Price (INR)</Th>
+					<Th isNumeric>Status</Th>
 					<Th isNumeric></Th>
 				</Tr>
 			</Thead>
@@ -42,11 +40,12 @@ export const OfferingList: FC = () => {
 						<Td>{offering.language.name}</Td>
 						<Td isNumeric>{offering.expectedTimeInHours} Hrs</Td>
 						<Td isNumeric>{formatInr(offering.price)}</Td>
+						<Td isNumeric>{offering.isAvailable ? "ACTIVE" : "DISABLED"}</Td>
 						<Td isNumeric onClick={(e) => e.stopPropagation()}>
 							<EditIconButton
 								onClick={() => {
-									// setSelectedOfferingForUpdate(offering)
-									// setIsDrawerOpen(true)
+									setSelectedOfferingForUpdate(offering)
+									setIsDrawerOpen(true)
 								}}
 							/>
 							<DeleteIconButton

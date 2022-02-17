@@ -1,12 +1,13 @@
 import { Box, Button, useDisclosure } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import { AuthRole } from "../../../utils/enums"
-import { OfferingList } from "./OfferingList"
 import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
 import { useVerifiedLawyerAuth } from "../useVerifiedLawyerAuth"
-import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
 import { OfferingAddDrawer } from "./offeringAdd/OfferingAddDrawer"
 import { OfferingDeleteDialog } from "./offeringDelete/OfferingDeleteDialog"
+import { OfferingList } from "./OfferingList"
+import { OfferingUpdateDrawer } from "./offeringUpdate/OfferingUpdateDrawer"
+import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
 
 export const LawyerOffering: FC = () => {
 	const { token } = useVerifiedLawyerAuth()
@@ -36,7 +37,7 @@ export const LawyerOffering: FC = () => {
 
 			<OfferingAddDrawer {...offeringAddDrawerDisclosure} />
 			<OfferingDeleteDialog />
-			{/* <CityUpdateDrawer /> */}
+			<OfferingUpdateDrawer />
 		</SidebarLayout>
 	)
 }
