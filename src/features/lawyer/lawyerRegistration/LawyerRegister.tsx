@@ -9,16 +9,18 @@ import {
 	useColorModeValue,
 	Text,
 	Avatar,
+	AvatarBadge,
+	IconButton,
 	Center,
 	Textarea,
 	Select,
+	Box,
 } from "@chakra-ui/react"
+import { EditIcon } from "@chakra-ui/icons"
 import default_profile from "../../../assests/default_profile.jpg"
 import { lawyerRegister } from "./services"
-import { useNavigate } from "react-router-dom"
 
 export const LawyerRegister: FC = () => {
-	const navigate = useNavigate();
 	const [lawyerData, setLawyerData] = useState<any>({
 		name: "",
 		cityId: 1,
@@ -33,10 +35,7 @@ export const LawyerRegister: FC = () => {
 
 	const onSubmit = async () => {
 		try {
-			let data:any = await lawyerRegister(lawyerData)
-			if (data){
-				navigate("/lawyer/status/")
-			}
+			await lawyerRegister(lawyerData)
 		} catch (e) {}
 	}
 	const renderBody = () => {
@@ -74,6 +73,15 @@ export const LawyerRegister: FC = () => {
 						<Stack direction={["column", "row"]} spacing={8}>
 							<Center>
 								<Avatar size="xl" src={default_profile}>
+									<AvatarBadge
+										as={IconButton}
+										size="sm"
+										rounded="full"
+										top="-10px"
+										colorScheme="red"
+										aria-label="remove Image"
+										icon={<EditIcon />}
+									/>
 								</Avatar>
 							</Center>
 							<FormControl id="name" isRequired>
@@ -92,7 +100,7 @@ export const LawyerRegister: FC = () => {
 						<FormLabel>City of Practising</FormLabel>
 						<Select
 							defaultValue={"Mumbai"}
-							onChange={(_) => onDataChange(parseInt(_.target.value), "cityId")}
+							onChange={(_) => onDataChange(_.target.value, "cityId")}
 						>
 							<option value="1">Mumbai</option>
 							<option value="2">Gujarat</option>
@@ -126,6 +134,49 @@ export const LawyerRegister: FC = () => {
 							value={lawyerData.phone}
 							onChange={(_) => onDataChange(_.target.value, "phone")}
 						/>
+					</FormControl>
+					<FormControl id="files" isRequired>
+						<FormLabel>Upload Documents For Verification</FormLabel>
+						<Box
+							maxW="4000px"
+							borderWidth="1px"
+							borderRadius="lg"
+							overflow="hidden"
+						>
+							<Text
+								display="flex"
+								fontWeight="bold"
+								fontSize="xs"
+								// eslint-disable-next-line react-hooks/rules-of-hooks
+								bg={useColorModeValue("white", "gray.700")}
+							>
+								Upload Any Goverment approved ID and Lawyer Licence provided from
+								Bar Council of India.
+							</Text>
+							<Box p="5">
+								<Box display="flex" justifyContent="center">
+									<Box
+										color="gray.500"
+										fontWeight="semibold"
+										letterSpacing="wide"
+										fontSize="xs"
+										textTransform="uppercase"
+										ml="2"
+									>
+										<Button
+											color={"gray.600"}
+											size="sm"
+											bg={"gray.400"}
+											_hover={{
+												bg: "gray.400",
+											}}
+										>
+											Upload Images
+										</Button>
+									</Box>
+								</Box>
+							</Box>
+						</Box>
 					</FormControl>
 					{renderFooter()}
 				</Stack>
