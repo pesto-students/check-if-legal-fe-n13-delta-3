@@ -1,13 +1,11 @@
 import { FC } from "react"
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import { AdminCity } from "./features/admin/adminCity/AdminCity"
-import { AdminDashboard } from "./features/admin/adminDashboard/AdminDashboard"
 import { AdminLanguage } from "./features/admin/adminLanguage/AdminLanguage"
 import { AdminLawyer } from "./features/admin/adminLawyer/AdminLawyer"
 import { AdminPaperType } from "./features/admin/adminPaperType/AdminPaperType"
 import { Landing } from "./features/landing/Landing"
 import { LawyerBank } from "./features/lawyer/lawyerBank/LawyerBank"
-import { LawyerDashboard } from "./features/lawyer/lawyerDashboard/LawyerDashboard"
 import { LawyerOffering } from "./features/lawyer/lawyerOffering/LawyerOffering"
 import { LawyerRegister } from "./features/lawyer/lawyerRegister/LawyerRegister"
 import { LawyerReview } from "./features/lawyer/lawyerReview/LawyerReview"
@@ -36,11 +34,10 @@ export function AppRouter() {
 				</Route>
 
 				<Route path="admin" element={<PrivateOutlet role={AuthRole.ADMIN} />}>
-					<Route index element={<AdminDashboard />} />
+					<Route index element={<AdminLawyer />} />
 					<Route path="city" element={<AdminCity />} />
 					<Route path="paperType" element={<AdminPaperType />} />
 					<Route path="language" element={<AdminLanguage />} />
-					<Route path="lawyer" element={<AdminLawyer />} />
 				</Route>
 
 				<Route path="user" element={<PrivateOutlet role={AuthRole.USER} />}>
@@ -49,12 +46,11 @@ export function AppRouter() {
 				</Route>
 
 				<Route path="lawyer" element={<PrivateOutlet role={AuthRole.LAWYER} />}>
-					<Route index element={<LawyerDashboard />} />
+					<Route index element={<LawyerReview />} />
 					<Route path="register" element={<LawyerRegister />} />
 					<Route path="status" element={<LawyerStatus />} />
 					<Route path="offering" element={<LawyerOffering />} />
 					<Route path="bank" element={<LawyerBank />} />
-					<Route path="review" element={<LawyerReview />} />
 					<Route path="review/:id/details" element={<LawyerReviewDetails />} />
 				</Route>
 			</Routes>
