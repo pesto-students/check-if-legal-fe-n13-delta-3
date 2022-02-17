@@ -37,7 +37,6 @@ export const ReviewNote: FC = () => {
 					<Button mt={2} size="sm" onClick={() => setIsDrawerOpen(true)}>
 						Update Note
 					</Button>
-					<ReviewNoteUpdateDrawer />
 				</>
 			)}
 		</Box>
