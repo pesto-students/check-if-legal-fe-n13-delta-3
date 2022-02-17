@@ -1,13 +1,13 @@
 import { Box, Button, useDisclosure } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
-import { SidebarLayout } from "../../../components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
 import { AuthRole } from "../../../utils/enums"
 import { useAdminAuth } from "../useAdminAuth"
 import { CityAddDrawer } from "./cityAdd/CityAddDrawer"
 import { CityDeleteDialog } from "./cityDelete/CityDeleteDialog"
 import { CityListView } from "./CityListView"
-import { useCityStore } from "../../city/useCityStore"
-import { useStateStore } from "../../state/useStateStore"
+import { useCityStore } from "../../shared/city/useCityStore"
+import { useStateStore } from "../../shared/state/useStateStore"
 import { CityUpdateDrawer } from "./cityUpdate/CityUpdateDrawer"
 
 export const AdminCity: FC = () => {

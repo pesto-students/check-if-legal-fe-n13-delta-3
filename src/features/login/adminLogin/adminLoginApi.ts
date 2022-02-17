@@ -9,5 +9,5 @@ interface IResponseShape {
 export async function adminLoginApi(payload: { username: string; password: string }) {
 	const httpApi = new HttpApi<IResponseShape>(HttpMethod.POST, "/admin/login")
 	const response = await httpApi.send({ body: payload })
-	storage.setAuth({ role: AuthRole.ADMIN, token: response.token })
+	storage.setAuth({ role: AuthRole.ADMIN, token: response.token, isVerified: true })
 }

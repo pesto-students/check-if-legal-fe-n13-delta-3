@@ -1,9 +1,9 @@
 import { FC, useState } from "react"
-import DeleteItemDialog from "../../../../components/ui/DeleteItemDialog"
+import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { useAdminAuth } from "../../useAdminAuth"
 import { useLanguageDeleteStore } from "./useLanguageDeleteStore"
-import { useLanguageStore } from "../../../language/useLanguageStore"
+import { useLanguageStore } from "../../../shared/language/useLanguageStore"
 import { languageDeleteApi } from "./languageDeleteApi"
 
 export const LanguageDeleteDialog: FC = () => {

@@ -1,0 +1,101 @@
+import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { FC, useEffect } from "react"
+import { formatInr, normalizeDate } from "../../../utils/helpers"
+import { ILawyer } from "../../lawyer/ILawyer"
+import { IUser } from "../../user/IUser"
+import { CenteredSpinner } from "../components/ui/CenterSpinner"
+import { ReviewStatus } from "../review/IReview"
+import { ReviewCancel } from "./reviewCancel/ReviewCancel"
+import { ReviewClose } from "./reviewClose/ReviewClose"
+import { ReviewDocuments } from "./reviewDocuments/ReviewDocuments"
+import { ReviewNote } from "./reviewNote/ReviewNote"
+import { ReviewPayment } from "./reviewPayment/ReviewPayment"
+import { useReviewDetailsStore } from "./useReviewDetailsStore"
+
+interface IProps {
+	token: string
+	isLawyer: boolean
+	reviewId: number
+}
+
+export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
+	const { review, isReviewLoading, fetchReview, setIsLawyer } = useReviewDetailsStore()
+
+	useEffect(() => {
+		setIsLawyer(isLawyer)
+		fetchReview({ id: reviewId, token })
+	}, [fetchReview, reviewId, token, isLawyer, setIsLawyer])
+
+	if (!review || isReviewLoading) return <CenteredSpinner />
+
+	return (
+		<Box>
+			<Heading size={"lg"}>{review.paperType.name}</Heading>
+			<br />
+
+			<Flex gap={"16"}>
+				<StatusBox status={review.status} />
+				{!isLawyer && review.lawyer && <LawyerBox lawyer={review.lawyer} />}
+				{isLawyer && review.user && <UserBox user={review.user} />}
+				<DateBox date={review.createdAt} />
+				<PriceBox price={review.price} />
+			</Flex>
+			<br />
+
+			<ReviewNote />
+			<br />
+			<ReviewDocuments />
+			<br />
+			{!isLawyer && <ReviewPayment />}
+			<br />
+			{!isLawyer && <ReviewCancel />}
+			{isLawyer && <ReviewClose />}
+		</Box>
+	)
+}
+
+const StatusBox: FC<{ status: ReviewStatus }> = ({ status }) => (
+	<Box>
+		<Text>Status</Text>
+		<Text fontSize="xl" fontWeight={"semibold"}>
+			{" "}
+			{status}
+		</Text>
+	</Box>
+)
+
+const LawyerBox: FC<{ lawyer: ILawyer }> = ({ lawyer }) => (
+	<Box>
+		<Text>Lawyer</Text>
+		<Text fontSize="xl" fontWeight={"semibold"}>
+			{lawyer.name}
+		</Text>
+	</Box>
+)
+
+const UserBox: FC<{ user: IUser }> = ({ user }) => (
+	<Box>
+		<Text>User</Text>
+		<Text fontSize="xl" fontWeight={"semibold"}>
+			{user.name}
+		</Text>
+	</Box>
+)
+
+const DateBox: FC<{ date: string }> = ({ date }) => (
+	<Box>
+		<Text>Issue Date</Text>
+		<Text fontSize="xl" fontWeight={"semibold"}>
+			{normalizeDate(date)}
+		</Text>
+	</Box>
+)
+
+const PriceBox: FC<{ price: number }> = ({ price }) => (
+	<Box>
+		<Text>Price</Text>
+		<Text fontSize="xl" fontWeight={"semibold"}>
+			{formatInr(price)} INR
+		</Text>
+	</Box>
+)

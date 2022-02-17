@@ -1,7 +1,7 @@
 import create from "zustand"
 import { getErrorMessage } from "../../../utils/helpers"
-import { reviewListApi } from "../../review/reviewListApi"
-import { IReview } from "../../review/IReview"
+import { reviewListApi } from "../../shared/review/reviewListApi"
+import { IReview } from "../../shared/review/IReview"
 
 interface IStoreState {
 	reviews?: IReview[]
@@ -17,7 +17,7 @@ export const useReviewStore = create<IStoreState>((set) => {
 			set({ isReviewsLoading: true })
 			set({ fetchReviewsError: undefined })
 
-			reviewListApi({ include: { lawyer: true }, token })
+			reviewListApi({ token })
 				.then((reviews) => set({ reviews }))
 				.catch((err) => set({ fetchReviewsError: getErrorMessage(err) }))
 				.finally(() => set({ isReviewsLoading: false }))

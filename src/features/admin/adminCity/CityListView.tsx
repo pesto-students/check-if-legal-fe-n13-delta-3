@@ -1,10 +1,10 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
-import { CenteredSpinner } from "../../../components/ui/CenterSpinner"
-import { DeleteIconButton } from "../../../components/ui/DeleteIconButton"
-import { EditIconButton } from "../../../components/ui/EditIconButton"
+import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
+import { EditIconButton } from "../../shared/components/ui/EditIconButton"
 import { useCityDeleteStore } from "./cityDelete/useCityDeleteStore"
-import { useCityStore } from "../../city/useCityStore"
+import { useCityStore } from "../../shared/city/useCityStore"
 import { useCityUpdateStore } from "./cityUpdate/useCityUpdateStore"
 
 export const CityListView: FC = () => {

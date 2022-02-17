@@ -1,6 +1,6 @@
 import create from "zustand"
 import { getErrorMessage } from "../../../../utils/helpers"
-import { ILawyer } from "./ILawyer"
+import { ILawyer } from "../../../lawyer/ILawyer"
 import { lawyerListApi } from "./lawyerListApi"
 
 interface IStoreState {

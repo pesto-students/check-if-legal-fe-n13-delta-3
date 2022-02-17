@@ -11,9 +11,9 @@ import {
 import { FC, useState } from "react"
 import { GoogleLogin, GoogleLoginResponse } from "react-google-login"
 import { FcGoogle } from "react-icons/fc"
-import { useNavigate } from "react-router-dom"
-import { ErrorText } from "../../../components/ui/ErrorText"
-import { Title } from "../../../components/ui/Title"
+import { useLocation, useNavigate } from "react-router-dom"
+import { ErrorText } from "../../shared/components/ui/ErrorText"
+import { Title } from "../../shared/components/ui/Title"
 import { GOOGLE_CLIENT_ID } from "../../../configs"
 import { userGoogleAuthApi } from "./userGoogleAuthApi"
 
@@ -21,12 +21,15 @@ export const UserSignInWithGoogle: FC = () => {
 	const [isLawyer, setIsLawyer] = useState(false)
 	const [errorText, setErrorText] = useState<string>()
 	const navigate = useNavigate()
+	const location = useLocation()
 
 	const onSuccess = async (response: any) => {
 		try {
 			const { tokenId } = response as GoogleLoginResponse
 			const { role } = await userGoogleAuthApi({ idToken: tokenId, isLawyer })
-			navigate(`/${role}`)
+
+			const from = location.state as string | undefined
+			navigate(from ?? `/${role}`)
 		} catch (err) {
 			setErrorText(err instanceof Error ? err.message : "Unknown Error")
 		}

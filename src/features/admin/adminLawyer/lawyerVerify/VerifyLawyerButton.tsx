@@ -2,7 +2,7 @@ import { Button, useToast } from "@chakra-ui/react"
 import { FC } from "react"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { useAdminAuth } from "../../useAdminAuth"
-import { ILawyer } from "../lawyerList/ILawyer"
+import { ILawyer } from "../../../lawyer/ILawyer"
 import { useLawyerStore } from "../lawyerList/useLawyerStore"
 import { lawyerVerifyApi } from "./lawyerVerifyApid"
 
