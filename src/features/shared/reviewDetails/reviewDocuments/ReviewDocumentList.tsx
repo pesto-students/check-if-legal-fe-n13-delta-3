@@ -1,4 +1,5 @@
 import { Box, Flex, Table, Tbody, Td, Text, Tr } from "@chakra-ui/react"
+import _ from "lodash"
 import { FC } from "react"
 import { BsFileEarmarkImage } from "react-icons/bs"
 import { DeleteIconButton } from "../../components/ui/DeleteIconButton"
@@ -6,7 +7,15 @@ import { DownloadIconButton } from "../../components/ui/DownloadIconButton"
 import { useReviewDetailsStore } from "../useReviewDetailsStore"
 
 export const ReviewDocumentList: FC = () => {
-	const { documents } = useReviewDetailsStore()
+	const { documents, isLawyer } = useReviewDetailsStore()
+
+	if (_.isEmpty(documents)) {
+		return (
+			<Box>
+				<Text>No documents uploaded</Text>
+			</Box>
+		)
+	}
 
 	return (
 		<Box
@@ -29,7 +38,7 @@ export const ReviewDocumentList: FC = () => {
 							</Td>
 							<Td isNumeric>
 								<DownloadIconButton />
-								<DeleteIconButton />
+								{!isLawyer && <DeleteIconButton />}
 							</Td>
 						</Tr>
 					))}

@@ -13,9 +13,9 @@ export const ReviewNote: FC = () => {
 		<Box>
 			<Heading size={"md"}>Review Note</Heading>
 
-			{review.userNote ? (
-				<Text maxW={"xl"}>{review.userNote}</Text>
-			) : (
+			{review.userNote && <Text maxW={"xl"}>{review.userNote}</Text>}
+
+			{!review.userNote && !isLawyer && (
 				<Box>
 					<Text maxW={"sm"}>
 						Add more info in words regarding papers review, it will help lawyer to
@@ -27,13 +27,20 @@ export const ReviewNote: FC = () => {
 				</Box>
 			)}
 
-			{review.userNote && !isLawyer && (
-				<Button mt={2} size="sm" onClick={() => setIsDrawerOpen(true)}>
-					Update Note
-				</Button>
+			{!review.userNote && isLawyer && (
+				<Box>
+					<Text maxW={"sm"}>No note proved for review.</Text>
+				</Box>
 			)}
 
-			<ReviewNoteUpdateDrawer />
+			{review.userNote && !isLawyer && (
+				<>
+					<Button mt={2} size="sm" onClick={() => setIsDrawerOpen(true)}>
+						Update Note
+					</Button>
+					<ReviewNoteUpdateDrawer />
+				</>
+			)}
 		</Box>
 	)
 }

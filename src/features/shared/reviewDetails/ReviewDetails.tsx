@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
-import { normalizeDate, formatInr } from "../../../utils/helpers"
+import { formatInr, normalizeDate } from "../../../utils/helpers"
 import { ILawyer } from "../../lawyer/ILawyer"
 import { IUser } from "../../user/IUser"
 import { CenteredSpinner } from "../components/ui/CenterSpinner"
@@ -43,9 +43,9 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 			<br />
 			<ReviewDocuments />
 			<br />
-			<ReviewPayment />
+			{!isLawyer && <ReviewPayment />}
 			<br />
-			<ReviewCancel />
+			{!isLawyer && <ReviewCancel />}
 		</Box>
 	)
 }
