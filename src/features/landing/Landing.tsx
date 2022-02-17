@@ -1,9 +1,6 @@
 import { FC } from "react"
+import { Header } from "./Header"
 
 export const Landing: FC = () => {
-	return (
-		<div>
-			<h1>CHECK IF LEGAL</h1>
-		</div>
-	)
+	return <Header />
 }
