@@ -18,6 +18,7 @@ export const HeroSection = () => {
 				w={{ base: "full", md: 11 / 12, xl: 9 / 12 }}
 				mx="auto"
 				textAlign={"center"}
+				mt={16}
 			>
 				<chakra.h1
 					mb={6}

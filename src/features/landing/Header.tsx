@@ -20,12 +20,21 @@ export const Header: FC = () => {
 
 	const navItems = [
 		{ href: "/offering", name: "Verify Papers" },
+		{ href: "#feature", name: "Features" },
 		{ href: "#about", name: "About Us" },
 		{ href: "#for-lawyer", name: "For Lawyers" },
 	]
 
 	return (
-		<chakra.header bg={bg} w="full" px={{ base: 2, sm: 4 }} py={4} shadow="md">
+		<chakra.header
+			bg={bg}
+			w="full"
+			px={{ base: 2, sm: 4 }}
+			py={4}
+			shadow="md"
+			position={"fixed"}
+			zIndex={1}
+		>
 			<Container maxW={"6xl"}>
 				<Flex alignItems="center" justifyContent="space-between" mx="auto">
 					<Flex>
