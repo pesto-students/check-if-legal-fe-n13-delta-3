@@ -4,7 +4,7 @@ import { formatInr } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
 import { EditIconButton } from "../../shared/components/ui/EditIconButton"
-import { useOfferingDeleteStore } from "./offeringDelete/useCityDeleteStore"
+import { useOfferingDeleteStore } from "./offeringDelete/useOfferingDeleteStore"
 import { useOfferingUpdateStore } from "./offeringUpdate/useOfferingUpdateStore"
 import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
 

@@ -1,45 +1,45 @@
 import { FC, useState } from "react"
 import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
-import { offeringDeleteApi } from "./offeringDeleteApi"
+import { bankDeleteApi } from "./bankDeleteApi"
 import { useVerifiedLawyerAuth } from "../../useVerifiedLawyerAuth"
-import { useLawyerOfferingStore } from "../useLawyerOfferingStore"
-import { useOfferingDeleteStore } from "./useOfferingDeleteStore"
+import { useLawyerBankStore } from "../useLawyerBankStore"
+import { useBankDeleteStore } from "./useBankDeleteStore"
 
-export const OfferingDeleteDialog: FC = () => {
+export const BankDeleteDialog: FC = () => {
 	const { token } = useVerifiedLawyerAuth()
 
-	const { fetchOfferings } = useLawyerOfferingStore()
-	const { selectedOffering, isDeleteDialogOpen, setIsDeleteDialogOpen } =
-		useOfferingDeleteStore()
+	const { fetchBanks } = useLawyerBankStore()
+	const { selectedBank, isDeleteDialogOpen, setIsDeleteDialogOpen } =
+		useBankDeleteStore()
 
 	const [isLoading, setIsLoading] = useState(false)
 	const [errorMessage, setErrorMessage] = useState<string>()
 
-	if (!selectedOffering) return null
+	if (!selectedBank) return null
 
-	const handleOfferingDelete = () => {
+	const handleBankDelete = () => {
 		setIsLoading(true)
-		offeringDeleteApi({ id: selectedOffering.id }, token)
+		bankDeleteApi({ id: selectedBank.id }, token)
 			.then(() => {
 				setIsDeleteDialogOpen(false)
-				fetchOfferings({ token })
+				fetchBanks({ token })
 			})
 			.catch((error) => setErrorMessage(getErrorMessage(error)))
 			.finally(() => setIsLoading(false))
 	}
 
-	if (!selectedOffering) return null
+	if (!selectedBank) return null
 
 	return (
 		<DeleteItemDialog
-			title={`Delete Offering`}
+			title={`Delete Bank: ${selectedBank.bankName}`}
 			isOpen={isDeleteDialogOpen}
 			onCancel={() => {
 				setIsDeleteDialogOpen(false)
 				setErrorMessage(undefined)
 			}}
-			onDelete={handleOfferingDelete}
+			onDelete={handleBankDelete}
 			isLoading={isLoading}
 			errorMessage={errorMessage}
 		/>

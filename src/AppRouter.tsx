@@ -6,6 +6,7 @@ import { AdminLanguage } from "./features/admin/adminLanguage/AdminLanguage"
 import { AdminLawyer } from "./features/admin/adminLawyer/AdminLawyer"
 import { AdminPaperType } from "./features/admin/adminPaperType/AdminPaperType"
 import { Landing } from "./features/landing/Landing"
+import { LawyerBank } from "./features/lawyer/lawyerBank/LawyerBank"
 import { LawyerDashboard } from "./features/lawyer/lawyerDashboard/LawyerDashboard"
 import { LawyerOffering } from "./features/lawyer/lawyerOffering/LawyerOffering"
 import { LawyerRegister } from "./features/lawyer/lawyerRegister/LawyerRegister"
@@ -50,6 +51,7 @@ export function AppRouter() {
 					<Route path="register" element={<LawyerRegister />} />
 					<Route path="status" element={<LawyerStatus />} />
 					<Route path="offering" element={<LawyerOffering />} />
+					<Route path="bank" element={<LawyerBank />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
