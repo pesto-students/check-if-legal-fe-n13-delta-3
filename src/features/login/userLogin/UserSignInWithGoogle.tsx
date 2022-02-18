@@ -16,6 +16,7 @@ import { ErrorText } from "../../shared/components/ui/ErrorText"
 import { Title } from "../../shared/components/ui/Title"
 import { GOOGLE_CLIENT_ID } from "../../../configs"
 import { userGoogleAuthApi } from "./userGoogleAuthApi"
+import { getErrorMessage } from "../../../utils/helpers"
 
 export const UserSignInWithGoogle: FC = () => {
 	const [isLawyer, setIsLawyer] = useState(false)
@@ -31,7 +32,8 @@ export const UserSignInWithGoogle: FC = () => {
 			const from = location.state as string | undefined
 			navigate(from ?? `/${role}`)
 		} catch (err) {
-			setErrorText(err instanceof Error ? err.message : "Unknown Error")
+			const message = getErrorMessage(err)
+			setErrorText(message)
 		}
 	}
 
@@ -42,10 +44,15 @@ export const UserSignInWithGoogle: FC = () => {
 
 	return (
 		<Box textAlign={"center"}>
-			<Box width={"lg"} bgColor={"gray.100"} p={4} borderRadius={"lg"}>
+			<Box>
 				<Flex direction={"column"} gap={4} alignItems="center">
-					<Title p={4}>Sign in to your Account</Title>
-					<Text mt={8} mb={2}>
+					<Title>Sign in to your Account</Title>
+					<Text color="gray.600">
+						If you do not have an account, your account will be created based in
+						your Google account info.
+					</Text>
+
+					<Text fontWeight={"semibold"} mt="4">
 						Continue as
 					</Text>
 					<RadioGroup
@@ -66,7 +73,7 @@ export const UserSignInWithGoogle: FC = () => {
 							<Button
 								width={"sm"}
 								backgroundColor={"white"}
-								variant={"outline"}
+								_hover={{ backgroundColor: "gray.50" }}
 								leftIcon={<FcGoogle />}
 								{...renderProps}
 							>
@@ -75,11 +82,31 @@ export const UserSignInWithGoogle: FC = () => {
 								</Center>
 							</Button>
 						)}
-						buttonText="Login"
-						cookiePolicy={"single_host_origin"}
 						onSuccess={onSuccess}
 						onFailure={onFailure}
 					/>
+
+					<Button
+						width={"sm"}
+						backgroundColor={"white"}
+						_hover={{ backgroundColor: "gray.50" }}
+						onClick={() => {
+							const demoGoogleUserIdToken = isLawyer
+								? process.env.REACT_APP_DEMO_LAWYER_ID_TOKEN
+								: process.env.REACT_APP_DEMO_USER_ID_TOKEN
+							if (!demoGoogleUserIdToken) {
+								console.log("No demo user id token found")
+								setErrorText("Demo user id token not set")
+								return
+							}
+
+							onSuccess({ idToken: demoGoogleUserIdToken })
+						}}
+					>
+						<Center>
+							<Text>Try as demo {isLawyer ? "Lawyer" : "User"}</Text>
+						</Center>
+					</Button>
 				</Flex>
 			</Box>
 		</Box>
