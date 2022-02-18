@@ -7,6 +7,7 @@ import {
 	Flex,
 	HStack,
 	IconButton,
+	Img,
 	useDisclosure,
 	VStack,
 } from "@chakra-ui/react"
@@ -39,7 +40,7 @@ export const Header: FC = () => {
 				<Flex alignItems="center" justifyContent="space-between" mx="auto">
 					<Flex>
 						<chakra.h1 fontSize="xl" fontWeight="semibold" ml="2">
-							CHECK IF LEGAL
+							<Img src="assets/logo-dark.png" height={"25px"} />
 						</chakra.h1>
 					</Flex>
 					<HStack display="flex" alignItems="center" spacing={1}>
