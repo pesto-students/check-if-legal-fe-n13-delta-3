@@ -15,6 +15,7 @@ import { AdminLogin } from "./features/login/adminLogin/AdminLogin"
 import { UserLogin } from "./features/login/userLogin/UserLogin"
 import { Logout } from "./features/logout/Logout"
 import { Offering } from "./features/offering/Offering"
+import { NotFound } from "./features/defaults/NotFound"
 import { UserReview } from "./features/user/userReview/UserReview"
 import { UserReviewDetails } from "./features/user/userReviewDetails/UserReviewDetails"
 import { AuthRole } from "./utils/enums"
@@ -53,6 +54,8 @@ export function AppRouter() {
 					<Route path="bank" element={<LawyerBank />} />
 					<Route path="review/:id/details" element={<LawyerReviewDetails />} />
 				</Route>
+
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</BrowserRouter>
 	)
