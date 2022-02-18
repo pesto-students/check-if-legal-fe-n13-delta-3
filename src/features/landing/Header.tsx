@@ -56,7 +56,7 @@ export const Header: FC = () => {
 							))}
 						</HStack>
 						<NavLink to={"login"}>
-							<Button colorScheme="blue" size="sm">
+							<Button colorScheme="blue" size="md">
 								Sign In
 							</Button>
 						</NavLink>
