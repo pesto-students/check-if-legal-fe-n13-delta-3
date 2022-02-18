@@ -49,9 +49,9 @@ export const Header: FC = () => {
 							display={{ base: "none", md: "inline-flex" }}
 						>
 							{navItems.map((item, i) => (
-								<NavLink key={i} to={item.href}>
+								<chakra.a href={item.href} key={i}>
 									<Button variant="ghost">{item.name}</Button>
-								</NavLink>
+								</chakra.a>
 							))}
 						</HStack>
 						<NavLink to={"login"}>
@@ -91,11 +91,11 @@ export const Header: FC = () => {
 								/>
 
 								{navItems.map((item, i) => (
-									<NavLink key={i} to={item.href}>
+									<chakra.a key={i} href={item.href}>
 										<Button w="full" variant="ghost">
 											{item.name}
 										</Button>
-									</NavLink>
+									</chakra.a>
 								))}
 							</VStack>
 						</Box>
