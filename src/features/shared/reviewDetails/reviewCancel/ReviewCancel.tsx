@@ -32,7 +32,7 @@ export const ReviewCancel: FC = () => {
 		reviewCancelApi({ id: review.id, token })
 			.then(() => {
 				disclosure.onClose()
-				navigate("/user/review")
+				navigate("/user")
 			})
 			.catch((err) => setErrorText(getErrorMessage(err)))
 			.finally(() => setIsLoading(false))

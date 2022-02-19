@@ -1,26 +1,36 @@
 import { Box, Button, Heading, Text } from "@chakra-ui/react"
-import { FC } from "react"
+import { ComponentProps, FC } from "react"
 import { useReviewDetailsStore } from "../useReviewDetailsStore"
 import { ReviewNoteUpdateDrawer } from "./updateReviewNote/ReviewNoteUpdateDrawer"
 import { useReviewNoteUpdateStore } from "./updateReviewNote/useReviewNoteUpdateStore"
 
-export const ReviewNote: FC = () => {
+interface IProps extends ComponentProps<typeof Box> {}
+
+export const ReviewNote: FC<IProps> = (props) => {
 	const { setIsDrawerOpen } = useReviewNoteUpdateStore()
 	const { isLawyer, review } = useReviewDetailsStore()
 	if (!review) return null
 
+	const toShowUpdateDrawer = !isLawyer
+	const toShowAltText = !review.userNote && isLawyer
+	const toShowAddReviewButton = !review.userNote && !isLawyer
+	const toShowUpdateButton = review.userNote && !isLawyer
+
 	return (
-		<Box>
+		<Box {...props}>
 			<Heading size={"md"}>Review Note</Heading>
 
-			{review.userNote && <Text maxW={"xl"}>{review.userNote}</Text>}
-			{!isLawyer && <ReviewNoteUpdateDrawer />}
+			{toShowUpdateDrawer && <ReviewNoteUpdateDrawer />}
 
-			{!review.userNote && isLawyer ? (
+			{review.userNote && <Text maxW={"xl"}>{review.userNote}</Text>}
+
+			{toShowAltText && (
 				<Box>
 					<Text maxW={"sm"}>No note proved for review.</Text>
 				</Box>
-			) : (
+			)}
+
+			{toShowAddReviewButton && (
 				<Box>
 					<Text maxW={"sm"}>
 						Add more info in words regarding papers review, it will help lawyer to
@@ -32,12 +42,10 @@ export const ReviewNote: FC = () => {
 				</Box>
 			)}
 
-			{review.userNote && !isLawyer && (
-				<>
-					<Button mt={2} size="sm" onClick={() => setIsDrawerOpen(true)}>
-						Update Note
-					</Button>
-				</>
+			{toShowUpdateButton && (
+				<Button mt={2} size="sm" onClick={() => setIsDrawerOpen(true)}>
+					Update Note
+				</Button>
 			)}
 		</Box>
 	)

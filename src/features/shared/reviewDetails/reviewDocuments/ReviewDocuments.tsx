@@ -2,7 +2,7 @@ import { Box, Heading } from "@chakra-ui/react"
 import { FC } from "react"
 import { useReviewDetailsStore } from "../useReviewDetailsStore"
 import { ReviewDocumentList } from "./ReviewDocumentList"
-import { UploadDocumentsForm } from "./UploadDocumentsForm"
+import { UploadDocuments } from "./UploadDocuments"
 
 export const ReviewDocuments: FC = () => {
 	const { isLawyer } = useReviewDetailsStore()
@@ -11,7 +11,7 @@ export const ReviewDocuments: FC = () => {
 		<Box>
 			<Heading size={"md"}>Documents</Heading>
 			<ReviewDocumentList />
-			{!isLawyer && <UploadDocumentsForm />}
+			{!isLawyer && <UploadDocuments />}
 		</Box>
 	)
 }

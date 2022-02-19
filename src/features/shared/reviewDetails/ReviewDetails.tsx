@@ -31,18 +31,16 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 	return (
 		<Box>
 			<Heading size={"lg"}>{review.paperType.name}</Heading>
-			<br />
 
-			<Flex gap={"16"}>
+			<Flex gap={"16"} mt={4}>
 				<StatusBox status={review.status} />
 				{!isLawyer && review.lawyer && <LawyerBox lawyer={review.lawyer} />}
 				{isLawyer && review.user && <UserBox user={review.user} />}
 				<DateBox date={review.createdAt} />
 				<PriceBox price={review.price} />
 			</Flex>
-			<br />
 
-			<ReviewNote />
+			<ReviewNote mt={6} />
 			<br />
 			<ReviewDocuments />
 			<br />
