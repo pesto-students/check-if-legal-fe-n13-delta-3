@@ -1,4 +1,3 @@
-import { Center } from "@chakra-ui/react"
 import { FC, useCallback } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { storage } from "../../../utils/storage"
@@ -24,10 +23,8 @@ export const UserLogin: FC = () => {
 	)
 
 	return (
-		<Center mt={"16"}>
-			<LoginLayout>
-				<UserSignInWithGoogle onLoginSuccess={onLoginSuccess} />
-			</LoginLayout>
-		</Center>
+		<LoginLayout>
+			<UserSignInWithGoogle onLoginSuccess={onLoginSuccess} />
+		</LoginLayout>
 	)
 }

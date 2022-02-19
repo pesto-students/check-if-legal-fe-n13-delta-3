@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom"
 
 export const LoginLayout: FC = ({ children }) => {
 	return (
-		<Box>
+		<Box mt={16}>
 			<Center p={8}>
 				<Flex direction={"column"} alignItems="center" gap={6}>
 					<Box>
