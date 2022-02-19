@@ -48,6 +48,9 @@ export const OfferingUpdateDrawer: FC = () => {
 	}
 
 	const onSubmit = handleSubmit((data) => {
+		if (data.expectedTimeInHours) data.expectedTimeInHours = +data.expectedTimeInHours
+		if (data.price) data.price = +data.price
+
 		offeringUpdateApi({ ...data, id: selectedOffering.id }, token)
 			.then(() => {
 				reset()
@@ -82,7 +85,7 @@ export const OfferingUpdateDrawer: FC = () => {
 			<Stack maxWidth={"sm"} marginX={"auto"}>
 				{/* Paper Type */}
 				<FormControl>
-					<InputLabel label="Select Paper Type" />
+					<InputLabel label="Paper Type" />
 					<Select<{ label: string; value: number }, false>
 						options={paperTypeOptions}
 						onChange={(selected) =>
@@ -92,9 +95,10 @@ export const OfferingUpdateDrawer: FC = () => {
 						autoFocus
 					/>
 				</FormControl>
-				{/* Paper Type */}
+
+				{/* Language */}
 				<FormControl>
-					<InputLabel label="Select Language" />
+					<InputLabel label="Language" />
 					<Select<{ label: string; value: number }, false>
 						options={languagesOptions}
 						onChange={(selected) =>
@@ -117,7 +121,7 @@ export const OfferingUpdateDrawer: FC = () => {
 
 				{/* Price */}
 				<FormControl>
-					<InputLabel label="Name" />
+					<InputLabel label="Price (INR)" />
 					<Input
 						type={"number"}
 						isRequired

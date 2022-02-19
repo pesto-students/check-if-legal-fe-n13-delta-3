@@ -60,7 +60,7 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 			<Stack maxWidth={"sm"} marginX={"auto"}>
 				{/* Paper Type */}
 				<FormControl>
-					<InputLabel label="Select Paper Type" />
+					<InputLabel label="Paper Type" />
 					<Select<{ label: string; value: number }, false>
 						options={paperTypes.map((el) => ({ label: el.name, value: el.id }))}
 						onChange={(selected) =>
@@ -69,9 +69,10 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 						autoFocus
 					/>
 				</FormControl>
-				{/* Paper Type */}
+
+				{/* Language */}
 				<FormControl>
-					<InputLabel label="Select Language" />
+					<InputLabel label="Language" />
 					<Select<{ label: string; value: number }, false>
 						options={languages.map((el) => ({ label: el.name, value: el.id }))}
 						onChange={(selected) =>
@@ -88,7 +89,7 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 
 				{/* Price */}
 				<FormControl>
-					<InputLabel label="Name" />
+					<InputLabel label="Price (INR)" />
 					<Input type={"number"} isRequired {...register("price")} />
 				</FormControl>
 

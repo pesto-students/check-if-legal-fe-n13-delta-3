@@ -1,5 +1,5 @@
 import { FC, useCallback } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import { storage } from "../../../utils/storage"
 import { IAuthPayload } from "../../../utils/types"
 import { useSuccessToast } from "../../shared/hooks/useSuccessToast"
@@ -10,6 +10,7 @@ export const UserLogin: FC = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const successToast = useSuccessToast()
+	const auth = storage.getAuth()
 
 	const onLoginSuccess = useCallback(
 		(authPayload: IAuthPayload) => {
@@ -21,6 +22,8 @@ export const UserLogin: FC = () => {
 		},
 		[navigate, location, successToast],
 	)
+
+	if (auth) <Navigate to={`/${auth.role}`} />
 
 	return (
 		<LoginLayout>
