@@ -43,7 +43,7 @@ export const SidebarContent: FC<IProps> = ({ role, ...rest }) => {
 		>
 			<Box px="4" py="5">
 				<Box pl={2}>
-					<Img src="assets/logo-light.png" height={"60px"} />
+					<Img src="/assets/logo-light.png" height={"60px"} />
 				</Box>
 				<Text ml="2" color="whiteAlpha.700">
 					{_.capitalize(role)} Portal
