@@ -5,8 +5,8 @@ import { FcGoogle } from "react-icons/fc"
 import { GOOGLE_CLIENT_ID } from "../../../../configs"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { IAuthPayload } from "../../../../utils/types"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { Title } from "../../../shared/components/ui/Title"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { userGoogleAuthApi } from "../apis/userGoogleAuth.api"
 import { DemoLogin } from "./UserDemoLogin"
 
@@ -16,18 +16,18 @@ interface IProps {
 
 export const UserSignInWithGoogle: FC<IProps> = ({ onLoginSuccess }) => {
 	const [isLawyer, setIsLawyer] = useState(false)
-	const [errorText, setErrorText] = useState<string>()
+	const errorToast = useErrorToast()
 
 	const onSuccess = (googleLoginResponse: any) => {
 		const { tokenId } = googleLoginResponse as GoogleLoginResponse
 		return userGoogleAuthApi({ idToken: tokenId, isLawyer })
 			.then((auth) => onLoginSuccess(auth))
-			.catch((err) => setErrorText(getErrorMessage(err)))
+			.catch((error) => errorToast(getErrorMessage(error)))
 	}
 
-	const onFailure = (error: any) => {
-		setErrorText(error)
-		console.log(error)
+	const onFailure = (googleErrorResponse: any) => {
+		console.log(googleErrorResponse)
+		errorToast(googleErrorResponse?.error ?? "Unable to complete sign in with Google")
 	}
 
 	return (
@@ -52,8 +52,6 @@ export const UserSignInWithGoogle: FC<IProps> = ({ onLoginSuccess }) => {
 							<Radio value="lawyer">Lawyer</Radio>
 						</Stack>
 					</RadioGroup>
-
-					{errorText && <ErrorText text={errorText} />}
 
 					<GoogleLogin
 						clientId={GOOGLE_CLIENT_ID}
