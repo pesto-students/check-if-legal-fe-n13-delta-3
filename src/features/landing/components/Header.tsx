@@ -35,6 +35,8 @@ export const Header: FC = () => {
 			shadow="md"
 			position={"fixed"}
 			zIndex={1}
+			bgColor={"rgba(255, 255, 255, .8)"}
+			backdropFilter={"blur(20px)"}
 		>
 			<Container maxW={"6xl"}>
 				<Flex alignItems="center" justifyContent="space-between" mx="auto">
