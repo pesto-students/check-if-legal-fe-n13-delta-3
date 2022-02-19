@@ -5,12 +5,15 @@ import { Navigate, NavLink } from "react-router-dom"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { useLawyerAuth } from "../useLawyerAuth"
 import { useLawyerStore } from "../useLawyerStore"
+import { LawyerDetailsUpdateDrawer } from "./lawyerDetailsUpdate/LawyerDetailsUpdateDrawer"
+import { useLawyerUpdateStore } from "./lawyerDetailsUpdate/useLawyerUpdateStore"
 import { LawyerProfilePicture } from "./lawyerProfilePicture/LawyerProfilePicture"
 import { LawyerProofs } from "./lawyerProofs/LawyerProofs"
 
 export const LawyerStatus: FC = () => {
 	const { token } = useLawyerAuth()
 	const { lawyer, fetchLawyer } = useLawyerStore()
+	const { setIsDrawerOpen } = useLawyerUpdateStore()
 
 	useEffect(() => {
 		if (_.isUndefined(lawyer)) fetchLawyer({ token })
@@ -36,9 +39,15 @@ export const LawyerStatus: FC = () => {
 						<Text>City: {lawyer.city.name}</Text>
 						<Text>{lawyer.address}</Text>
 						<Text>Contact: {lawyer.phone}</Text>
-						<Button size={"xs"} mt={1} colorScheme="blackAlpha">
+						<Button
+							size={"xs"}
+							mt={1}
+							colorScheme="blackAlpha"
+							onClick={() => setIsDrawerOpen(true)}
+						>
 							Update Details
 						</Button>
+						<LawyerDetailsUpdateDrawer />
 					</Box>
 				</Flex>
 				<Box mt={8} textAlign="left">

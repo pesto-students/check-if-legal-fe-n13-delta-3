@@ -38,6 +38,7 @@ export const LawyerRegisterForm: FC = () => {
 	})
 
 	if (!cities) return null
+	const cityOptions = cities.map((el) => ({ label: cityLabel(el), value: el.id }))
 
 	return (
 		<Box>
@@ -60,10 +61,7 @@ export const LawyerRegisterForm: FC = () => {
 						<FormControl>
 							<InputLabel label="City of Practising" />
 							<Select<{ label: string; value: number }, false>
-								options={cities.map((el) => ({
-									label: cityLabel(el),
-									value: el.id,
-								}))}
+								options={cityOptions}
 								onChange={(selected) =>
 									selected && setValue("cityId", selected.value)
 								}

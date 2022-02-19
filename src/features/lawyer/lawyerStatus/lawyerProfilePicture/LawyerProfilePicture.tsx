@@ -7,7 +7,7 @@ export const LawyerProfilePicture: FC = () => {
 	const { lawyer } = useLawyerStore()
 	if (!lawyer) return null
 
-	const profileSrc = `${API_URL}/lawyerPictures/${lawyer.id}.jpg`
+	const profileSrc = `${API_URL}/static/lawyerPictures/${lawyer.id}.jpg`
 
 	return (
 		<Box>
