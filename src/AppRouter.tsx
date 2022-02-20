@@ -22,7 +22,7 @@ import { storage } from "./utils/storage"
 
 export function AppRouter() {
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename="/">
 			<Routes>
 				<Route index element={<Landing />} />
 				<Route path="logout" element={<Logout />} />
