@@ -1,6 +1,6 @@
-import { HttpApi, HttpMethod } from "../../../../../core/http"
+import { HttpApi, HttpMethod } from "../../../../core/http"
 
-export async function reviewNoteUpdateApi(
+export async function apiReviewNoteUpdate(
 	{ reviewId, userNote }: { reviewId: number; userNote?: string },
 	token: string,
 ) {

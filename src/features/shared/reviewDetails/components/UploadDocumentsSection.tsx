@@ -6,13 +6,19 @@ import { useUserAuth } from "../../../user/useUserAuth"
 import { FileUploadModal } from "../../components/fileUploadModal/FileUploadModal"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
-import { useReviewDetailsStore } from "../useReviewDetailsStore"
-import { reviewDocumentsUploadApi } from "./reviewDocumentsUploadApi"
+import { apiReviewDocumentsUpload } from "../apis/apiReviewDocumentsUpload"
+import { useReviewDetailsQuery } from "../queries/reviewDetails.query"
 
-export const UploadDocuments: FC = () => {
+interface IProps {
+	reviewId: number
+}
+
+export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 	const { token } = useUserAuth()
-	const { review, fetchReview, documents } = useReviewDetailsStore()
 	const [isLoading, setIsLoading] = useState(false)
+
+	const { data, refetch } = useReviewDetailsQuery({ reviewId, token })
+	const documents = data?.documentList
 
 	const fileUploadModal = useDisclosure()
 	const errorToast = useErrorToast()
@@ -21,7 +27,6 @@ export const UploadDocuments: FC = () => {
 	const onDrop = useCallback(
 		(files: File[]) => {
 			setIsLoading(true)
-			if (!review) return
 
 			const formData = new FormData()
 			try {
@@ -32,30 +37,35 @@ export const UploadDocuments: FC = () => {
 				setIsLoading(false)
 			}
 
-			reviewDocumentsUploadApi({ id: review.id, formData, token })
+			apiReviewDocumentsUpload({ id: reviewId, formData, token })
 				.then(() => {
 					successToast("Documents uploaded successfully")
-					fetchReview({ id: review.id, token })
+					refetch()
 				})
 				.catch((err) => errorToast(getErrorMessage(err)))
 				.finally(() => setIsLoading(false))
 		},
-		[fetchReview, review, token, errorToast, successToast],
+		[reviewId, token, errorToast, successToast, refetch],
 	)
 
-	if (!review) return null
+	const isDocumentEmpty = _.isEmpty(documents)
 
 	return (
 		<Box mt={2} maxW={"xl"}>
-			{_.isEmpty(documents) && (
+			{isDocumentEmpty && (
 				<Text maxW={"sm"}>
 					Upload all the necessary documents required for the review process in image
 					or PDF format
 				</Text>
 			)}
 
-			<Button colorScheme={"blue"} size="sm" onClick={() => fileUploadModal.onOpen()}>
-				Upload Documents
+			<Button
+				mt={1}
+				colorScheme={isDocumentEmpty ? "blue" : undefined}
+				size="sm"
+				onClick={() => fileUploadModal.onOpen()}
+			>
+				{isDocumentEmpty ? "Upload Documents" : "Upload More Documents"}
 			</Button>
 
 			<FileUploadModal
@@ -63,6 +73,7 @@ export const UploadDocuments: FC = () => {
 				multiple
 				maxFiles={10}
 				isLoading={isLoading}
+				accept={["pdf", "jpg"]}
 				{...fileUploadModal}
 			/>
 		</Box>

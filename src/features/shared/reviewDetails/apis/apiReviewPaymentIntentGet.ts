@@ -9,7 +9,7 @@ interface IResponseShape {
 	description?: string
 }
 
-export async function reviewPaymentIntentGetApi({
+export async function apiReviewPaymentIntentGet({
 	reviewId,
 	token,
 }: {

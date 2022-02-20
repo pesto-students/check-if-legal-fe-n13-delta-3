@@ -1,6 +1,6 @@
 import { HttpApi, HttpMethod } from "../../../../core/http"
 
-export async function reviewDocumentsUploadApi({
+export async function apiReviewDocumentsUpload({
 	id,
 	formData,
 	token,

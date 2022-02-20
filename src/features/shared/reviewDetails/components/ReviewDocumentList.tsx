@@ -4,12 +4,19 @@ import { FC } from "react"
 import { BsFileEarmarkImage } from "react-icons/bs"
 import { DeleteIconButton } from "../../components/ui/DeleteIconButton"
 import { DownloadIconButton } from "../../components/ui/DownloadIconButton"
-import { useReviewDetailsStore } from "../useReviewDetailsStore"
+import { useReviewDetailsData } from "../queries/reviewDetails.query"
 
-export const ReviewDocumentList: FC = () => {
-	const { documents, isLawyer } = useReviewDetailsStore()
+interface IProps {
+	reviewId: number
+	isLawyer: boolean
+}
+
+export const ReviewDocumentList: FC<IProps> = ({ reviewId, isLawyer }) => {
+	const { data } = useReviewDetailsData({ reviewId })
+	const documents = data?.documentList
 
 	if (_.isEmpty(documents)) {
+		if (!isLawyer) return null
 		return (
 			<Box>
 				<Text>No documents uploaded</Text>

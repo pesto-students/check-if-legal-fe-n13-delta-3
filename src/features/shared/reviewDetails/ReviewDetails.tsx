@@ -1,16 +1,16 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { formatInr, normalizeDate } from "../../../utils/helpers"
 import { ILawyer } from "../../lawyer/ILawyer"
 import { IUser } from "../../user/IUser"
 import { CenteredSpinner } from "../components/ui/CenterSpinner"
 import { ReviewStatus } from "../review/IReview"
-import { ReviewCancel } from "./reviewCancel/ReviewCancel"
-import { ReviewClose } from "./reviewClose/ReviewClose"
-import { ReviewDocuments } from "./reviewDocuments/ReviewDocuments"
-import { ReviewNote } from "./reviewNote/ReviewNote"
-import { ReviewPayment } from "./reviewPayment/ReviewPayment"
-import { useReviewDetailsStore } from "./useReviewDetailsStore"
+import { ReviewCancel } from "./components/ReviewCancel"
+import { ReviewClose } from "./components/ReviewClose"
+import { ReviewDocumentsSection } from "./components/ReviewDocumentsSection"
+import { ReviewNoteSection } from "./components/ReviewNoteSection"
+import { ReviewPaymentSection } from "./components/ReviewPaymentSection"
+import { useReviewDetailsQuery } from "./queries/reviewDetails.query"
 
 interface IProps {
 	token: string
@@ -19,35 +19,30 @@ interface IProps {
 }
 
 export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
-	const { review, isReviewLoading, fetchReview, setIsLawyer } = useReviewDetailsStore()
+	const { data, isLoading } = useReviewDetailsQuery({ token, reviewId })
 
-	useEffect(() => {
-		setIsLawyer(isLawyer)
-		fetchReview({ id: reviewId, token })
-	}, [fetchReview, reviewId, token, isLawyer, setIsLawyer])
-
-	if (!review || isReviewLoading) return <CenteredSpinner />
+	if (isLoading) return <CenteredSpinner />
+	if (!data) return <Box>Review not found</Box>
 
 	return (
 		<Box>
-			<Heading size={"lg"}>{review.paperType.name}</Heading>
+			<Heading size={"lg"}>{data.review.paperType.name}</Heading>
 
 			<Flex gap={"16"} mt={4}>
-				<StatusBox status={review.status} />
-				{!isLawyer && review.lawyer && <LawyerBox lawyer={review.lawyer} />}
-				{isLawyer && review.user && <UserBox user={review.user} />}
-				<DateBox date={review.createdAt} />
-				<PriceBox price={review.price} />
+				<StatusBox status={data.review.status} />
+				{!isLawyer && data.review.lawyer && <LawyerBox lawyer={data.review.lawyer} />}
+				{isLawyer && data.review.user && <UserBox user={data.review.user} />}
+				<DateBox date={data.review.createdAt} />
+				<PriceBox price={data.review.price} />
 			</Flex>
 
-			<ReviewNote mt={6} />
-			<br />
-			<ReviewDocuments />
-			<br />
-			{!isLawyer && <ReviewPayment />}
-			<br />
-			{!isLawyer && <ReviewCancel />}
-			{isLawyer && <ReviewClose />}
+			<Flex direction={"column"} gap={6} mt={6}>
+				<ReviewNoteSection reviewId={reviewId} isLawyer={isLawyer} />
+				<ReviewDocumentsSection reviewId={reviewId} isLawyer={isLawyer} />
+				{!isLawyer && <ReviewPaymentSection reviewId={reviewId} />}
+				{!isLawyer && <ReviewCancel reviewId={reviewId} />}
+				{isLawyer && <ReviewClose reviewId={reviewId} />}
+			</Flex>
 		</Box>
 	)
 }

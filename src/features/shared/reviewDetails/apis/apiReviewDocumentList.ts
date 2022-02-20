@@ -1,6 +1,6 @@
-import { HttpApi, HttpMethod } from "../../../core/http"
+import { HttpApi, HttpMethod } from "../../../../core/http"
 
-export async function reviewDocumentListApi({
+export async function apiReviewDocumentList({
 	reviewId,
 	token,
 }: {
