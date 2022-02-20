@@ -33,8 +33,6 @@ export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 				for (const file of files) formData.append("documents", file)
 			} catch (err) {
 				errorToast(getErrorMessage(err))
-			} finally {
-				setIsLoading(false)
 			}
 
 			apiReviewDocumentsUpload({ id: reviewId, formData, token })
@@ -49,6 +47,7 @@ export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 	)
 
 	const isDocumentEmpty = _.isEmpty(documents)
+	const acceptFileExts = [".pdf", ".PDF", ".jpg", ".JPG", ".jpeg", ".JPEG"]
 
 	return (
 		<Box mt={2} maxW={"xl"}>
@@ -73,8 +72,9 @@ export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 				multiple
 				maxFiles={10}
 				isLoading={isLoading}
-				accept={["pdf", "jpg"]}
+				accept={acceptFileExts}
 				{...fileUploadModal}
+				contentText={"PNG, JPG files supported upto 20MB"}
 			/>
 		</Box>
 	)
