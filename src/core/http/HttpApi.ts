@@ -31,6 +31,8 @@ export class HttpApi<ResponseShape = any> {
 			...(this.isFormData ? { "Content-Type": `multipart/form-data;` } : {}),
 			// ? { "Content-Type": `multipart/form-data; boundary=${body._boundary}` }
 		}
+		console.log("---url",url)
+		console.log("----base",API_URL)
 
 		try {
 			const response = await axios({
