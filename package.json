@@ -32,7 +32,7 @@
     "eject": "react-scripts eject"
   },
   "engines": {
-		"node": "14.15.0"
+		"node": "14.17.0"
 	},
   "browserslist": {
     "production": [
