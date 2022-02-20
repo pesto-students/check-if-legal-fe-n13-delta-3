@@ -5,8 +5,8 @@ import { formatInr, getErrorMessage } from "../../../../utils/helpers"
 import { useUserAuth } from "../../../user/useUserAuth"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
-import { useReviewDetailsData } from "../queries/reviewDetails.query"
-import { apiReviewPaymentIntentGet } from "../apis/apiReviewPaymentIntentGet"
+import { useReviewDetailsData } from "../reviewDetails.query"
+import { apiReviewPaymentIntentGet } from "./paymentIntentGet.api"
 
 interface IProps extends ComponentProps<typeof Box> {
 	reviewId: number

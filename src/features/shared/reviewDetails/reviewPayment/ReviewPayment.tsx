@@ -1,15 +1,15 @@
 import { Box, Heading, Text } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
 import { ReviewStatus } from "../../review/IReview"
-import { ReviewPaymentStatus } from "../IReviewPayment"
-import { useReviewDetailsData } from "../queries/reviewDetails.query"
+import { ReviewPaymentStatus } from "./IReviewPayment"
+import { useReviewDetailsData } from "../reviewDetails.query"
 import { RazorpayPayment } from "./RazorpayPayment"
 
 interface IProps extends ComponentProps<typeof Box> {
 	reviewId: number
 }
 
-export const ReviewPaymentSection: FC<IProps> = ({ reviewId, ...rest }) => {
+export const ReviewPayment: FC<IProps> = ({ reviewId, ...rest }) => {
 	const { data } = useReviewDetailsData({ reviewId })
 	const review = data?.review
 	const payment = data?.payment

@@ -4,7 +4,7 @@ import { FC } from "react"
 import { BsFileEarmarkImage } from "react-icons/bs"
 import { DeleteIconButton } from "../../components/ui/DeleteIconButton"
 import { DownloadIconButton } from "../../components/ui/DownloadIconButton"
-import { useReviewDetailsData } from "../queries/reviewDetails.query"
+import { useReviewDetailsData } from "../reviewDetails.query"
 
 interface IProps {
 	reviewId: number

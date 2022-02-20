@@ -8,7 +8,7 @@ interface IProps extends ComponentProps<typeof Box> {
 	isLawyer: boolean
 }
 
-export const ReviewDocumentsSection: FC<IProps> = ({ reviewId, isLawyer, ...rest }) => (
+export const ReviewDocuments: FC<IProps> = ({ reviewId, isLawyer, ...rest }) => (
 	<Box {...rest}>
 		<Heading size={"md"}>Documents</Heading>
 		<ReviewDocumentList reviewId={reviewId} isLawyer={isLawyer} />

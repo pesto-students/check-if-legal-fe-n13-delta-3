@@ -1,6 +1,6 @@
 import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
-import { useReviewDetailsData } from "../queries/reviewDetails.query"
+import { useReviewDetailsData } from "../reviewDetails.query"
 import { ReviewNoteUpdateDrawer } from "./ReviewNoteUpdateDrawer"
 
 interface IProps extends ComponentProps<typeof Box> {

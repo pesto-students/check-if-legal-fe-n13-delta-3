@@ -1,15 +1,18 @@
 import { useCallback } from "react"
 import { useQuery, useQueryClient } from "react-query"
-import { IReview } from "../../review/IReview"
-import { apiReviewDocumentList } from "../apis/apiReviewDocumentList"
-import { apiReviewGet } from "../apis/apiReviewGet"
-import { apiReviewPaymentGet } from "../apis/apiReviewPaymentGet"
-import { IReviewPayment } from "../IReviewPayment"
+import { IReview } from "../review/IReview"
+import { apiReviewDocumentList } from "./apis/apiReviewDocumentList"
+import { apiReviewGet } from "./apis/apiReviewGet"
+import { apiReviewPaymentGet } from "./apis/reviewPaymentGet.api"
+import { IReviewFeedback } from "./reviewFeedback/IReviewFeedback"
+import { apiReviewFeedbackList } from "./reviewFeedback/feedbackList/feedbackList.api"
+import { IReviewPayment } from "./reviewPayment/IReviewPayment"
 
 interface IDataShape {
 	review: IReview
 	documentList: string[]
 	payment?: IReviewPayment | null
+	feedbackList?: IReviewFeedback[]
 }
 
 export function useReviewDetailsQuery({
@@ -21,12 +24,13 @@ export function useReviewDetailsQuery({
 }) {
 	return useQuery<IDataShape, Error>(["review", reviewId], async () => {
 		const payment = await apiReviewPaymentGet({ reviewId, token })
-		const [review, documentList] = await Promise.all([
+		const [review, documentList, feedbackList] = await Promise.all([
 			apiReviewGet({ id: reviewId, token }),
 			apiReviewDocumentList({ reviewId, token }),
+			apiReviewFeedbackList({ reviewId, token }),
 		])
 
-		return { review, documentList, payment }
+		return { review, documentList, payment, feedbackList }
 	})
 }
 

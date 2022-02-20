@@ -6,8 +6,8 @@ import { useUserAuth } from "../../../user/useUserAuth"
 import { FileUploadModal } from "../../components/fileUploadModal/FileUploadModal"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
-import { apiReviewDocumentsUpload } from "../apis/apiReviewDocumentsUpload"
-import { useReviewDetailsQuery } from "../queries/reviewDetails.query"
+import { apiReviewDocumentsUpload } from "./reviewDocumentsUpload.api"
+import { useReviewDetailsQuery } from "../reviewDetails.query"
 
 interface IProps {
 	reviewId: number

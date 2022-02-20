@@ -7,8 +7,8 @@ import { Dialog } from "../../components/ui/Dialog"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
 import { ReviewStatus } from "../../review/IReview"
-import { apiReviewCancel } from "../apis/apiReviewCancel"
-import { useReviewDetailsData } from "../queries/reviewDetails.query"
+import { apiReviewCancel } from "./reviewCancel.api"
+import { useReviewDetailsData } from "../reviewDetails.query"
 
 interface IProps extends ComponentProps<typeof Box> {
 	reviewId: number

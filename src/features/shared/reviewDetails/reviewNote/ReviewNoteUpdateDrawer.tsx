@@ -6,8 +6,8 @@ import { DrawerForm } from "../../components/ui/DrawerForm"
 import { InputLabel } from "../../components/ui/InputLabel"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
-import { useReviewDetailsQuery } from "../queries/reviewDetails.query"
-import { apiReviewNoteUpdate } from "../apis/apiReviewNoteUpdate"
+import { useReviewDetailsQuery } from "../reviewDetails.query"
+import { apiReviewNoteUpdate } from "./reviewNoteUpdate.api"
 
 interface IFormData {
 	userNote: string

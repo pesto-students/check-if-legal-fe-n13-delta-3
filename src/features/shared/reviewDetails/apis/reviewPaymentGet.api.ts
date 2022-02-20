@@ -1,5 +1,5 @@
 import { HttpApi, HttpMethod } from "../../../../core/http"
-import { IReviewPayment } from "../IReviewPayment"
+import { IReviewPayment } from "../reviewPayment/IReviewPayment"
 
 export async function apiReviewPaymentGet({
 	reviewId,

@@ -1,16 +1,17 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { FC } from "react"
-import { formatInr, normalizeDate } from "../../../utils/helpers"
+import { formatInr, getReviewStatusText, normalizeDate } from "../../../utils/helpers"
 import { ILawyer } from "../../lawyer/ILawyer"
 import { IUser } from "../../user/IUser"
 import { CenteredSpinner } from "../components/ui/CenterSpinner"
 import { ReviewStatus } from "../review/IReview"
-import { ReviewCancel } from "./components/ReviewCancel"
-import { ReviewClose } from "./components/ReviewClose"
-import { ReviewDocumentsSection } from "./components/ReviewDocumentsSection"
-import { ReviewNoteSection } from "./components/ReviewNoteSection"
-import { ReviewPaymentSection } from "./components/ReviewPaymentSection"
-import { useReviewDetailsQuery } from "./queries/reviewDetails.query"
+import { ReviewCancel } from "./reviewCancel/ReviewCancel"
+import { ReviewClose } from "./reviewClose/ReviewClose"
+import { ReviewDocuments } from "./reviewDocuments/ReviewDocuments"
+import { ReviewFeedback } from "./reviewFeedback/ReviewFeedback"
+import { ReviewNoteSection } from "./reviewNote/ReviewNoteSection"
+import { ReviewPayment } from "./reviewPayment/ReviewPayment"
+import { useReviewDetailsQuery } from "./reviewDetails.query"
 
 interface IProps {
 	token: string
@@ -38,8 +39,9 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 
 			<Flex direction={"column"} gap={6} mt={6}>
 				<ReviewNoteSection reviewId={reviewId} isLawyer={isLawyer} />
-				<ReviewDocumentsSection reviewId={reviewId} isLawyer={isLawyer} />
-				{!isLawyer && <ReviewPaymentSection reviewId={reviewId} />}
+				<ReviewDocuments reviewId={reviewId} isLawyer={isLawyer} />
+				{!isLawyer && <ReviewPayment reviewId={reviewId} />}
+				<ReviewFeedback reviewId={reviewId} isLawyer={isLawyer} />
 				{!isLawyer && <ReviewCancel reviewId={reviewId} />}
 				{isLawyer && <ReviewClose reviewId={reviewId} />}
 			</Flex>
@@ -49,46 +51,35 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 
 const StatusBox: FC<{ status: ReviewStatus }> = ({ status }) => (
 	<Box>
-		<Text>Status</Text>
-		<Text fontSize="xl" fontWeight={"semibold"}>
-			{" "}
-			{status}
-		</Text>
+		<Text fontWeight={"semibold"}>Status</Text>
+		<Text fontSize="xl">{getReviewStatusText(status)}</Text>
 	</Box>
 )
 
 const LawyerBox: FC<{ lawyer: ILawyer }> = ({ lawyer }) => (
 	<Box>
-		<Text>Lawyer</Text>
-		<Text fontSize="xl" fontWeight={"semibold"}>
-			{lawyer.name}
-		</Text>
+		<Text fontWeight={"semibold"}>Lawyer</Text>
+		<Text fontSize="xl">{lawyer.name}</Text>
 	</Box>
 )
 
 const UserBox: FC<{ user: IUser }> = ({ user }) => (
 	<Box>
-		<Text>User</Text>
-		<Text fontSize="xl" fontWeight={"semibold"}>
-			{user.name}
-		</Text>
+		<Text fontWeight={"semibold"}>User</Text>
+		<Text fontSize="xl">{user.name}</Text>
 	</Box>
 )
 
 const DateBox: FC<{ date: string }> = ({ date }) => (
 	<Box>
-		<Text>Issue Date</Text>
-		<Text fontSize="xl" fontWeight={"semibold"}>
-			{normalizeDate(date)}
-		</Text>
+		<Text fontWeight={"semibold"}>Issue Date</Text>
+		<Text fontSize="xl">{normalizeDate(date)}</Text>
 	</Box>
 )
 
 const PriceBox: FC<{ price: number }> = ({ price }) => (
 	<Box>
-		<Text>Price</Text>
-		<Text fontSize="xl" fontWeight={"semibold"}>
-			{formatInr(price)} INR
-		</Text>
+		<Text fontWeight={"semibold"}>Price</Text>
+		<Text fontSize="xl">{formatInr(price)} INR</Text>
 	</Box>
 )
