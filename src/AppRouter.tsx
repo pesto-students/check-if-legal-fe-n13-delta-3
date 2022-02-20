@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
+import { HashRouter, Navigate, Outlet, Route, Routes } from "react-router-dom"
 import { AdminCity } from "./features/admin/adminCity/AdminCity"
 import { AdminLanguage } from "./features/admin/adminLanguage/AdminLanguage"
 import { AdminLawyer } from "./features/admin/adminLawyer/AdminLawyer"
@@ -22,7 +22,7 @@ import { storage } from "./utils/storage"
 
 export function AppRouter() {
 	return (
-		<BrowserRouter basename="/">
+		<HashRouter >
 			<Routes>
 				<Route index element={<Landing />} />
 				<Route path="logout" element={<Logout />} />
@@ -54,7 +54,7 @@ export function AppRouter() {
 					<Route path="review/:id/details" element={<LawyerReviewDetails />} />
 				</Route>
 			</Routes>
-		</BrowserRouter>
+		</HashRouter>
 	)
 }
 
