@@ -6,8 +6,8 @@ import { useUserAuth } from "../../../user/useUserAuth"
 import { FileUploadModal } from "../../components/fileUploadModal/FileUploadModal"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
-import { apiReviewDocumentsUpload } from "./reviewDocumentsUpload.api"
 import { useReviewDetailsQuery } from "../reviewDetails.query"
+import { apiReviewDocumentsUpload } from "./reviewDocumentsUpload.api"
 
 interface IProps {
 	reviewId: number
@@ -38,12 +38,13 @@ export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 			apiReviewDocumentsUpload({ id: reviewId, formData, token })
 				.then(() => {
 					successToast("Documents uploaded successfully")
+					fileUploadModal.onClose()
 					refetch()
 				})
 				.catch((err) => errorToast(getErrorMessage(err)))
 				.finally(() => setIsLoading(false))
 		},
-		[reviewId, token, errorToast, successToast, refetch],
+		[reviewId, token, errorToast, successToast, refetch, fileUploadModal],
 	)
 
 	const isDocumentEmpty = _.isEmpty(documents)
@@ -73,8 +74,8 @@ export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 				maxFiles={10}
 				isLoading={isLoading}
 				accept={acceptFileExts}
-				{...fileUploadModal}
 				contentText={"PNG, JPG files supported upto 20MB"}
+				{...fileUploadModal}
 			/>
 		</Box>
 	)
