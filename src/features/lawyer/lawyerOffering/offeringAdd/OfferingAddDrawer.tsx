@@ -1,12 +1,16 @@
 import { FormControl, Input, Stack, Textarea } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
-import { ComponentProps, FC, useState } from "react"
+import { ComponentProps, FC } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { useLanguageListData } from "../../../shared/language/languageList.query"
-import { usePaperTypeListData } from "../../../shared/paperType/paperTypeList.query"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
+import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
+import { ILanguage } from "../../../shared/language/ILanguage"
+import { useLanguageListQuery } from "../../../shared/language/languageList.query"
+import { IPaperType } from "../../../shared/paperType/IPaperType"
+import { usePaperTypeListQuery } from "../../../shared/paperType/paperTypeList.query"
 import { useVerifiedLawyerAuth } from "../../useVerifiedLawyerAuth"
 import { useLawyerOfferingStore } from "../useLawyerOfferingStore"
 import { offeringAddApi } from "./offeringAddApi"
@@ -16,8 +20,8 @@ type IProps = Omit<ComponentProps<typeof DrawerForm>, "children">
 interface IFormData {
 	paperTypeId: number
 	languageId: number
-	expectedTimeInHours: number
-	price: number
+	expectedTimeInHours: string
+	price: string
 	description?: string
 }
 
@@ -25,28 +29,29 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 	const { token } = useVerifiedLawyerAuth()
 
 	const { fetchOfferings } = useLawyerOfferingStore()
-	const { data: paperTypes } = usePaperTypeListData()
-	const { data: languages } = useLanguageListData()
+	const { data: paperTypes } = usePaperTypeListQuery()
+	const { data: languages } = useLanguageListQuery()
 
 	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>()
-	const [errorText, setErrorText] = useState<string>()
+	const errorToast = useErrorToast()
+	const successToast = useSuccessToast()
 
 	const onSubmit = handleSubmit((data) => {
-		data.price = +data.price
-		data.expectedTimeInHours = +data.expectedTimeInHours
+		const payload = {
+			...data,
+			price: +data.price,
+			expectedTimeInHours: +data.expectedTimeInHours,
+		}
 
-		offeringAddApi(data, token)
+		offeringAddApi(payload, token)
 			.then(() => {
+				successToast("Offering added successfully")
 				props.onClose()
 				reset()
 				fetchOfferings({ token })
 			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+			.catch((err) => errorToast(getErrorMessage(err)))
 	})
-
-	if (!paperTypes || !languages) return null
 
 	return (
 		<DrawerForm
@@ -61,23 +66,25 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 				{/* Paper Type */}
 				<FormControl>
 					<InputLabel label="Paper Type" />
-					<Select<{ label: string; value: number }, false>
-						options={paperTypes.map((el) => ({ label: el.name, value: el.id }))}
-						onChange={(selected) =>
-							selected && setValue("paperTypeId", selected.value)
-						}
+					<Select<IPaperType, false>
 						autoFocus
+						options={paperTypes}
+						getOptionValue={(option) => `${option.id}`}
+						getOptionLabel={(option) => option.name}
+						onChange={(selected) =>
+							selected && setValue("paperTypeId", selected.id)
+						}
 					/>
 				</FormControl>
 
 				{/* Language */}
 				<FormControl>
 					<InputLabel label="Language" />
-					<Select<{ label: string; value: number }, false>
-						options={languages.map((el) => ({ label: el.name, value: el.id }))}
-						onChange={(selected) =>
-							selected && setValue("languageId", selected.value)
-						}
+					<Select<ILanguage, false>
+						options={languages}
+						getOptionValue={(option) => `${option.id}`}
+						getOptionLabel={(option) => option.name}
+						onChange={(selected) => selected && setValue("languageId", selected.id)}
 					/>
 				</FormControl>
 
@@ -98,8 +105,6 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 					<InputLabel label="Description" />
 					<Textarea {...register("description")} />
 				</FormControl>
-
-				{errorText && <ErrorText text={errorText} />}
 			</Stack>
 		</DrawerForm>
 	)
