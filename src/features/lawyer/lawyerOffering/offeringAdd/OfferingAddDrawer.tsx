@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { useLanguageStore } from "../../../shared/language/useLanguageStore"
+import { useLanguageListData } from "../../../shared/language/languageList.query"
 import { usePaperTypeListData } from "../../../shared/paperType/paperTypeList.query"
 import { useVerifiedLawyerAuth } from "../../useVerifiedLawyerAuth"
 import { useLawyerOfferingStore } from "../useLawyerOfferingStore"
@@ -26,7 +26,7 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 
 	const { fetchOfferings } = useLawyerOfferingStore()
 	const { data: paperTypes } = usePaperTypeListData()
-	const { languages } = useLanguageStore()
+	const { data: languages } = useLanguageListData()
 
 	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>()
 	const [errorText, setErrorText] = useState<string>()

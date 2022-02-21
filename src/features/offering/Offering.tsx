@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { useCityListQuery } from "../shared/city/cityList.query"
-import { useLanguageStore } from "../shared/language/useLanguageStore"
+import { useLanguageListQuery } from "../shared/language/languageList.query"
 import { usePaperTypeListQuery } from "../shared/paperType/paperTypeList.query"
 import { FilterBox } from "./components/FilterBox"
 import { OfferingFilterForm } from "./components/OfferingFilterForm"
@@ -11,12 +11,8 @@ import { useUserOfferingStore } from "./userOffering.store"
 export const Offering: FC = () => {
 	useCityListQuery()
 	usePaperTypeListQuery()
-	const { fetchLanguages } = useLanguageStore()
+	useLanguageListQuery()
 	const { city, language, paperType } = useUserOfferingStore()
-
-	useEffect(() => {
-		fetchLanguages()
-	}, [fetchLanguages])
 
 	const isFilterFilled = Boolean(city && language && paperType)
 	if (!isFilterFilled) return <OfferingFilterForm />

@@ -6,14 +6,14 @@ import { useCityListData } from "../../shared/city/cityList.query"
 import { ICity } from "../../shared/city/ICity"
 import { InputLabel } from "../../shared/components/ui/InputLabel"
 import { ILanguage } from "../../shared/language/ILanguage"
-import { useLanguageStore } from "../../shared/language/useLanguageStore"
+import { useLanguageListData } from "../../shared/language/languageList.query"
 import { IPaperType } from "../../shared/paperType/IPaperType"
 import { usePaperTypeListData } from "../../shared/paperType/paperTypeList.query"
 import { useUserOfferingStore } from "../userOffering.store"
 
 export const OfferingFilterForm: FC = () => {
 	const { data: cities } = useCityListData()
-	const { languages } = useLanguageStore()
+	const { data: languages } = useLanguageListData()
 	const { data: paperTypes } = usePaperTypeListData()
 
 	const setSelectedPaperType = useUserOfferingStore((st) => st.setPaperType)

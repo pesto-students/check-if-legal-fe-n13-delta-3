@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { useLanguageStore } from "../../../shared/language/useLanguageStore"
+import { useLanguageListData } from "../../../shared/language/languageList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { languageAddApi } from "./languageAddApi"
 
@@ -17,7 +17,7 @@ interface IFormData {
 
 export const LanguageAddDrawer: FC<IProps> = (props) => {
 	const { token } = useAdminAuth()
-	const fetchLanguages = useLanguageStore((state) => state.fetchLanguages)
+	const { refetch: refetchLanguages } = useLanguageListData()
 
 	const [errorText, setErrorText] = useState<string>()
 	const { register, handleSubmit, formState, reset } = useForm<IFormData>({
@@ -29,7 +29,7 @@ export const LanguageAddDrawer: FC<IProps> = (props) => {
 			.then(() => {
 				props.onClose()
 				reset()
-				fetchLanguages()
+				refetchLanguages()
 			})
 			.catch((err) =>
 				setErrorText(err instanceof Error ? err.message : "Unknown Error"),

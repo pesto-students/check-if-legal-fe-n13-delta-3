@@ -1,24 +1,21 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
 import { EditIconButton } from "../../shared/components/ui/EditIconButton"
+import { useLanguageListQuery } from "../../shared/language/languageList.query"
 import { useLanguageDeleteStore } from "./languageDelete/useLanguageDeleteStore"
-import { useLanguageStore } from "../../shared/language/useLanguageStore"
 import { useLanguageUpdateStore } from "./languageUpdate/useLanguageUpdateStore"
 
 export const LanguageListView: FC = () => {
-	const { languages, isLanguagesLoading, fetchLanguages } = useLanguageStore()
+	const { data: languages, isLoading } = useLanguageListQuery()
+
 	const { setSelectedLanguage: setSelectedLanguageForDelete, setIsDeleteDialogOpen } =
 		useLanguageDeleteStore()
 	const { setSelectedLanguage: setSelectedLanguageForUpdate, setIsDrawerOpen } =
 		useLanguageUpdateStore()
 
-	useEffect(() => {
-		fetchLanguages()
-	}, [fetchLanguages])
-
-	if (isLanguagesLoading || !languages) return <CenteredSpinner />
+	if (isLoading) return <CenteredSpinner />
 
 	return (
 		<Table size="sm" fontSize={"lg"}>
@@ -29,7 +26,7 @@ export const LanguageListView: FC = () => {
 				</Tr>
 			</Thead>
 			<Tbody>
-				{languages.map((language) => (
+				{languages?.map((language) => (
 					<Tr
 						key={language.id}
 						cursor="pointer"
