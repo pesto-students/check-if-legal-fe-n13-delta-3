@@ -8,11 +8,11 @@ import { InputLabel } from "../../shared/components/ui/InputLabel"
 import { ILanguage } from "../../shared/language/ILanguage"
 import { useLanguageStore } from "../../shared/language/useLanguageStore"
 import { IPaperType } from "../../shared/paperType/IPaperType"
-import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
+import { usePaperTypeListData } from "../../shared/paperType/paperTypeList.query"
 import { useUserOfferingStore } from "../userOffering.store"
 
 export const FilterBox: FC = () => {
-	const { paperTypes } = usePaperTypeStore()
+	const { data: paperTypes } = usePaperTypeListData()
 	const { languages } = useLanguageStore()
 	const { data: cities } = useCityListData()
 

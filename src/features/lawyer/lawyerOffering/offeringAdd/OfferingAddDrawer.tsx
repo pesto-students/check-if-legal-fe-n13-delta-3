@@ -6,7 +6,7 @@ import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
 import { useLanguageStore } from "../../../shared/language/useLanguageStore"
-import { usePaperTypeStore } from "../../../shared/paperType/usePaperTypeStore"
+import { usePaperTypeListData } from "../../../shared/paperType/paperTypeList.query"
 import { useVerifiedLawyerAuth } from "../../useVerifiedLawyerAuth"
 import { useLawyerOfferingStore } from "../useLawyerOfferingStore"
 import { offeringAddApi } from "./offeringAddApi"
@@ -25,7 +25,7 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 	const { token } = useVerifiedLawyerAuth()
 
 	const { fetchOfferings } = useLawyerOfferingStore()
-	const { paperTypes } = usePaperTypeStore()
+	const { data: paperTypes } = usePaperTypeListData()
 	const { languages } = useLanguageStore()
 
 	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>()

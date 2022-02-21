@@ -8,13 +8,13 @@ import { InputLabel } from "../../shared/components/ui/InputLabel"
 import { ILanguage } from "../../shared/language/ILanguage"
 import { useLanguageStore } from "../../shared/language/useLanguageStore"
 import { IPaperType } from "../../shared/paperType/IPaperType"
-import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
+import { usePaperTypeListData } from "../../shared/paperType/paperTypeList.query"
 import { useUserOfferingStore } from "../userOffering.store"
 
 export const OfferingFilterForm: FC = () => {
 	const { data: cities } = useCityListData()
 	const { languages } = useLanguageStore()
-	const { paperTypes } = usePaperTypeStore()
+	const { data: paperTypes } = usePaperTypeListData()
 
 	const setSelectedPaperType = useUserOfferingStore((st) => st.setPaperType)
 	const setSelectedLanguage = useUserOfferingStore((st) => st.setLanguage)

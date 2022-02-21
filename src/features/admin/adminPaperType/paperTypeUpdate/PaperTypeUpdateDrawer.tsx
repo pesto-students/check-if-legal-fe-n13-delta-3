@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { usePaperTypeStore } from "../../../shared/paperType/usePaperTypeStore"
+import { usePaperTypeListData } from "../../../shared/paperType/paperTypeList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { paperTypeUpdateApi } from "./paperTypeUpdateApi"
 import { usePaperTypeUpdateStore } from "./usePaperTypeUpdateStore"
@@ -16,7 +16,7 @@ interface IFormData {
 export const PaperTypeUpdateDrawer: FC = () => {
 	const { token } = useAdminAuth()
 
-	const fetchPaperTypes = usePaperTypeStore((state) => state.fetchPaperTypes)
+	const { refetch: refetchPaperTypes } = usePaperTypeListData()
 	const { selectedPaperType, isDrawerOpen, setIsDrawerOpen } = usePaperTypeUpdateStore()
 
 	const [errorText, setErrorText] = useState<string>()
@@ -36,7 +36,7 @@ export const PaperTypeUpdateDrawer: FC = () => {
 		paperTypeUpdateApi({ ...data, id: selectedPaperType.id }, token)
 			.then(() => {
 				onDrawerClose()
-				fetchPaperTypes()
+				refetchPaperTypes()
 			})
 			.catch((err) =>
 				setErrorText(err instanceof Error ? err.message : "Unknown Error"),

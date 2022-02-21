@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { usePaperTypeStore } from "../../../shared/paperType/usePaperTypeStore"
+import { usePaperTypeListData } from "../../../shared/paperType/paperTypeList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { paperTypeAddApi } from "./paperTypeAddApi"
 
@@ -17,7 +17,7 @@ interface IFormData {
 
 export const PaperTypeAddDrawer: FC<IProps> = (props) => {
 	const { token } = useAdminAuth()
-	const fetchPaperTypes = usePaperTypeStore((state) => state.fetchPaperTypes)
+	const { refetch: refetchPaperTypes } = usePaperTypeListData()
 
 	const { register, handleSubmit, formState, reset } = useForm<IFormData>({
 		defaultValues: { name: "" },
@@ -29,7 +29,7 @@ export const PaperTypeAddDrawer: FC<IProps> = (props) => {
 			.then(() => {
 				props.onClose()
 				reset()
-				fetchPaperTypes()
+				refetchPaperTypes()
 			})
 			.catch((err) =>
 				setErrorText(err instanceof Error ? err.message : "Unknown Error"),

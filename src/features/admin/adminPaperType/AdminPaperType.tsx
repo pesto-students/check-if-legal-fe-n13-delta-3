@@ -1,8 +1,7 @@
 import { Box, Button, useDisclosure } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
-import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
+import { FC } from "react"
 import { AuthRole } from "../../../utils/enums"
-import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
+import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
 import { useAdminAuth } from "../useAdminAuth"
 import { PaperTypeAddDrawer } from "./paperTypeAdd/PaperTypeAddDrawer"
 import { PaperTypeDeleteDialog } from "./paperTypeDelete/PaperTypeDeleteDialog"
@@ -11,12 +10,6 @@ import { PaperTypeUpdateDrawer } from "./paperTypeUpdate/PaperTypeUpdateDrawer"
 
 export const AdminPaperType: FC = () => {
 	useAdminAuth()
-	const fetchPaperTypes = usePaperTypeStore((state) => state.fetchPaperTypes)
-
-	useEffect(() => {
-		fetchPaperTypes()
-	}, [fetchPaperTypes])
-
 	const cityAddDrawerDisclosure = useDisclosure()
 
 	return (

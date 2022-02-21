@@ -3,20 +3,24 @@ import { FC, useEffect } from "react"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
 import { EditIconButton } from "../../shared/components/ui/EditIconButton"
+import { usePaperTypeListQuery } from "../../shared/paperType/paperTypeList.query"
 import { usePaperTypeDeleteStore } from "./paperTypeDelete/usePaperTypeDeleteStore"
-import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
 import { usePaperTypeUpdateStore } from "./paperTypeUpdate/usePaperTypeUpdateStore"
 
 export const PaperTypeListView: FC = () => {
-	const { paperTypes, isPaperTypesLoading, fetchPaperTypes } = usePaperTypeStore()
+	const {
+		data: paperTypes,
+		isLoading: isPaperTypesLoading,
+		refetch: refetchPaperTypes,
+	} = usePaperTypeListQuery()
 	const { setSelectedPaperType: setSelectedPaperTypeForDelete, setIsDeleteDialogOpen } =
 		usePaperTypeDeleteStore()
 	const { setSelectedPaperType: setSelectedPaperTypeForUpdate, setIsDrawerOpen } =
 		usePaperTypeUpdateStore()
 
 	useEffect(() => {
-		fetchPaperTypes()
-	}, [fetchPaperTypes])
+		refetchPaperTypes()
+	}, [refetchPaperTypes])
 
 	if (isPaperTypesLoading || !paperTypes) return <CenteredSpinner />
 
