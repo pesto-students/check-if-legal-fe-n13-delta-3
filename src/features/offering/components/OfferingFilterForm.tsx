@@ -2,9 +2,8 @@ import { Box, Button, Center, FormControl, Heading, Stack } from "@chakra-ui/rea
 import { Select } from "chakra-react-select"
 import { FC } from "react"
 import { cityLabel } from "../../../utils/helpers"
+import { useCityListData } from "../../shared/city/cityList.query"
 import { ICity } from "../../shared/city/ICity"
-import { useCityStore } from "../../shared/city/useCityStore"
-import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { InputLabel } from "../../shared/components/ui/InputLabel"
 import { ILanguage } from "../../shared/language/ILanguage"
 import { useLanguageStore } from "../../shared/language/useLanguageStore"
@@ -13,15 +12,13 @@ import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
 import { useUserOfferingStore } from "../userOffering.store"
 
 export const OfferingFilterForm: FC = () => {
-	const { cities } = useCityStore()
+	const { data: cities } = useCityListData()
 	const { languages } = useLanguageStore()
 	const { paperTypes } = usePaperTypeStore()
 
 	const setSelectedPaperType = useUserOfferingStore((st) => st.setPaperType)
 	const setSelectedLanguage = useUserOfferingStore((st) => st.setLanguage)
 	const setSelectedCity = useUserOfferingStore((st) => st.setCity)
-
-	if (!cities || !languages || !paperTypes) return <CenteredSpinner />
 
 	return (
 		<Center>

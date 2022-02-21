@@ -2,12 +2,12 @@ import { FormControl, Input, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { ComponentProps, FC, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useCityListData } from "../../../shared/city/cityList.query"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { useAdminAuth } from "../../useAdminAuth"
-import { useCityStore } from "../../../shared/city/useCityStore"
 import { useStateStore } from "../../../shared/state/useStateStore"
+import { useAdminAuth } from "../../useAdminAuth"
 import { cityAddApi } from "./cityAddApi"
 
 type IProps = Omit<ComponentProps<typeof DrawerForm>, "children">
@@ -20,7 +20,7 @@ interface IFormData {
 export const CityAddDrawer: FC<IProps> = (props) => {
 	const { token } = useAdminAuth()
 	const states = useStateStore((state) => state.states)
-	const fetchCities = useCityStore((state) => state.fetchCities)
+	const { refetch: refetchCities } = useCityListData()
 
 	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>({
 		defaultValues: { name: "" },
@@ -32,7 +32,7 @@ export const CityAddDrawer: FC<IProps> = (props) => {
 			.then(() => {
 				props.onClose()
 				reset()
-				fetchCities()
+				refetchCities()
 			})
 			.catch((err) =>
 				setErrorText(err instanceof Error ? err.message : "Unknown Error"),

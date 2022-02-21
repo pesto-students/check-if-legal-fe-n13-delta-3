@@ -2,10 +2,10 @@ import { FormControl, Input, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useCityListData } from "../../../shared/city/cityList.query"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { useCityStore } from "../../../shared/city/useCityStore"
 import { useStateStore } from "../../../shared/state/useStateStore"
 import { useAdminAuth } from "../../useAdminAuth"
 import { cityUpdateApi } from "./cityUpdateApi"
@@ -20,7 +20,7 @@ export const CityUpdateDrawer: FC = () => {
 	const { token } = useAdminAuth()
 
 	const states = useStateStore((state) => state.states)
-	const fetchCities = useCityStore((state) => state.fetchCities)
+	const { refetch: refetchCities } = useCityListData()
 	const { selectedCity, isDrawerOpen, setIsDrawerOpen } = useCityUpdateStore()
 
 	const [errorText, setErrorText] = useState<string>()
@@ -40,7 +40,7 @@ export const CityUpdateDrawer: FC = () => {
 		cityUpdateApi({ ...data, id: selectedCity.id }, token)
 			.then(() => {
 				onDrawerClose()
-				fetchCities()
+				refetchCities()
 			})
 			.catch((err) =>
 				setErrorText(err instanceof Error ? err.message : "Unknown Error"),

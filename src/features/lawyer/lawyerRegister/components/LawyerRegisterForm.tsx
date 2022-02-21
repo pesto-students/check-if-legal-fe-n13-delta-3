@@ -4,7 +4,7 @@ import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { NavLink, useNavigate } from "react-router-dom"
 import { cityLabel, getErrorMessage } from "../../../../utils/helpers"
-import { useCityStore } from "../../../shared/city/useCityStore"
+import { useCityListData } from "../../../shared/city/cityList.query"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
 import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
@@ -25,7 +25,7 @@ export const LawyerRegisterForm: FC = () => {
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const { cities } = useCityStore()
+	const { data: cities } = useCityListData()
 	const { register, handleSubmit, formState, setValue } = useForm<IFormData>()
 
 	const onSubmit = handleSubmit((data) => {

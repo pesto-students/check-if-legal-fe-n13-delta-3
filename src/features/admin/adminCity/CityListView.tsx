@@ -1,24 +1,21 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
+import { FC } from "react"
+import { useCityListData } from "../../shared/city/cityList.query"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
 import { EditIconButton } from "../../shared/components/ui/EditIconButton"
 import { useCityDeleteStore } from "./cityDelete/useCityDeleteStore"
-import { useCityStore } from "../../shared/city/useCityStore"
 import { useCityUpdateStore } from "./cityUpdate/useCityUpdateStore"
 
 export const CityListView: FC = () => {
-	const { cities, isCitiesLoading, fetchCities } = useCityStore()
+	const citiesQuery = useCityListData()
+
 	const { setSelectedCity: setSelectedCityForDelete, setIsDeleteDialogOpen } =
 		useCityDeleteStore()
 	const { setSelectedCity: setSelectedCityForUpdate, setIsDrawerOpen } =
 		useCityUpdateStore()
 
-	useEffect(() => {
-		fetchCities()
-	}, [fetchCities])
-
-	if (isCitiesLoading || !cities) return <CenteredSpinner />
+	if (citiesQuery.state?.isFetching) return <CenteredSpinner />
 
 	return (
 		<Table size="sm" fontSize={"lg"}>
@@ -30,7 +27,7 @@ export const CityListView: FC = () => {
 				</Tr>
 			</Thead>
 			<Tbody>
-				{cities.map((city) => (
+				{citiesQuery.data?.map((city) => (
 					<Tr
 						key={city.id}
 						cursor="pointer"

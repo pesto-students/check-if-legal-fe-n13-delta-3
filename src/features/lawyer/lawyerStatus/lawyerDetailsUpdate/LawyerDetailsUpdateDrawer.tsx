@@ -3,7 +3,7 @@ import { Select } from "chakra-react-select"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { cityLabel, getErrorMessage } from "../../../../utils/helpers"
-import { useCityStore } from "../../../shared/city/useCityStore"
+import { useCityListData } from "../../../shared/city/cityList.query"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
 import { useErrorToast } from "../../../shared/hooks/useErrorToast"
@@ -26,7 +26,7 @@ export const LawyerDetailsUpdateDrawer: FC = () => {
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const { cities } = useCityStore()
+	const { data: cities } = useCityListData()
 	const { lawyer, fetchLawyer } = useLawyerStore()
 	const { isDrawerOpen, setIsDrawerOpen } = useLawyerUpdateStore()
 

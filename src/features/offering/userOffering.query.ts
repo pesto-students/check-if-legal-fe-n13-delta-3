@@ -7,7 +7,7 @@ import { IUserOffering } from "./IUserOffering"
 import { apiUserOfferingList } from "./apis/userOfferingList.api"
 
 type IDataShape = IUserOffering[]
-const queryKey = "userOffering"
+const queryKey = "userOfferings"
 
 export function useUserOfferingsQuery({
 	city,

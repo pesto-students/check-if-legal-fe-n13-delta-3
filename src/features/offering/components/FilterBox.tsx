@@ -2,8 +2,8 @@ import { FormControl, Heading, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { FC } from "react"
 import { cityLabel } from "../../../utils/helpers"
+import { useCityListData } from "../../shared/city/cityList.query"
 import { ICity } from "../../shared/city/ICity"
-import { useCityStore } from "../../shared/city/useCityStore"
 import { InputLabel } from "../../shared/components/ui/InputLabel"
 import { ILanguage } from "../../shared/language/ILanguage"
 import { useLanguageStore } from "../../shared/language/useLanguageStore"
@@ -14,7 +14,7 @@ import { useUserOfferingStore } from "../userOffering.store"
 export const FilterBox: FC = () => {
 	const { paperTypes } = usePaperTypeStore()
 	const { languages } = useLanguageStore()
-	const { cities } = useCityStore()
+	const { data: cities } = useCityListData()
 
 	const selectedPaperType = useUserOfferingStore((st) => st.paperType)
 	const setSelectedPaperType = useUserOfferingStore((st) => st.setPaperType)
@@ -22,8 +22,6 @@ export const FilterBox: FC = () => {
 	const setSelectedLanguage = useUserOfferingStore((st) => st.setLanguage)
 	const selectedCity = useUserOfferingStore((st) => st.city)
 	const setSelectedCity = useUserOfferingStore((st) => st.setCity)
-
-	if (!selectedPaperType || !selectedLanguage || !selectedCity) return null
 
 	return (
 		<Stack bgColor={"gray.50"} p={4} borderRadius="lg" m={2}>

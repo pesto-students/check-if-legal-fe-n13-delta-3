@@ -1,15 +1,15 @@
 import { FC, useState } from "react"
-import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
+import { useCityListData } from "../../../shared/city/cityList.query"
+import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { useAdminAuth } from "../../useAdminAuth"
-import { useCityDeleteStore } from "./useCityDeleteStore"
-import { useCityStore } from "../../../shared/city/useCityStore"
 import { cityDeleteApi } from "./cityDeleteApi"
+import { useCityDeleteStore } from "./useCityDeleteStore"
 
 export const CityDeleteDialog: FC = () => {
 	const { token } = useAdminAuth()
 
-	const fetchCities = useCityStore((state) => state.fetchCities)
+	const { refetch: refetchCities } = useCityListData()
 	const { selectedCity, isDeleteDialogOpen, setIsDeleteDialogOpen } =
 		useCityDeleteStore()
 
@@ -23,7 +23,7 @@ export const CityDeleteDialog: FC = () => {
 		cityDeleteApi({ id: selectedCity.id }, token)
 			.then(() => {
 				setIsDeleteDialogOpen(false)
-				fetchCities()
+				refetchCities()
 			})
 			.catch((error) => setErrorMessage(getErrorMessage(error)))
 			.finally(() => setIsLoading(false))
