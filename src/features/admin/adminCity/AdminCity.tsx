@@ -1,9 +1,9 @@
 import { Box, Button, useDisclosure } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { AuthRole } from "../../../utils/enums"
 import { useCityListQuery } from "../../shared/city/cityList.query"
 import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
-import { useStateStore } from "../../shared/state/useStateStore"
+import { useStateListQuery } from "../../shared/state/stateList.query"
 import { useAdminAuth } from "../useAdminAuth"
 import { CityAddDrawer } from "./cityAdd/CityAddDrawer"
 import { CityDeleteDialog } from "./cityDelete/CityDeleteDialog"
@@ -14,11 +14,7 @@ export const AdminCity: FC = () => {
 	useAdminAuth()
 
 	useCityListQuery()
-	const fetchStates = useStateStore((state) => state.fetchStates)
-
-	useEffect(() => {
-		fetchStates()
-	}, [fetchStates])
+	useStateListQuery()
 
 	const cityAddDrawerDisclosure = useDisclosure()
 

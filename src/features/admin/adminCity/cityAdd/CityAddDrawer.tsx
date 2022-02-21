@@ -6,7 +6,7 @@ import { useCityListData } from "../../../shared/city/cityList.query"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { useStateStore } from "../../../shared/state/useStateStore"
+import { useStateListQuery } from "../../../shared/state/stateList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { cityAddApi } from "./cityAddApi"
 
@@ -19,7 +19,7 @@ interface IFormData {
 
 export const CityAddDrawer: FC<IProps> = (props) => {
 	const { token } = useAdminAuth()
-	const states = useStateStore((state) => state.states)
+	const { data: states } = useStateListQuery()
 	const { refetch: refetchCities } = useCityListData()
 
 	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>({
@@ -56,7 +56,8 @@ export const CityAddDrawer: FC<IProps> = (props) => {
 					<InputLabel label="Name" />
 					<Input isRequired autoFocus {...register("name")} />
 				</FormControl>
-				{/* Name */}
+
+				{/* State Selection */}
 				<FormControl>
 					<InputLabel label="Select State" />
 					<Select<{ label: string; value: number }, false>

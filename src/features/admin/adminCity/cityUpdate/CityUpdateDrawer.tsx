@@ -6,7 +6,7 @@ import { useCityListData } from "../../../shared/city/cityList.query"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
-import { useStateStore } from "../../../shared/state/useStateStore"
+import { useStateListQuery } from "../../../shared/state/stateList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { cityUpdateApi } from "./cityUpdateApi"
 import { useCityUpdateStore } from "./useCityUpdateStore"
@@ -19,7 +19,7 @@ interface IFormData {
 export const CityUpdateDrawer: FC = () => {
 	const { token } = useAdminAuth()
 
-	const states = useStateStore((state) => state.states)
+	const { data: states } = useStateListQuery()
 	const { refetch: refetchCities } = useCityListData()
 	const { selectedCity, isDrawerOpen, setIsDrawerOpen } = useCityUpdateStore()
 
