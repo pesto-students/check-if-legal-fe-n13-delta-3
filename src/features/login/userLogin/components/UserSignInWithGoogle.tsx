@@ -26,7 +26,6 @@ export const UserSignInWithGoogle: FC<IProps> = ({ onLoginSuccess }) => {
 	}
 
 	const onFailure = (googleErrorResponse: any) => {
-		console.log(googleErrorResponse)
 		errorToast(googleErrorResponse?.error ?? "Unable to complete sign in with Google")
 	}
 

@@ -1,20 +1,16 @@
 import { IconButton } from "@chakra-ui/react"
-import React from "react"
+import { ComponentProps, FC } from "react"
 import { AiOutlineCloudDownload } from "react-icons/ai"
 
-export const DownloadIconButton: React.FC<{ onClick?: Function; size?: string }> = ({
-	onClick,
-	size,
-	...rest
-}) => (
+type IProps = Omit<ComponentProps<typeof IconButton>, "aria-label" | "icon">
+
+export const DownloadIconButton: FC<IProps> = ({ ...rest }) => (
 	<IconButton
-		aria-label="delete"
+		aria-label="download"
 		variant="ghost"
 		icon={<AiOutlineCloudDownload />}
-		size={size ?? "sm"}
 		mx="1"
 		colorScheme={"blue"}
-		onClick={() => onClick && onClick()}
 		{...rest}
 	/>
 )

@@ -2,9 +2,14 @@ import { Box, Flex, Table, Tbody, Td, Text, Tr } from "@chakra-ui/react"
 import _ from "lodash"
 import { FC } from "react"
 import { BsFileEarmarkImage } from "react-icons/bs"
+import { downloadFileFromBase64 } from "../../../../utils/fileDownload/downloadFileFromBase64"
+import { getErrorMessage } from "../../../../utils/helpers"
+import { storage } from "../../../../utils/storage"
 import { DeleteIconButton } from "../../components/ui/DeleteIconButton"
 import { DownloadIconButton } from "../../components/ui/DownloadIconButton"
+import { useErrorToast } from "../../hooks/useErrorToast"
 import { useReviewDetailsData } from "../reviewDetails.query"
+import { apiReviewDocumentGet } from "./reviewDocumentGet.api"
 
 interface IProps {
 	reviewId: number
@@ -12,8 +17,23 @@ interface IProps {
 }
 
 export const ReviewDocumentList: FC<IProps> = ({ reviewId, isLawyer }) => {
+	const auth = storage.getAuth()
+	const token = auth?.token
+
 	const { data } = useReviewDetailsData({ reviewId })
 	const documents = data?.documentList
+
+	const errorToast = useErrorToast()
+
+	const handleOnDownload = (fileName: string) => {
+		if (!token) return
+
+		apiReviewDocumentGet({ reviewId, fileName, token })
+			.then(({ base64File }) => {
+				downloadFileFromBase64(base64File, fileName)
+			})
+			.catch((err) => errorToast(getErrorMessage(err)))
+	}
 
 	if (_.isEmpty(documents)) {
 		if (!isLawyer) return null
@@ -44,7 +64,7 @@ export const ReviewDocumentList: FC<IProps> = ({ reviewId, isLawyer }) => {
 								</Flex>
 							</Td>
 							<Td isNumeric>
-								<DownloadIconButton />
+								<DownloadIconButton onClick={() => handleOnDownload(el)} />
 								{!isLawyer && <DeleteIconButton />}
 							</Td>
 						</Tr>
