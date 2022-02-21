@@ -1,26 +1,70 @@
 import { FormControl, Stack } from "@chakra-ui/react"
-import { Select } from "chakra-react-select"
-import { FC } from "react"
+import { Select, SingleValue } from "chakra-react-select"
+import { FC, useCallback } from "react"
 import { cityLabel } from "../../../utils/helpers"
 import { useCityStore } from "../../shared/city/useCityStore"
 import { InputLabel } from "../../shared/components/ui/InputLabel"
 import { useLanguageStore } from "../../shared/language/useLanguageStore"
 import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
-import { useOfferingStore } from "../useOfferingStore"
+import { useUserOfferingStore } from "../userOffering.store"
+
+type ISelectOnChangeParam = SingleValue<{ label: string; value: number }>
 
 export const FilterBox: FC = () => {
-	const { paperTypeId, setPaperTypeId, languageId, setLanguageId, cityId, setCityId } =
-		useOfferingStore()
 	const { paperTypes } = usePaperTypeStore()
 	const { languages } = useLanguageStore()
 	const { cities } = useCityStore()
 
-	if (!paperTypes || !paperTypeId || !languages || !languageId || !cityId || !cities)
-		return null
+	const selectedPaperType = useUserOfferingStore((st) => st.paperType)
+	const setSelectedPaperType = useUserOfferingStore((st) => st.setPaperType)
+	const selectedLanguage = useUserOfferingStore((st) => st.language)
+	const setSelectedLanguage = useUserOfferingStore((st) => st.setLanguage)
+	const selectedCity = useUserOfferingStore((st) => st.city)
+	const setSelectedCity = useUserOfferingStore((st) => st.setCity)
 
-	const defaultPaperType = paperTypes.find((el) => el.id === paperTypeId)
-	const defaultLanguage = languages.find((el) => el.id === languageId)
-	const defaultCity = cities.find((el) => el.id === cityId)
+	const paperTypeOptions =
+		paperTypes?.map((el) => ({ label: el.name, value: el.id })) ?? []
+	const defaultSelectedPaperType = paperTypeOptions.find(
+		(el) => el.value === selectedPaperType?.id,
+	)
+	const onSelectedPaperTypeChange = useCallback(
+		(selected: ISelectOnChangeParam) => {
+			if (!selected) return
+			const paperType = paperTypes?.find((el) => el.id === selected.value)
+			if (!paperType) return
+			setSelectedPaperType(paperType)
+		},
+		[paperTypes, setSelectedPaperType],
+	)
+
+	const languageOptions =
+		languages?.map((el) => ({ label: el.name, value: el.id })) ?? []
+	const defaultSelectedLanguage = languageOptions.find(
+		(el) => el.value === selectedLanguage?.id,
+	)
+	const onSelectedLanguageChange = useCallback(
+		(selected: ISelectOnChangeParam) => {
+			if (!selected) return
+			const language = languages?.find((el) => el.id === selected.value)
+			if (!language) return
+			setSelectedLanguage(language)
+		},
+		[languages, setSelectedLanguage],
+	)
+
+	const cityOptions = cities?.map((el) => ({ label: cityLabel(el), value: el.id })) ?? []
+	const defaultSelectedCity = cityOptions.find((el) => el.value === selectedCity?.id)
+	const onSelectedCityChange = useCallback(
+		(selected: ISelectOnChangeParam) => {
+			if (!selected) return
+			const city = cities?.find((el) => el.id === selected.value)
+			if (!city) return
+			setSelectedCity(city)
+		},
+		[cities, setSelectedCity],
+	)
+
+	if (!selectedPaperType || !selectedLanguage || !selectedCity) return null
 
 	return (
 		<Stack>
@@ -28,12 +72,9 @@ export const FilterBox: FC = () => {
 			<FormControl>
 				<InputLabel label="Paper Type" />
 				<Select<{ label: string; value: number }, false>
-					options={paperTypes.map((el) => ({ label: el.name, value: el.id }))}
-					defaultValue={{
-						label: defaultPaperType?.name ?? "Select Paper Type",
-						value: paperTypeId,
-					}}
-					onChange={(selected) => selected && setPaperTypeId(selected.value)}
+					options={paperTypeOptions}
+					defaultValue={defaultSelectedPaperType}
+					onChange={onSelectedPaperTypeChange}
 				/>
 			</FormControl>
 
@@ -41,12 +82,9 @@ export const FilterBox: FC = () => {
 			<FormControl>
 				<InputLabel label="Language" />
 				<Select<{ label: string; value: number }, false>
-					options={languages.map((el) => ({ label: el.name, value: el.id }))}
-					defaultValue={{
-						label: defaultLanguage?.name ?? "Select Language",
-						value: languageId,
-					}}
-					onChange={(selected) => selected && setLanguageId(selected.value)}
+					options={languageOptions}
+					defaultValue={defaultSelectedLanguage}
+					onChange={onSelectedLanguageChange}
 				/>
 			</FormControl>
 
@@ -54,15 +92,9 @@ export const FilterBox: FC = () => {
 			<FormControl>
 				<InputLabel label="City" />
 				<Select<{ label: string; value: number }, false>
-					options={cities.map((el) => ({
-						label: cityLabel(el),
-						value: el.id,
-					}))}
-					defaultValue={{
-						label: defaultCity ? cityLabel(defaultCity) : "Select City",
-						value: cityId,
-					}}
-					onChange={(selected) => selected && setCityId(selected.value)}
+					options={cityOptions}
+					defaultValue={defaultSelectedCity}
+					onChange={onSelectedCityChange}
 				/>
 			</FormControl>
 		</Stack>

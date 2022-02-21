@@ -11,8 +11,7 @@ export function App() {
 			<ChakraProvider>
 				<AppRouter />
 			</ChakraProvider>
-			{/* The rest of your application */}
-			7 <ReactQueryDevtools initialIsOpen={false} />
+			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>
 	)
 }

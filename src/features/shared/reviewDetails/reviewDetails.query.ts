@@ -4,8 +4,8 @@ import { IReview } from "../review/IReview"
 import { apiReviewDocumentList } from "./apis/apiReviewDocumentList"
 import { apiReviewGet } from "./apis/apiReviewGet"
 import { apiReviewPaymentGet } from "./apis/reviewPaymentGet.api"
-import { IReviewFeedback } from "./reviewFeedback/IReviewFeedback"
 import { apiReviewFeedbackList } from "./reviewFeedback/feedbackList/feedbackList.api"
+import { IReviewFeedback } from "./reviewFeedback/IReviewFeedback"
 import { IReviewPayment } from "./reviewPayment/IReviewPayment"
 
 interface IDataShape {
@@ -15,6 +15,10 @@ interface IDataShape {
 	feedbackList?: IReviewFeedback[]
 }
 
+function getQueryKey(reviewId: number) {
+	return ["review", reviewId]
+}
+
 export function useReviewDetailsQuery({
 	reviewId,
 	token,
@@ -22,7 +26,7 @@ export function useReviewDetailsQuery({
 	reviewId: number
 	token: string
 }) {
-	return useQuery<IDataShape, Error>(["review", reviewId], async () => {
+	return useQuery<IDataShape, Error>(getQueryKey(reviewId), async () => {
 		const payment = await apiReviewPaymentGet({ reviewId, token })
 		const [review, documentList, feedbackList] = await Promise.all([
 			apiReviewGet({ id: reviewId, token }),
@@ -36,11 +40,13 @@ export function useReviewDetailsQuery({
 
 export function useReviewDetailsData({ reviewId }: { reviewId: number }) {
 	const queryClient = useQueryClient()
-	const data = queryClient.getQueryData<IDataShape>(["review", reviewId])
+	const queryKey = getQueryKey(reviewId)
+
+	const data = queryClient.getQueryData<IDataShape>(queryKey)
 
 	const refetch = useCallback(() => {
-		queryClient.refetchQueries(["review", reviewId])
-	}, [queryClient, reviewId])
+		queryClient.refetchQueries(queryKey)
+	}, [queryClient, queryKey])
 
 	return { data, refetch }
 }

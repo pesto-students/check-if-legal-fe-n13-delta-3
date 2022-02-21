@@ -1,6 +1,6 @@
 import { HttpApi, HttpMethod } from "../../core/http"
 
-export async function reviewCreateApi({
+export async function apiReviewCreate({
 	token,
 	offeringId,
 	cityId,

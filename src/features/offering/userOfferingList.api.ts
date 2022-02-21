@@ -1,7 +1,7 @@
 import { HttpApi, HttpMethod } from "../../core/http"
 import { IUserOffering } from "./IUserOffering"
 
-export async function userOfferingListApi({
+export async function apiUserOfferingList({
 	token,
 	paperTypeId,
 	cityId,
