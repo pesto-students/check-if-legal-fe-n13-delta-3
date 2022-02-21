@@ -1,53 +1,55 @@
 import { FormControl, Input, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
-import { FC, useState } from "react"
+import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { useCityListData } from "../../../shared/city/cityList.query"
+import { ICity } from "../../../shared/city/ICity"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
+import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
+import { IState } from "../../../shared/state/IState"
 import { useStateListQuery } from "../../../shared/state/stateList.query"
 import { useAdminAuth } from "../../useAdminAuth"
-import { cityUpdateApi } from "./cityUpdateApi"
-import { useCityUpdateStore } from "./useCityUpdateStore"
+import { apiCityUpdate } from "./cityUpdate.api"
 
 interface IFormData {
 	name: string
 	stateId: number
 }
 
-export const CityUpdateDrawer: FC = () => {
+interface IProps {
+	city: ICity
+	isOpen: boolean
+	onClose: () => void
+}
+
+export const CityUpdateDrawer: FC<IProps> = ({ city, isOpen, onClose }) => {
 	const { token } = useAdminAuth()
 
 	const { data: states } = useStateListQuery()
 	const { refetch: refetchCities } = useCityListData()
-	const { selectedCity, isDrawerOpen, setIsDrawerOpen } = useCityUpdateStore()
 
-	const [errorText, setErrorText] = useState<string>()
-	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>({
-		defaultValues: { name: selectedCity?.name, stateId: selectedCity?.stateId },
-	})
+	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>()
+	const errorToast = useErrorToast()
+	const successToast = useSuccessToast()
 
-	if (!states || !selectedCity) return null
-
-	const onDrawerClose = () => {
-		setIsDrawerOpen(false)
-		reset()
-		setErrorText(undefined)
-	}
+	useEffect(() => {
+		setValue("name", city.name)
+		setValue("stateId", city.stateId)
+	}, [city, setValue])
 
 	const onSubmit = handleSubmit((data) => {
-		cityUpdateApi({ ...data, id: selectedCity.id }, token)
+		apiCityUpdate({ id: city.id }, data, token)
 			.then(() => {
-				onDrawerClose()
+				successToast("City updated successfully")
+				onClose()
+				reset()
 				refetchCities()
 			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+			.catch((err) => errorToast(getErrorMessage(err)))
 	})
-
-	const stateOptions = states.map((state) => ({ label: state.name, value: state.id }))
 
 	return (
 		<DrawerForm
@@ -56,8 +58,8 @@ export const CityUpdateDrawer: FC = () => {
 			onSubmit={onSubmit}
 			isSubmitting={formState.isSubmitting}
 			submitLabel={"Save"}
-			onClose={onDrawerClose}
-			isOpen={isDrawerOpen}
+			onClose={onClose}
+			isOpen={isOpen}
 		>
 			<Stack maxWidth={"sm"} marginX={"auto"}>
 				{/* Name */}
@@ -66,24 +68,22 @@ export const CityUpdateDrawer: FC = () => {
 					<Input
 						isRequired
 						autoFocus
-						defaultValue={selectedCity.name}
+						defaultValue={city.name}
 						{...register("name")}
 					/>
 				</FormControl>
 
-				{/* Name */}
+				{/* State */}
 				<FormControl>
 					<InputLabel label="Select State" />
-					<Select<{ label: string; value: number }, false>
-						options={stateOptions}
-						defaultValue={stateOptions.find(
-							(el) => el.value === selectedCity.stateId,
-						)}
-						onChange={(selected) => selected && setValue("stateId", selected.value)}
+					<Select<IState, false>
+						options={states}
+						defaultValue={city.state}
+						getOptionLabel={(option) => option.name}
+						getOptionValue={(option) => `${option.id}`}
+						onChange={(selected) => selected && setValue("stateId", selected.id)}
 					/>
 				</FormControl>
-
-				{errorText && <ErrorText text={errorText} />}
 			</Stack>
 		</DrawerForm>
 	)

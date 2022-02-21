@@ -4,7 +4,7 @@ interface IResponseShape {
 	id: number
 }
 
-export async function cityAddApi(
+export async function apiCityAdd(
 	payload: { name: string; stateId: number },
 	token: string,
 ) {
