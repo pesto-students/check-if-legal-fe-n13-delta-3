@@ -2,13 +2,15 @@ import { Box, Button, Flex, FormControl, Input, Stack, Textarea } from "@chakra-
 import { Select } from "chakra-react-select"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { cityLabel, getErrorMessage } from "../../../../utils/helpers"
-import { useCityListData } from "../../../shared/city/cityList.query"
+import { useCityListQuery } from "../../../shared/city/cityList.query"
+import { ICity } from "../../../shared/city/ICity"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
 import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
 import { useLawyerAuth } from "../../useLawyerAuth"
+import { useLawyerStore } from "../../useLawyerStore"
 import { lawyerRegisterApi } from "../lawyerRegisterApi"
 
 interface IFormData {
@@ -21,24 +23,21 @@ interface IFormData {
 
 export const LawyerRegisterForm: FC = () => {
 	const { token } = useLawyerAuth()
-	const navigate = useNavigate()
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const { data: cities } = useCityListData()
+	const { fetchLawyer } = useLawyerStore()
+	const { data: cities } = useCityListQuery()
 	const { register, handleSubmit, formState, setValue } = useForm<IFormData>()
 
 	const onSubmit = handleSubmit((data) => {
 		lawyerRegisterApi(data, token)
 			.then(() => {
 				successToast("Registered request sent successfully")
-				navigate("/lawyer/status")
+				fetchLawyer({ token })
 			})
 			.catch((err) => errorToast(getErrorMessage(err)))
 	})
-
-	if (!cities) return null
-	const cityOptions = cities.map((el) => ({ label: cityLabel(el), value: el.id }))
 
 	return (
 		<Box>
@@ -60,10 +59,12 @@ export const LawyerRegisterForm: FC = () => {
 						{/* City */}
 						<FormControl>
 							<InputLabel label="City of Practising" />
-							<Select<{ label: string; value: number }, false>
-								options={cityOptions}
+							<Select<ICity, false>
+								options={cities}
+								getOptionLabel={(city) => cityLabel(city)}
+								getOptionValue={(city) => `${city.id}`}
 								onChange={(selected) =>
-									selected && setValue("cityId", selected.value)
+									selected && setValue("cityId", selected.id)
 								}
 							/>
 						</FormControl>
