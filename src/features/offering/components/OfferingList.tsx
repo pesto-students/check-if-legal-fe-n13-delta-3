@@ -7,7 +7,7 @@ import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { ErrorText } from "../../shared/components/ui/ErrorText"
 import { useErrorToast } from "../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../shared/hooks/useSuccessToast"
-import { apiReviewCreate } from "../reviewCreate.api"
+import { apiReviewCreate } from "../apis/reviewCreate.api"
 import { useUserOfferingsQuery } from "../userOffering.query"
 import { useUserOfferingStore } from "../userOffering.store"
 import { PriceBox } from "./PriceBox"
@@ -16,12 +16,14 @@ export const OfferingList: FC = () => {
 	const authPayload = storage.getAuth()
 	const token = authPayload?.token
 
+	const [isLoading, setIsLoading] = useState(false)
 	const navigate = useNavigate()
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const [isLoading, setIsLoading] = useState(false)
-	const { city, language, paperType } = useUserOfferingStore()
+	const city = useUserOfferingStore((st) => st.city)
+	const language = useUserOfferingStore((st) => st.language)
+	const paperType = useUserOfferingStore((st) => st.paperType)
 
 	const {
 		data: offerings,

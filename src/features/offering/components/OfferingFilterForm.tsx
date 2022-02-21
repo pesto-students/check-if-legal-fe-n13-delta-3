@@ -1,6 +1,7 @@
 import { Box, Button, Center, FormControl, Heading, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { FC } from "react"
+import { cityLabel } from "../../../utils/helpers"
 import { ICity } from "../../shared/city/ICity"
 import { useCityStore } from "../../shared/city/useCityStore"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
@@ -63,7 +64,7 @@ export const OfferingFilterForm: FC = () => {
 							<Select<ICity, false>
 								options={cities}
 								getOptionValue={(option) => `${option.id}`}
-								getOptionLabel={(option) => option.name}
+								getOptionLabel={(option) => cityLabel(option)}
 								onChange={(selected) => selected && setSelectedCity(selected)}
 							/>
 						</FormControl>

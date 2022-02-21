@@ -1,14 +1,15 @@
-import { FormControl, Stack } from "@chakra-ui/react"
-import { Select, SingleValue } from "chakra-react-select"
-import { FC, useCallback } from "react"
+import { FormControl, Heading, Stack } from "@chakra-ui/react"
+import { Select } from "chakra-react-select"
+import { FC } from "react"
 import { cityLabel } from "../../../utils/helpers"
+import { ICity } from "../../shared/city/ICity"
 import { useCityStore } from "../../shared/city/useCityStore"
 import { InputLabel } from "../../shared/components/ui/InputLabel"
+import { ILanguage } from "../../shared/language/ILanguage"
 import { useLanguageStore } from "../../shared/language/useLanguageStore"
+import { IPaperType } from "../../shared/paperType/IPaperType"
 import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
 import { useUserOfferingStore } from "../userOffering.store"
-
-type ISelectOnChangeParam = SingleValue<{ label: string; value: number }>
 
 export const FilterBox: FC = () => {
 	const { paperTypes } = usePaperTypeStore()
@@ -22,79 +23,45 @@ export const FilterBox: FC = () => {
 	const selectedCity = useUserOfferingStore((st) => st.city)
 	const setSelectedCity = useUserOfferingStore((st) => st.setCity)
 
-	const paperTypeOptions =
-		paperTypes?.map((el) => ({ label: el.name, value: el.id })) ?? []
-	const defaultSelectedPaperType = paperTypeOptions.find(
-		(el) => el.value === selectedPaperType?.id,
-	)
-	const onSelectedPaperTypeChange = useCallback(
-		(selected: ISelectOnChangeParam) => {
-			if (!selected) return
-			const paperType = paperTypes?.find((el) => el.id === selected.value)
-			if (!paperType) return
-			setSelectedPaperType(paperType)
-		},
-		[paperTypes, setSelectedPaperType],
-	)
-
-	const languageOptions =
-		languages?.map((el) => ({ label: el.name, value: el.id })) ?? []
-	const defaultSelectedLanguage = languageOptions.find(
-		(el) => el.value === selectedLanguage?.id,
-	)
-	const onSelectedLanguageChange = useCallback(
-		(selected: ISelectOnChangeParam) => {
-			if (!selected) return
-			const language = languages?.find((el) => el.id === selected.value)
-			if (!language) return
-			setSelectedLanguage(language)
-		},
-		[languages, setSelectedLanguage],
-	)
-
-	const cityOptions = cities?.map((el) => ({ label: cityLabel(el), value: el.id })) ?? []
-	const defaultSelectedCity = cityOptions.find((el) => el.value === selectedCity?.id)
-	const onSelectedCityChange = useCallback(
-		(selected: ISelectOnChangeParam) => {
-			if (!selected) return
-			const city = cities?.find((el) => el.id === selected.value)
-			if (!city) return
-			setSelectedCity(city)
-		},
-		[cities, setSelectedCity],
-	)
-
 	if (!selectedPaperType || !selectedLanguage || !selectedCity) return null
 
 	return (
-		<Stack>
+		<Stack bgColor={"gray.50"} p={4} borderRadius="lg" m={2}>
+			<Heading size={"md"}>Filters</Heading>
+
 			{/* Paper Type Selection */}
 			<FormControl>
 				<InputLabel label="Paper Type" />
-				<Select<{ label: string; value: number }, false>
-					options={paperTypeOptions}
-					defaultValue={defaultSelectedPaperType}
-					onChange={onSelectedPaperTypeChange}
+				<Select<IPaperType, false>
+					options={paperTypes}
+					defaultValue={selectedPaperType}
+					getOptionValue={(option) => `${option.id}`}
+					getOptionLabel={(option) => option.name}
+					onChange={(selected) => selected && setSelectedPaperType(selected)}
 				/>
 			</FormControl>
 
 			{/* Language Selection */}
 			<FormControl>
 				<InputLabel label="Language" />
-				<Select<{ label: string; value: number }, false>
-					options={languageOptions}
-					defaultValue={defaultSelectedLanguage}
-					onChange={onSelectedLanguageChange}
+				<Select<ILanguage, false>
+					options={languages}
+					defaultValue={selectedLanguage}
+					getOptionValue={(option) => `${option.id}`}
+					getOptionLabel={(option) => option.name}
+					onChange={(selected) => selected && setSelectedLanguage(selected)}
 				/>
 			</FormControl>
 
 			{/* City Selection */}
 			<FormControl>
 				<InputLabel label="City" />
-				<Select<{ label: string; value: number }, false>
-					options={cityOptions}
-					defaultValue={defaultSelectedCity}
-					onChange={onSelectedCityChange}
+				<Select<ICity, false>
+					options={cities}
+					defaultValue={selectedCity}
+					getOptionValue={(option) => `${option.id}`}
+					getOptionLabel={(option) => cityLabel(option)}
+					onChange={(selected) => selected && setSelectedCity(selected)}
 				/>
 			</FormControl>
 		</Stack>

@@ -1,5 +1,5 @@
-import { HttpApi, HttpMethod } from "../../core/http"
-import { IUserOffering } from "./IUserOffering"
+import { HttpApi, HttpMethod } from "../../../core/http"
+import { IUserOffering } from "../IUserOffering"
 
 export async function apiUserOfferingList({
 	token,

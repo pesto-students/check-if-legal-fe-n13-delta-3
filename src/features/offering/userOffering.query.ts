@@ -4,7 +4,7 @@ import { ICity } from "../shared/city/ICity"
 import { ILanguage } from "../shared/language/ILanguage"
 import { IPaperType } from "../shared/paperType/IPaperType"
 import { IUserOffering } from "./IUserOffering"
-import { apiUserOfferingList } from "./userOfferingList.api"
+import { apiUserOfferingList } from "./apis/userOfferingList.api"
 
 type IDataShape = IUserOffering[]
 const queryKey = "userOffering"
