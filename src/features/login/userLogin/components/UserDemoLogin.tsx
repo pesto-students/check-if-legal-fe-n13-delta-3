@@ -25,9 +25,9 @@ export const DemoLogin: FC<IProps> = ({ isLawyer, onLoginSuccess }) => {
 
 	return (
 		<Button
-			width={"sm"}
-			backgroundColor={"white"}
-			_hover={{ backgroundColor: "gray.50" }}
+			width={{ base: "xs", sm: "sm" }}
+			backgroundColor={{ base: undefined, sm: "white" }}
+			_hover={{ backgroundColor: { base: undefined, sm: "gray.50" } }}
 			onClick={handleDemoLogin}
 			isLoading={isLoading}
 			isDisabled={isLoading}
