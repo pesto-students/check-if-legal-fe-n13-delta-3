@@ -1,23 +1,18 @@
 import { Box, Flex, Table, Tbody, Td, Text, Tr } from "@chakra-ui/react"
-import _ from "lodash"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 import { BsFileEarmarkImage } from "react-icons/bs"
-import { CenteredSpinner } from "../../../shared/components/ui/CenterSpinner"
-import { DeleteIconButton } from "../../../shared/components/ui/DeleteIconButton"
-import { DownloadIconButton } from "../../../shared/components/ui/DownloadIconButton"
-import { useLawyerAuth } from "../../useLawyerAuth"
-import { useLawyerProofStore } from "./useLawyerProofStore"
+import { CenteredSpinner } from "../../../../shared/components/ui/CenterSpinner"
+import { DeleteIconButton } from "../../../../shared/components/ui/DeleteIconButton"
+import { DownloadIconButton } from "../../../../shared/components/ui/DownloadIconButton"
+import { useLawyerAuth } from "../../../useLawyerAuth"
+import { useLawyerProofQuery } from "../lawyerProof.query"
 
 export const LawyerProofList: FC = () => {
 	const { token } = useLawyerAuth()
-	const { proofs, fetchProofs, isProofsLoading } = useLawyerProofStore()
+	const { data: proofs, isLoading } = useLawyerProofQuery({ token })
 
-	useEffect(() => {
-		fetchProofs({ token })
-	}, [fetchProofs, token])
-
-	if (isProofsLoading || _.isUndefined(proofs)) return <CenteredSpinner />
-	if (_.isEmpty(proofs)) return null
+	if (isLoading) return <CenteredSpinner />
+	if (!proofs) return null
 
 	return (
 		<Box

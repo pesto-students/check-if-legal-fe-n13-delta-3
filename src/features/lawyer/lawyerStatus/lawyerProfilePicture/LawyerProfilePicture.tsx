@@ -1,12 +1,12 @@
 import { Avatar, Box, Button, Flex } from "@chakra-ui/react"
 import { FC } from "react"
 import { API_URL } from "../../../../configs"
-import { useLawyerStore } from "../../useLawyerStore"
+import { useLawyerData } from "../../lawyer.query"
 
 export const LawyerProfilePicture: FC = () => {
-	const { lawyer } = useLawyerStore()
-	if (!lawyer) return null
+	const { data: lawyer } = useLawyerData()
 
+	if (!lawyer) return null
 	const profileSrc = `${API_URL}/static/lawyerPictures/${lawyer.id}.jpg`
 
 	return (

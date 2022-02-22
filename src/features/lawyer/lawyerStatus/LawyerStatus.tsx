@@ -1,25 +1,28 @@
-import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react"
-import _ from "lodash"
-import { FC, useEffect } from "react"
+import {
+	Box,
+	Button,
+	Center,
+	Flex,
+	Heading,
+	Stack,
+	Text,
+	useDisclosure,
+} from "@chakra-ui/react"
+import { FC } from "react"
 import { Navigate, NavLink } from "react-router-dom"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { useLawyerQuery } from "../lawyer.query"
 import { useLawyerAuth } from "../useLawyerAuth"
-import { useLawyerStore } from "../useLawyerStore"
 import { LawyerDetailsUpdateDrawer } from "./lawyerDetailsUpdate/LawyerDetailsUpdateDrawer"
-import { useLawyerUpdateStore } from "./lawyerDetailsUpdate/useLawyerUpdateStore"
 import { LawyerProfilePicture } from "./lawyerProfilePicture/LawyerProfilePicture"
-import { LawyerProofs } from "./lawyerProofs/LawyerProofs"
+import { LawyerProofs } from "./lawyerProofs/components/LawyerProofs"
 
 export const LawyerStatus: FC = () => {
 	const { token } = useLawyerAuth()
-	const { lawyer, fetchLawyer } = useLawyerStore()
-	const { setIsDrawerOpen } = useLawyerUpdateStore()
+	const { data: lawyer, isLoading } = useLawyerQuery({ token })
+	const updateDrawer = useDisclosure()
 
-	useEffect(() => {
-		if (_.isUndefined(lawyer)) fetchLawyer({ token })
-	}, [fetchLawyer, token, lawyer])
-
-	if (_.isUndefined(lawyer)) return <CenteredSpinner />
+	if (isLoading) return <CenteredSpinner />
 	if (!lawyer) return <Navigate to={"/lawyer/register"} />
 	if (lawyer.isVerified) return <Navigate to={"/lawyer"} />
 
@@ -31,23 +34,41 @@ export const LawyerStatus: FC = () => {
 					It usually takes 3-4 business days for verification process. You might get
 					a telephone verification call on provided contact number.
 				</Text>
-				<Flex mt={8} p={4} gap={6} bgColor="gray.200" borderRadius={"lg"}>
-					<LawyerProfilePicture />
-					<Box textAlign={"left"}>
-						<Heading size={"md"}>{lawyer.name}</Heading>
-						<Text>{lawyer.description}</Text>
-						<Text>City: {lawyer.city.name}</Text>
-						<Text>{lawyer.address}</Text>
-						<Text>Contact: {lawyer.phone}</Text>
+				<Flex
+					mt={8}
+					p={8}
+					gap={6}
+					bgColor="gray.200"
+					borderRadius={"lg"}
+					justifyContent="space-between"
+				>
+					<Stack textAlign={"left"}>
+						<Heading size={"lg"}>{lawyer.name}</Heading>
+						<Box>
+							<Text fontWeight={"semibold"}>Description:</Text>
+							<Text>{lawyer.description}</Text>
+						</Box>
+						<Box>
+							<Text fontWeight={"semibold"}>Address:</Text>
+							<Text>{lawyer.address}</Text>
+						</Box>
+						<Text>
+							<b>City:</b> {lawyer.city.name}
+						</Text>
+						<Text>
+							<b>Contact:</b> {lawyer.phone}
+						</Text>
 						<Button
-							size={"xs"}
-							mt={1}
+							size={"sm"}
+							mt={2}
 							colorScheme="blackAlpha"
-							onClick={() => setIsDrawerOpen(true)}
+							onClick={updateDrawer.onOpen}
 						>
 							Update Details
 						</Button>
-						<LawyerDetailsUpdateDrawer />
+					</Stack>
+					<Box>
+						<LawyerProfilePicture />
 					</Box>
 				</Flex>
 				<Box mt={8} textAlign="left">
@@ -59,6 +80,8 @@ export const LawyerStatus: FC = () => {
 					</NavLink>
 				</Box>
 			</Box>
+
+			{lawyer && <LawyerDetailsUpdateDrawer lawyer={lawyer} {...updateDrawer} />}
 		</Center>
 	)
 }

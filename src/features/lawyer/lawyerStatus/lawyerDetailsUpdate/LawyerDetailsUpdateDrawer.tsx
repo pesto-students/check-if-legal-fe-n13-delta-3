@@ -1,64 +1,61 @@
 import { FormControl, Input, Stack, Textarea } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { cityLabel, getErrorMessage } from "../../../../utils/helpers"
-import { useCityListData } from "../../../shared/city/cityList.query"
+import { useCityListQuery } from "../../../shared/city/cityList.query"
+import { ICity } from "../../../shared/city/ICity"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
 import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
+import { ILawyer } from "../../ILawyer"
+import { useLawyerData } from "../../lawyer.query"
 import { useLawyerAuth } from "../../useLawyerAuth"
-import { useLawyerStore } from "../../useLawyerStore"
 import { lawyerUpdateApi } from "./lawyerSelfUpdateApi"
-import { useLawyerUpdateStore } from "./useLawyerUpdateStore"
 
 interface IFormData {
 	name: string
 	cityId: number
 	address: string
-	description: string
+	description?: string
 	phone: string
 }
 
-export const LawyerDetailsUpdateDrawer: FC = () => {
+interface IProps {
+	lawyer: ILawyer
+	isOpen: boolean
+	onClose: () => void
+}
+
+export const LawyerDetailsUpdateDrawer: FC<IProps> = ({ lawyer, isOpen, onClose }) => {
 	const { token } = useLawyerAuth()
+
+	const { refetch } = useLawyerData()
+	const { data: cities } = useCityListQuery()
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const { data: cities } = useCityListData()
-	const { lawyer, fetchLawyer } = useLawyerStore()
-	const { isDrawerOpen, setIsDrawerOpen } = useLawyerUpdateStore()
+	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>()
 
-	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>({
-		defaultValues: {
-			name: lawyer?.name,
-			cityId: lawyer?.cityId,
-			address: lawyer?.address,
-			description: lawyer?.description,
-			phone: lawyer?.phone,
-		},
-	})
-
-	if (!lawyer || !cities) return null
-
-	const onDrawerClose = () => {
-		setIsDrawerOpen(false)
-		reset()
-	}
+	useEffect(() => {
+		setValue("name", lawyer.name)
+		setValue("cityId", lawyer.cityId)
+		setValue("address", lawyer.address)
+		setValue("description", lawyer.description)
+		setValue("phone", lawyer.phone)
+	}, [setValue, lawyer])
 
 	const onSubmit = handleSubmit((data) => {
-		lawyerUpdateApi(data, token)
+		return lawyerUpdateApi(data, token)
 			.then(() => {
 				successToast("Updated successfully")
-				onDrawerClose()
-				fetchLawyer({ token })
+				onClose()
+				reset()
+				refetch()
 			})
 			.catch((error) => errorToast(getErrorMessage(error)))
 	})
-
-	const cityOptions = cities.map((el) => ({ label: cityLabel(el), value: el.id }))
-	const defaultCity = cityOptions.find((el) => el.value === lawyer?.cityId)
 
 	return (
 		<DrawerForm
@@ -67,8 +64,8 @@ export const LawyerDetailsUpdateDrawer: FC = () => {
 			onSubmit={onSubmit}
 			isSubmitting={formState.isSubmitting}
 			submitLabel={"Save"}
-			onClose={onDrawerClose}
-			isOpen={isDrawerOpen}
+			onClose={onClose}
+			isOpen={isOpen}
 		>
 			<Stack maxWidth={"sm"} marginX={"auto"}>
 				{/* Lawyer Name */}
@@ -91,10 +88,12 @@ export const LawyerDetailsUpdateDrawer: FC = () => {
 				{/* City */}
 				<FormControl>
 					<InputLabel label="City of Practising" />
-					<Select<{ label: string; value: number }, false>
-						options={cityOptions}
-						defaultValue={defaultCity}
-						onChange={(selected) => selected && setValue("cityId", selected.value)}
+					<Select<ICity, false>
+						options={cities}
+						defaultValue={lawyer.city}
+						getOptionLabel={cityLabel}
+						getOptionValue={(city) => `${city.id}`}
+						onChange={(selected) => selected && setValue("cityId", selected.id)}
 					/>
 				</FormControl>
 

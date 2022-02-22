@@ -1,6 +1,6 @@
-import { HttpApi, HttpMethod } from "../../../../core/http"
+import { HttpApi, HttpMethod } from "../../../../../core/http"
 
-export async function lawyerProofsUploadApi({
+export async function apiLawyerProofsUpload({
 	formData,
 	token,
 }: {
