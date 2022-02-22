@@ -63,7 +63,7 @@ export const ReviewClose: FC<IProps> = ({ reviewId, ...rest }) => {
 				title="Mark Review as Completed"
 				approveText="Yes, Complete It"
 				approveButtonColorScheme={"blue"}
-				onCancel={() => disclosure.onClose()}
+				onCancel={disclosure.onClose}
 				onApprove={handleClose}
 				isLoading={isLoading}
 			></Dialog>
