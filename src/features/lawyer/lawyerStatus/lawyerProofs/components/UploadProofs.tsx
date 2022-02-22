@@ -54,11 +54,11 @@ export const UploadProofs: FC = () => {
 	]
 
 	return (
-		<Box mt={2} maxW={"xl"}>
-			{_.isEmpty(proofs) && (
+		<Box mt={1} maxW={"xl"}>
+			{isProofEmpty && (
 				<Text maxW={"sm"}>
-					Upload all the necessary proofs required for the review process in image or
-					PDF format
+					Upload all the necessary proofs required for the review process in PNG, JPG
+					or PDF format
 				</Text>
 			)}
 			<Button

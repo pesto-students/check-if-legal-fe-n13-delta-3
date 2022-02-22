@@ -1,18 +1,23 @@
-import { Box, Flex, Table, Tbody, Td, Text, Tr } from "@chakra-ui/react"
-import { FC } from "react"
+import { Box, Flex, Table, Tbody, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
+import _ from "lodash"
+import { FC, useState } from "react"
 import { BsFileEarmarkImage } from "react-icons/bs"
 import { CenteredSpinner } from "../../../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../../../shared/components/ui/DeleteIconButton"
 import { DownloadIconButton } from "../../../../shared/components/ui/DownloadIconButton"
 import { useLawyerAuth } from "../../../useLawyerAuth"
 import { useLawyerProofQuery } from "../lawyerProof.query"
+import { ProofDeleteDialog } from "./ProofDeleteDialog"
 
 export const LawyerProofList: FC = () => {
 	const { token } = useLawyerAuth()
 	const { data: proofs, isLoading } = useLawyerProofQuery({ token })
 
+	const [selectedFile, setSelectedFile] = useState<string>()
+	const deleteDialog = useDisclosure()
+
 	if (isLoading) return <CenteredSpinner />
-	if (!proofs) return null
+	if (_.isEmpty(proofs)) return null
 
 	return (
 		<Box
@@ -35,12 +40,19 @@ export const LawyerProofList: FC = () => {
 							</Td>
 							<Td isNumeric>
 								<DownloadIconButton />
-								<DeleteIconButton />
+								<DeleteIconButton
+									onClick={() => {
+										setSelectedFile(el)
+										deleteDialog.onOpen()
+									}}
+								/>
 							</Td>
 						</Tr>
 					))}
 				</Tbody>
 			</Table>
+
+			{selectedFile && <ProofDeleteDialog fileName={selectedFile} {...deleteDialog} />}
 		</Box>
 	)
 }
