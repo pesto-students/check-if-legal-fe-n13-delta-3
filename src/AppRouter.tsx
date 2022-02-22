@@ -16,6 +16,7 @@ import { AdminLogin } from "./features/login/adminLogin/AdminLogin"
 import { UserLogin } from "./features/login/userLogin/UserLogin"
 import { Logout } from "./features/logout/Logout"
 import { Offering } from "./features/offering/Offering"
+import { PaymentsListGeneric } from "./features/user/payment/paymentList"
 import { UserReview } from "./features/user/userReview/UserReview"
 import { UserReviewDetails } from "./features/user/userReviewDetails/UserReviewDetails"
 import { AuthRole } from "./utils/enums"
@@ -23,7 +24,7 @@ import { storage } from "./utils/storage"
 
 export function AppRouter() {
 	return (
-		<HashRouter >
+		<HashRouter>
 			<Routes>
 				<Route index element={<Landing />} />
 				<Route path="logout" element={<Logout />} />
@@ -44,6 +45,7 @@ export function AppRouter() {
 				<Route path="user" element={<PrivateOutlet role={AuthRole.USER} />}>
 					<Route index element={<UserReview />} />
 					<Route path="review/:id/details" element={<UserReviewDetails />} />
+					<Route path="payment" element={<PaymentsListGeneric />} />
 				</Route>
 
 				<Route path="lawyer" element={<PrivateOutlet role={AuthRole.LAWYER} />}>
