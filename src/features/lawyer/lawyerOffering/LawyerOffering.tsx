@@ -17,17 +17,13 @@ export const LawyerOffering: FC = () => {
 		fetchOfferings({ token })
 	}, [fetchOfferings, token])
 
-	const offeringAddDrawerDisclosure = useDisclosure()
+	const addDrawer = useDisclosure()
 
 	return (
 		<SidebarLayout role={AuthRole.LAWYER} headingText="Offerings">
 			<Box>
 				<Box m={4}>
-					<Button
-						size={"sm"}
-						colorScheme="blue"
-						onClick={() => offeringAddDrawerDisclosure.onOpen()}
-					>
+					<Button size={"sm"} colorScheme="blue" onClick={addDrawer.onOpen}>
 						Add Offering
 					</Button>
 				</Box>
@@ -35,7 +31,7 @@ export const LawyerOffering: FC = () => {
 				<OfferingList />
 			</Box>
 
-			<OfferingAddDrawer {...offeringAddDrawerDisclosure} />
+			<OfferingAddDrawer {...addDrawer} />
 			<OfferingDeleteDialog />
 			<OfferingUpdateDrawer />
 		</SidebarLayout>

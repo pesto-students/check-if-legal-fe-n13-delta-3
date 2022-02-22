@@ -1,47 +1,46 @@
-import { FC, useState } from "react"
-import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
+import { FC, useCallback, useState } from "react"
 import { getErrorMessage } from "../../../../utils/helpers"
+import { useCityListData } from "../../../shared/city/cityList.query"
+import { ICity } from "../../../shared/city/ICity"
+import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
+import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
 import { useAdminAuth } from "../../useAdminAuth"
-import { useCityDeleteStore } from "./useCityDeleteStore"
-import { useCityStore } from "../../../shared/city/useCityStore"
-import { cityDeleteApi } from "./cityDeleteApi"
+import { apiCityDelete } from "./cityDelete.api"
 
-export const CityDeleteDialog: FC = () => {
+interface IProps {
+	isOpen: boolean
+	onClose: () => void
+	city: ICity
+}
+
+export const CityDeleteDialog: FC<IProps> = ({ isOpen, onClose, city }) => {
 	const { token } = useAdminAuth()
+	const { refetch: refetchCities } = useCityListData()
 
-	const fetchCities = useCityStore((state) => state.fetchCities)
-	const { selectedCity, isDeleteDialogOpen, setIsDeleteDialogOpen } =
-		useCityDeleteStore()
-
+	const successToast = useSuccessToast()
+	const errorToast = useErrorToast()
 	const [isLoading, setIsLoading] = useState(false)
-	const [errorMessage, setErrorMessage] = useState<string>()
 
-	if (!selectedCity) return null
-
-	const handleCityDelete = () => {
+	const onDelete = useCallback(() => {
 		setIsLoading(true)
-		cityDeleteApi({ id: selectedCity.id }, token)
+		apiCityDelete({ id: city.id }, token)
 			.then(() => {
-				setIsDeleteDialogOpen(false)
-				fetchCities()
+				successToast("City deleted successfully")
+				onClose()
+				refetchCities()
 			})
-			.catch((error) => setErrorMessage(getErrorMessage(error)))
+			.catch((error) => errorToast(getErrorMessage(error)))
 			.finally(() => setIsLoading(false))
-	}
-
-	if (!selectedCity) return null
+	}, [city, onClose, refetchCities, token, errorToast, successToast])
 
 	return (
 		<DeleteItemDialog
-			title={`Delete City: ${selectedCity.name}`}
-			isOpen={isDeleteDialogOpen}
-			onCancel={() => {
-				setIsDeleteDialogOpen(false)
-				setErrorMessage(undefined)
-			}}
-			onDelete={handleCityDelete}
+			title={`Delete City: ${city.name}`}
+			isOpen={isOpen}
+			onCancel={onClose}
+			onDelete={onDelete}
 			isLoading={isLoading}
-			errorMessage={errorMessage}
 		/>
 	)
 }

@@ -1,15 +1,15 @@
 import { FC, useState } from "react"
-import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
+import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
+import { usePaperTypeListData } from "../../../shared/paperType/paperTypeList.query"
 import { useAdminAuth } from "../../useAdminAuth"
-import { usePaperTypeDeleteStore } from "./usePaperTypeDeleteStore"
-import { usePaperTypeStore } from "../../../shared/paperType/usePaperTypeStore"
 import { paperTypeDeleteApi } from "./paperTypeDeleteApi"
+import { usePaperTypeDeleteStore } from "./usePaperTypeDeleteStore"
 
 export const PaperTypeDeleteDialog: FC = () => {
 	const { token } = useAdminAuth()
 
-	const fetchPaperTypes = usePaperTypeStore((state) => state.fetchPaperTypes)
+	const { refetch: refetchPaperTypes } = usePaperTypeListData()
 	const { selectedPaperType, isDeleteDialogOpen, setIsDeleteDialogOpen } =
 		usePaperTypeDeleteStore()
 
@@ -23,7 +23,7 @@ export const PaperTypeDeleteDialog: FC = () => {
 		paperTypeDeleteApi({ id: selectedPaperType.id }, token)
 			.then(() => {
 				setIsDeleteDialogOpen(false)
-				fetchPaperTypes()
+				refetchPaperTypes()
 			})
 			.catch((error) => setErrorMessage(getErrorMessage(error)))
 			.finally(() => setIsLoading(false))

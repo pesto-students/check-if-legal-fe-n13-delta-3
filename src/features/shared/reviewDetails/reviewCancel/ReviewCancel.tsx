@@ -1,23 +1,45 @@
 import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { ComponentProps, FC, useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { useUserAuth } from "../../../user/useUserAuth"
 import { Dialog } from "../../components/ui/Dialog"
+import { useErrorToast } from "../../hooks/useErrorToast"
+import { useSuccessToast } from "../../hooks/useSuccessToast"
 import { ReviewStatus } from "../../review/IReview"
-import { useReviewDetailsStore } from "../useReviewDetailsStore"
-import { reviewCancelApi } from "./reviewCancelApi"
+import { apiReviewCancel } from "./reviewCancel.api"
+import { useReviewDetailsData } from "../reviewDetails.query"
 
-export const ReviewCancel: FC = () => {
+interface IProps extends ComponentProps<typeof Box> {
+	reviewId: number
+}
+
+export const ReviewCancel: FC<IProps> = ({ reviewId, ...rest }) => {
 	const navigate = useNavigate()
 	const { token } = useUserAuth()
-	const { isLawyer, review } = useReviewDetailsStore()
-	const [isLoading, setIsLoading] = useState(false)
-	const [errorText, setErrorText] = useState<string>()
 
+	const [isLoading, setIsLoading] = useState(false)
+	const errorToast = useErrorToast()
+	const successToast = useSuccessToast()
 	const disclosure = useDisclosure()
 
-	if (isLawyer || !review) return null
+	const { data } = useReviewDetailsData({ reviewId })
+	const review = data?.review
+
+	const handleOnCancel = useCallback(() => {
+		setIsLoading(true)
+
+		apiReviewCancel({ id: reviewId, token })
+			.then(() => {
+				disclosure.onClose()
+				successToast("Review cancelled successfully")
+				navigate("/user")
+			})
+			.catch((err) => errorToast(getErrorMessage(err)))
+			.finally(() => setIsLoading(false))
+	}, [disclosure, navigate, reviewId, token, errorToast, successToast])
+
+	if (!review) return null
 
 	const isNotCancellable = [
 		ReviewStatus.PENDING_FOR_REVIEW,
@@ -25,43 +47,25 @@ export const ReviewCancel: FC = () => {
 	].includes(review.status)
 	if (isNotCancellable) return null
 
-	const handleCancel = () => {
-		setIsLoading(true)
-		setErrorText(undefined)
-
-		reviewCancelApi({ id: review.id, token })
-			.then(() => {
-				disclosure.onClose()
-				navigate("/user/review")
-			})
-			.catch((err) => setErrorText(getErrorMessage(err)))
-			.finally(() => setIsLoading(false))
-	}
-
 	return (
-		<Box>
+		<Box {...rest}>
 			<Heading size={"md"}>Review Cancellation</Heading>
 			<Text maxW={"md"}>
-				You will be taken to online payment gateway, once payment completes it will be
-				sent for the review
+				On cancellation of this review, all the related documents and data will
+				erased. This action is irreversible.
 			</Text>
-			<Button
-				mt={1}
-				size={"sm"}
-				colorScheme={"red"}
-				onClick={() => disclosure.onOpen()}
-			>
+			<Button mt={1} size={"sm"} colorScheme={"red"} onClick={disclosure.onOpen}>
 				Cancel Review
 			</Button>
+
 			<Dialog
 				{...disclosure}
 				title="Cancel Review"
-				approveText="Yes, cancel"
+				approveText="Yes, Cancel"
 				approveButtonColorScheme={"red"}
-				onCancel={() => disclosure.onClose()}
-				onApprove={handleCancel}
+				onCancel={disclosure.onClose}
+				onApprove={handleOnCancel}
 				isLoading={isLoading}
-				errorMessage={errorText}
 			></Dialog>
 		</Box>
 	)

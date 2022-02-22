@@ -1,11 +1,11 @@
-import { Center } from "@chakra-ui/react"
 import _ from "lodash"
 import { FC, useEffect } from "react"
 import { Navigate } from "react-router-dom"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { useLawyerAuth } from "../useLawyerAuth"
 import { useLawyerStore } from "../useLawyerStore"
-import { LawyerRegisterForm } from "./LawyerRegisterForm"
+import { LawyerRegisterLayout } from "./components/LawyerRegisterLayout"
+import { LawyerRegisterForm } from "./components/LawyerRegisterForm"
 
 export const LawyerRegister: FC = () => {
 	const { token } = useLawyerAuth()
@@ -22,8 +22,8 @@ export const LawyerRegister: FC = () => {
 	}
 
 	return (
-		<Center>
+		<LawyerRegisterLayout>
 			<LawyerRegisterForm />
-		</Center>
+		</LawyerRegisterLayout>
 	)
 }

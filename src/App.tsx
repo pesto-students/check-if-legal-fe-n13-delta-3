@@ -1,13 +1,17 @@
 import { ChakraProvider } from "@chakra-ui/react"
+import { QueryClient, QueryClientProvider } from "react-query"
+import { ReactQueryDevtools } from "react-query/devtools"
 import { AppRouter } from "./AppRouter"
-import { useGlobalStoreFetch } from "./features/shared/hooks/useGlobalStoreFetch"
 
 export function App() {
-	useGlobalStoreFetch()
+	const queryClient = new QueryClient()
 
 	return (
-		<ChakraProvider>
-			<AppRouter />
-		</ChakraProvider>
+		<QueryClientProvider client={queryClient}>
+			<ChakraProvider>
+				<AppRouter />
+			</ChakraProvider>
+			<ReactQueryDevtools initialIsOpen={false} />
+		</QueryClientProvider>
 	)
 }

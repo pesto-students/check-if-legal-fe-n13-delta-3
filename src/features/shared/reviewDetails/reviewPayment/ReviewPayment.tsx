@@ -1,36 +1,45 @@
 import { Box, Heading, Text } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
-import { useUserAuth } from "../../../user/useUserAuth"
+import { ComponentProps, FC } from "react"
 import { ReviewStatus } from "../../review/IReview"
-import { useReviewDetailsStore } from "../useReviewDetailsStore"
+import { ReviewPaymentStatus } from "./IReviewPayment"
+import { useReviewDetailsData } from "../reviewDetails.query"
 import { RazorpayPayment } from "./RazorpayPayment"
-import { useReviewPaymentStore } from "./useReviewPaymentStore"
 
-export const ReviewPayment: FC = () => {
-	const { review } = useReviewDetailsStore()
-	const { token } = useUserAuth()
-	const { payment, fetchPayment } = useReviewPaymentStore()
+interface IProps extends ComponentProps<typeof Box> {
+	reviewId: number
+}
 
-	useEffect(() => {
-		if (!review) return
-		fetchPayment({ reviewId: review.id, token })
-	}, [review, fetchPayment, token])
+export const ReviewPayment: FC<IProps> = ({ reviewId, ...rest }) => {
+	const { data } = useReviewDetailsData({ reviewId })
+	const review = data?.review
+	const payment = data?.payment
 
 	if (!review) return null
 
-	const toHidePaymentSection = [ReviewStatus.INITIAL].includes(review.status)
+	const toHidePaymentSection = review.status === ReviewStatus.INITIAL
+	const isPaymentPaid = payment && payment.status === ReviewPaymentStatus.PAID
+
 	if (toHidePaymentSection) return null
 
-	if (payment) return null
-
 	return (
-		<Box>
+		<Box {...rest}>
 			<Heading size={"md"}>Payment Details</Heading>
-			<Text maxW={"md"}>
-				You will be taken to online payment gateway, once payment completes it will be
-				sent for the review
-			</Text>
-			<RazorpayPayment />
+			{isPaymentPaid && (
+				<Box mt={1}>
+					<Text>Payment Status: PAID</Text>
+					<Text>Payment Id: {reviewId}</Text>
+					<Text>Transaction Id: {payment.orderId.split("_")[1]?.toUpperCase()}</Text>
+				</Box>
+			)}
+			{!isPaymentPaid && (
+				<>
+					<Text maxW={"md"} mt={1}>
+						You will be taken to online payment gateway, once payment completes this
+						review will be sent to lawyer
+					</Text>
+					<RazorpayPayment reviewId={reviewId} />
+				</>
+			)}
 		</Box>
 	)
 }

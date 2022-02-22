@@ -1,45 +1,54 @@
 import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { ComponentProps, FC, useCallback, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { useVerifiedLawyerAuth } from "../../../lawyer/useVerifiedLawyerAuth"
 import { Dialog } from "../../components/ui/Dialog"
+import { useErrorToast } from "../../hooks/useErrorToast"
+import { useSuccessToast } from "../../hooks/useSuccessToast"
 import { ReviewStatus } from "../../review/IReview"
-import { useReviewDetailsStore } from "../useReviewDetailsStore"
-import { reviewCloseApi } from "./reviewCloseApi"
+import { apiReviewClose } from "./reviewClose.api"
+import { useReviewDetailsData } from "../reviewDetails.query"
 
-export const ReviewClose: FC = () => {
+interface IProps extends ComponentProps<typeof Box> {
+	reviewId: number
+}
+
+export const ReviewClose: FC<IProps> = ({ reviewId, ...rest }) => {
 	const navigate = useNavigate()
 	const { token } = useVerifiedLawyerAuth()
-	const { isLawyer, review } = useReviewDetailsStore()
-	const [isLoading, setIsLoading] = useState(false)
-	const [errorText, setErrorText] = useState<string>()
 
+	const [isLoading, setIsLoading] = useState(false)
+	const errorToast = useErrorToast()
+	const successToast = useSuccessToast()
 	const disclosure = useDisclosure()
 
-	if (!isLawyer || !review) return null
+	const { data } = useReviewDetailsData({ reviewId })
+	const review = data?.review
+
+	const handleClose = useCallback(() => {
+		setIsLoading(true)
+
+		apiReviewClose({ id: reviewId, token })
+			.then(() => {
+				disclosure.onClose()
+				successToast("Review marked as completed successfully")
+				navigate("/lawyer/review")
+			})
+			.catch((err) => errorToast(getErrorMessage(err)))
+			.finally(() => setIsLoading(false))
+	}, [disclosure, navigate, reviewId, token, errorToast, successToast])
+
+	if (!review) return null
 
 	const isClosable = review.status === ReviewStatus.PENDING_FOR_REVIEW
 	if (!isClosable) return null
 
-	const handleClose = () => {
-		setIsLoading(true)
-		setErrorText(undefined)
-
-		reviewCloseApi({ id: review.id, token })
-			.then(() => {
-				disclosure.onClose()
-				navigate("/lawyer/review")
-			})
-			.catch((err) => setErrorText(getErrorMessage(err)))
-			.finally(() => setIsLoading(false))
-	}
-
 	return (
-		<Box>
+		<Box {...rest}>
 			<Heading size={"md"}>Review Closing</Heading>
 			<Text maxW={"md"}>
-				This will mark review as completed and payout will be initiated
+				This will mark review as completed and payout will be initiated.
 			</Text>
 			<Button
 				mt={1}
@@ -47,17 +56,16 @@ export const ReviewClose: FC = () => {
 				colorScheme={"blue"}
 				onClick={() => disclosure.onOpen()}
 			>
-				Close Review
+				Mark Review as Completed
 			</Button>
 			<Dialog
 				{...disclosure}
-				title="Close Review"
-				approveText="Yes, Close"
+				title="Mark Review as Completed"
+				approveText="Yes, Complete It"
 				approveButtonColorScheme={"blue"}
-				onCancel={() => disclosure.onClose()}
+				onCancel={disclosure.onClose}
 				onApprove={handleClose}
 				isLoading={isLoading}
-				errorMessage={errorText}
 			></Dialog>
 		</Box>
 	)

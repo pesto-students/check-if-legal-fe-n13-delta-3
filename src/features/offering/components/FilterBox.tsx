@@ -1,68 +1,65 @@
-import { FormControl, Stack } from "@chakra-ui/react"
+import { FormControl, Heading, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { FC } from "react"
 import { cityLabel } from "../../../utils/helpers"
-import { useCityStore } from "../../shared/city/useCityStore"
+import { useCityListData } from "../../shared/city/cityList.query"
+import { ICity } from "../../shared/city/ICity"
 import { InputLabel } from "../../shared/components/ui/InputLabel"
-import { useLanguageStore } from "../../shared/language/useLanguageStore"
-import { usePaperTypeStore } from "../../shared/paperType/usePaperTypeStore"
-import { useOfferingStore } from "../useOfferingStore"
+import { ILanguage } from "../../shared/language/ILanguage"
+import { useLanguageListData } from "../../shared/language/languageList.query"
+import { IPaperType } from "../../shared/paperType/IPaperType"
+import { usePaperTypeListData } from "../../shared/paperType/paperTypeList.query"
+import { useUserOfferingStore } from "../userOffering.store"
 
 export const FilterBox: FC = () => {
-	const { paperTypeId, setPaperTypeId, languageId, setLanguageId, cityId, setCityId } =
-		useOfferingStore()
-	const { paperTypes } = usePaperTypeStore()
-	const { languages } = useLanguageStore()
-	const { cities } = useCityStore()
+	const { data: paperTypes } = usePaperTypeListData()
+	const { data: languages } = useLanguageListData()
+	const { data: cities } = useCityListData()
 
-	if (!paperTypes || !paperTypeId || !languages || !languageId || !cityId || !cities)
-		return null
-
-	const defaultPaperType = paperTypes.find((el) => el.id === paperTypeId)
-	const defaultLanguage = languages.find((el) => el.id === languageId)
-	const defaultCity = cities.find((el) => el.id === cityId)
+	const selectedPaperType = useUserOfferingStore((st) => st.paperType)
+	const setSelectedPaperType = useUserOfferingStore((st) => st.setPaperType)
+	const selectedLanguage = useUserOfferingStore((st) => st.language)
+	const setSelectedLanguage = useUserOfferingStore((st) => st.setLanguage)
+	const selectedCity = useUserOfferingStore((st) => st.city)
+	const setSelectedCity = useUserOfferingStore((st) => st.setCity)
 
 	return (
-		<Stack>
+		<Stack bgColor={"gray.50"} p={4} borderRadius="lg" m={2}>
+			<Heading size={"md"}>Filters</Heading>
+
 			{/* Paper Type Selection */}
 			<FormControl>
 				<InputLabel label="Paper Type" />
-				<Select<{ label: string; value: number }, false>
-					options={paperTypes.map((el) => ({ label: el.name, value: el.id }))}
-					defaultValue={{
-						label: defaultPaperType?.name ?? "Select Paper Type",
-						value: paperTypeId,
-					}}
-					onChange={(selected) => selected && setPaperTypeId(selected.value)}
+				<Select<IPaperType, false>
+					options={paperTypes}
+					defaultValue={selectedPaperType}
+					getOptionValue={(option) => `${option.id}`}
+					getOptionLabel={(option) => option.name}
+					onChange={(selected) => selected && setSelectedPaperType(selected)}
 				/>
 			</FormControl>
 
 			{/* Language Selection */}
 			<FormControl>
 				<InputLabel label="Language" />
-				<Select<{ label: string; value: number }, false>
-					options={languages.map((el) => ({ label: el.name, value: el.id }))}
-					defaultValue={{
-						label: defaultLanguage?.name ?? "Select Language",
-						value: languageId,
-					}}
-					onChange={(selected) => selected && setLanguageId(selected.value)}
+				<Select<ILanguage, false>
+					options={languages}
+					defaultValue={selectedLanguage}
+					getOptionValue={(option) => `${option.id}`}
+					getOptionLabel={(option) => option.name}
+					onChange={(selected) => selected && setSelectedLanguage(selected)}
 				/>
 			</FormControl>
 
 			{/* City Selection */}
 			<FormControl>
 				<InputLabel label="City" />
-				<Select<{ label: string; value: number }, false>
-					options={cities.map((el) => ({
-						label: cityLabel(el),
-						value: el.id,
-					}))}
-					defaultValue={{
-						label: defaultCity ? cityLabel(defaultCity) : "Select City",
-						value: cityId,
-					}}
-					onChange={(selected) => selected && setCityId(selected.value)}
+				<Select<ICity, false>
+					options={cities}
+					defaultValue={selectedCity}
+					getOptionValue={(option) => `${option.id}`}
+					getOptionLabel={(option) => cityLabel(option)}
+					onChange={(selected) => selected && setSelectedCity(selected)}
 				/>
 			</FormControl>
 		</Stack>

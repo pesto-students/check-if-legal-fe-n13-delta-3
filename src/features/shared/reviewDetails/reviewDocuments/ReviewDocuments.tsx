@@ -1,17 +1,17 @@
 import { Box, Heading } from "@chakra-ui/react"
-import { FC } from "react"
-import { useReviewDetailsStore } from "../useReviewDetailsStore"
+import { ComponentProps, FC } from "react"
 import { ReviewDocumentList } from "./ReviewDocumentList"
-import { UploadDocumentsForm } from "./UploadDocumentsForm"
+import { UploadDocumentsSection } from "./UploadDocumentsSection"
 
-export const ReviewDocuments: FC = () => {
-	const { isLawyer } = useReviewDetailsStore()
-
-	return (
-		<Box>
-			<Heading size={"md"}>Documents</Heading>
-			<ReviewDocumentList />
-			{!isLawyer && <UploadDocumentsForm />}
-		</Box>
-	)
+interface IProps extends ComponentProps<typeof Box> {
+	reviewId: number
+	isLawyer: boolean
 }
+
+export const ReviewDocuments: FC<IProps> = ({ reviewId, isLawyer, ...rest }) => (
+	<Box {...rest}>
+		<Heading size={"md"}>Documents</Heading>
+		<ReviewDocumentList reviewId={reviewId} isLawyer={isLawyer} />
+		{!isLawyer && <UploadDocumentsSection reviewId={reviewId} />}
+	</Box>
+)

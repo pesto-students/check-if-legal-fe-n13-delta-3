@@ -4,9 +4,10 @@ import { AdminCity } from "./features/admin/adminCity/AdminCity"
 import { AdminLanguage } from "./features/admin/adminLanguage/AdminLanguage"
 import { AdminLawyer } from "./features/admin/adminLawyer/AdminLawyer"
 import { AdminPaperType } from "./features/admin/adminPaperType/AdminPaperType"
+import { NotFound } from "./features/defaults/NotFound"
 import { Landing } from "./features/landing/Landing"
-import { LawyerBank } from "./features/lawyer/lawyerBank/LawyerBank"
 import { LawyerOffering } from "./features/lawyer/lawyerOffering/LawyerOffering"
+import { LawyerPayout } from "./features/lawyer/lawyerPayout/LawyerPayout"
 import { LawyerRegister } from "./features/lawyer/lawyerRegister/LawyerRegister"
 import { LawyerReview } from "./features/lawyer/lawyerReview/LawyerReview"
 import { LawyerReviewDetails } from "./features/lawyer/lawyerReviewDetails/LawyerReviewDetails"
@@ -50,9 +51,11 @@ export function AppRouter() {
 					<Route path="register" element={<LawyerRegister />} />
 					<Route path="status" element={<LawyerStatus />} />
 					<Route path="offering" element={<LawyerOffering />} />
-					<Route path="bank" element={<LawyerBank />} />
+					<Route path="payout" element={<LawyerPayout />} />
 					<Route path="review/:id/details" element={<LawyerReviewDetails />} />
 				</Route>
+
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</HashRouter>
 	)

@@ -1,9 +1,16 @@
 import { FC } from "react"
+import { FeatureSection } from "./components/FeatureSection"
+import { Footer } from "./components/Footer"
+import { Header } from "./components/Header"
+import { HeroSection } from "./components/HeroSection"
 
 export const Landing: FC = () => {
 	return (
-		<div>
-			<h1>CHECK IF LEGAL</h1>
-		</div>
+		<>
+			<Header />
+			<HeroSection />
+			<FeatureSection />
+			<Footer />
+		</>
 	)
 }

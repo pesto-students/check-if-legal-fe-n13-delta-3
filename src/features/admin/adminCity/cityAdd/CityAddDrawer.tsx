@@ -1,14 +1,16 @@
 import { FormControl, Input, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
-import { ComponentProps, FC, useState } from "react"
+import { ComponentProps, FC } from "react"
 import { useForm } from "react-hook-form"
+import { useCityListData } from "../../../shared/city/cityList.query"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
+import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
+import { IState } from "../../../shared/state/IState"
+import { useStateListQuery } from "../../../shared/state/stateList.query"
 import { useAdminAuth } from "../../useAdminAuth"
-import { useCityStore } from "../../../shared/city/useCityStore"
-import { useStateStore } from "../../../shared/state/useStateStore"
-import { cityAddApi } from "./cityAddApi"
+import { apiCityAdd } from "./cityAdd.api"
 
 type IProps = Omit<ComponentProps<typeof DrawerForm>, "children">
 
@@ -19,24 +21,24 @@ interface IFormData {
 
 export const CityAddDrawer: FC<IProps> = (props) => {
 	const { token } = useAdminAuth()
-	const states = useStateStore((state) => state.states)
-	const fetchCities = useCityStore((state) => state.fetchCities)
+	const { data: states } = useStateListQuery()
+	const { refetch: refetchCities } = useCityListData()
 
+	const errorToast = useErrorToast()
+	const successToast = useSuccessToast()
 	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>({
 		defaultValues: { name: "" },
 	})
-	const [errorText, setErrorText] = useState<string>()
 
 	const onSubmit = handleSubmit((data) => {
-		cityAddApi(data, token)
+		apiCityAdd(data, token)
 			.then(() => {
+				successToast("City added successfully")
 				props.onClose()
 				reset()
-				fetchCities()
+				refetchCities()
 			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+			.catch((err) => errorToast(err instanceof Error ? err.message : "Unknown Error"))
 	})
 
 	if (!states) return null
@@ -56,19 +58,17 @@ export const CityAddDrawer: FC<IProps> = (props) => {
 					<InputLabel label="Name" />
 					<Input isRequired autoFocus {...register("name")} />
 				</FormControl>
-				{/* Name */}
+
+				{/* State Selection */}
 				<FormControl>
 					<InputLabel label="Select State" />
-					<Select<{ label: string; value: number }, false>
-						options={states.map((state) => ({
-							label: state.name,
-							value: state.id,
-						}))}
-						onChange={(selected) => selected && setValue("stateId", selected.value)}
+					<Select<IState, false>
+						options={states}
+						getOptionLabel={(option) => option.name}
+						getOptionValue={(option) => `${option.id}`}
+						onChange={(selected) => selected && setValue("stateId", selected.id)}
 					/>
 				</FormControl>
-
-				{errorText && <ErrorText text={errorText} />}
 			</Stack>
 		</DrawerForm>
 	)

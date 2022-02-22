@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react"
+import { Box, Flex, Img, Text } from "@chakra-ui/react"
 import _ from "lodash"
 import { ComponentProps, FC } from "react"
 import { AiFillBank } from "react-icons/ai"
@@ -42,9 +42,9 @@ export const SidebarContent: FC<IProps> = ({ role, ...rest }) => {
 			{...rest}
 		>
 			<Box px="4" py="5">
-				<Text fontSize="2xl" ml="2" color="white" fontWeight="semibold">
-					CHECK IF LEGAL
-				</Text>
+				<Box pl={2}>
+					<Img src="/assets/logo-light.png" height={"60px"} />
+				</Box>
 				<Text ml="2" color="whiteAlpha.700">
 					{_.capitalize(role)} Portal
 				</Text>
@@ -90,7 +90,7 @@ function getNavItems(role: AuthRole) {
 	} else if (role === AuthRole.LAWYER) {
 		items.push(
 			{ name: "Reviews", icon: MdDocumentScanner, link: "/lawyer" },
-			{ name: "Banks", icon: AiFillBank, link: "/lawyer/bank" },
+			{ name: "Payouts", icon: AiFillBank, link: "/lawyer/payout" },
 			{ name: "Offerings", icon: MdLocalOffer, link: "/lawyer/offering" },
 		)
 	}
