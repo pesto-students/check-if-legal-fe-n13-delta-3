@@ -8,5 +8,5 @@ export const Logout: FC = () => {
 	const navigatePath = authPayload?.role === AuthRole.ADMIN ? "/login/admin" : "/login"
 	storage.clearAuth()
 
-	return <Navigate to={navigatePath} />
+	return <Navigate to={navigatePath} replace />
 }

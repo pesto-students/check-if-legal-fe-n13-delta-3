@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react"
+import { FC, useCallback, useEffect } from "react"
 import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import { storage } from "../../../utils/storage"
 import { IAuthPayload } from "../../../utils/types"
@@ -7,10 +7,15 @@ import { LoginLayout } from "./components/LoginLayout"
 import { UserSignInWithGoogle } from "./components/UserSignInWithGoogle"
 
 export const UserLogin: FC = () => {
+	const auth = storage.getAuth()
 	const navigate = useNavigate()
 	const location = useLocation()
+
 	const successToast = useSuccessToast()
-	const auth = storage.getAuth()
+
+	useEffect(() => {
+		if (auth) navigate(`/${auth.role}`)
+	}, [auth, navigate])
 
 	const onLoginSuccess = useCallback(
 		(authPayload: IAuthPayload) => {

@@ -11,7 +11,7 @@ import {
 	useDisclosure,
 	VStack,
 } from "@chakra-ui/react"
-import { FC } from "react"
+import { FC, Fragment } from "react"
 import { AiOutlineMenu } from "react-icons/ai"
 import { NavLink } from "react-router-dom"
 
@@ -20,10 +20,10 @@ export const Header: FC = () => {
 	const mobileNav = useDisclosure()
 
 	const navItems = [
-		{ href: "/offering", name: "Verify Papers" },
-		{ href: "#feature", name: "Features" },
-		{ href: "#about", name: "About Us" },
-		{ href: "#for-lawyer", name: "For Lawyers" },
+		{ href: "/#/offering", name: "Verify Papers" },
+		{ href: "#feature", name: "Features", samePage: true },
+		{ href: "#about", name: "About Us", samePage: true },
+		{ href: "#for-lawyer", name: "For Lawyers", samePage: true },
 	]
 
 	return (
@@ -94,11 +94,13 @@ export const Header: FC = () => {
 								/>
 
 								{navItems.map((item, i) => (
-									<chakra.a key={i} href={item.href}>
-										<Button w="full" variant="ghost">
-											{item.name}
-										</Button>
-									</chakra.a>
+									<Fragment key={i}>
+										<NavLink to={item.href}>
+											<Button w="full" variant="ghost">
+												{item.name}
+											</Button>
+										</NavLink>
+									</Fragment>
 								))}
 							</VStack>
 						</Box>
