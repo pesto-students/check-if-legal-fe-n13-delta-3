@@ -90,7 +90,7 @@ function getNavItems(role: AuthRole) {
 	} else if (role === AuthRole.LAWYER) {
 		items.push(
 			{ name: "Reviews", icon: MdDocumentScanner, link: "/lawyer" },
-			{ name: "Banks", icon: AiFillBank, link: "/lawyer/bank" },
+			{ name: "Payouts", icon: AiFillBank, link: "/lawyer/payout" },
 			{ name: "Offerings", icon: MdLocalOffer, link: "/lawyer/offering" },
 		)
 	}

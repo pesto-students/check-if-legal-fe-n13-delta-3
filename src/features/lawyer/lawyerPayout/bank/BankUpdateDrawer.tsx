@@ -1,12 +1,14 @@
 import { FormControl, Input, Stack } from "@chakra-ui/react"
-import { ComponentProps, FC, useState } from "react"
+import { ComponentProps, FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
+import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
 import { useVerifiedLawyerAuth } from "../../useVerifiedLawyerAuth"
-import { useLawyerBankStore } from "../useLawyerBankStore"
-import { bankAddApi } from "./bankAddApi"
+import { useLawyerBankData } from "./lawyerBank.query"
+import { apiLawyerBankUpsert } from "./lawyerBankUpsert.api"
 
 type IProps = Omit<ComponentProps<typeof DrawerForm>, "children">
 
@@ -16,29 +18,37 @@ interface IFormData {
 	accountNumber: string
 }
 
-export const BankAddDrawer: FC<IProps> = (props) => {
+export const BankUpdateDrawer: FC<IProps> = (props) => {
 	const { token } = useVerifiedLawyerAuth()
-	const { fetchBanks } = useLawyerBankStore()
+	const { data, refetch: refetchBankDetails } = useLawyerBankData()
 
-	const { register, handleSubmit, formState, reset } = useForm<IFormData>()
-	const [errorText, setErrorText] = useState<string>()
+	const { register, handleSubmit, formState, reset, setValue } = useForm<IFormData>()
+	const errorToast = useErrorToast()
+	const successToast = useSuccessToast()
+
+	useEffect(() => {
+		if (data) {
+			setValue("bankName", data.bankName)
+			setValue("bankIfsc", data.bankIfsc)
+			setValue("accountNumber", data.accountNumber)
+		}
+	})
 
 	const onSubmit = handleSubmit((data) => {
-		bankAddApi(data, token)
+		apiLawyerBankUpsert(data, token)
 			.then(() => {
+				successToast("Bank details updated successfully")
 				props.onClose()
 				reset()
-				fetchBanks({ token })
+				refetchBankDetails()
 			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+			.catch((err) => errorToast(getErrorMessage(err)))
 	})
 
 	return (
 		<DrawerForm
 			size={"sm"}
-			headingText="Add Bank"
+			headingText="Bank Details"
 			onSubmit={onSubmit}
 			isSubmitting={formState.isSubmitting}
 			submitLabel={"Save"}
@@ -62,8 +72,6 @@ export const BankAddDrawer: FC<IProps> = (props) => {
 					<InputLabel label="Bank A/C No." />
 					<Input isRequired {...register("accountNumber")} />
 				</FormControl>
-
-				{errorText && <ErrorText text={errorText} />}
 			</Stack>
 		</DrawerForm>
 	)
