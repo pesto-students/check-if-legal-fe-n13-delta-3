@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, Heading, Text } from "@chakra-ui/react"
+import { Avatar, Box, Button, Flex, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "../../../utils/helpers"
@@ -8,8 +8,10 @@ import { ErrorText } from "../../shared/components/ui/ErrorText"
 import { useErrorToast } from "../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../shared/hooks/useSuccessToast"
 import { apiReviewCreate } from "../apis/reviewCreate.api"
+import { IUserOffering } from "../IUserOffering"
 import { useUserOfferingsQuery } from "../userOffering.query"
 import { useUserOfferingStore } from "../userOffering.store"
+import { OfferingDetailsDrawer } from "./OfferingDetailsDrawer"
 import { PriceBox } from "./PriceBox"
 
 export const OfferingList: FC = () => {
@@ -20,6 +22,9 @@ export const OfferingList: FC = () => {
 	const navigate = useNavigate()
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
+
+	const [selectedOffering, setSelectedOffering] = useState<IUserOffering>()
+	const detailsDrawer = useDisclosure()
 
 	const city = useUserOfferingStore((st) => st.city)
 	const language = useUserOfferingStore((st) => st.language)
@@ -80,7 +85,15 @@ export const OfferingList: FC = () => {
 								{offering.expectedTimeInHours} hours expected for review
 							</Text>
 							<Box>
-								<Button as={Button} mt={2} size={"sm"}>
+								<Button
+									as={Button}
+									mt={2}
+									size={"sm"}
+									onClick={() => {
+										setSelectedOffering(offering)
+										detailsDrawer.onOpen()
+									}}
+								>
 									View Profile
 								</Button>
 							</Box>
@@ -106,6 +119,14 @@ export const OfferingList: FC = () => {
 					</Flex>
 				</Box>
 			))}
+
+			{selectedOffering && paperType && (
+				<OfferingDetailsDrawer
+					paperType={paperType}
+					offering={selectedOffering}
+					{...detailsDrawer}
+				/>
+			)}
 		</Box>
 	)
 }
