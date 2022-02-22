@@ -28,8 +28,8 @@ export const LawyerStatus: FC = () => {
 
 	return (
 		<Center>
-			<Box padding={10} maxW={"2xl"} textAlign="center">
-				<Heading size={"lg"}>Waiting for Verification</Heading>
+			<Box padding={10} maxW={"2xl"} textAlign={{ base: "left", md: "center" }}>
+				<Heading size={"xl"}>Waiting for Verification</Heading>
 				<Text mt={1}>
 					It usually takes 3-4 business days for verification process. You might get
 					a telephone verification call on provided contact number.
@@ -41,6 +41,7 @@ export const LawyerStatus: FC = () => {
 					bgColor="gray.200"
 					borderRadius={"lg"}
 					justifyContent="space-between"
+					direction={{ base: "column", md: "row" }}
 				>
 					<Stack textAlign={"left"}>
 						<Heading size={"lg"}>{lawyer.name}</Heading>

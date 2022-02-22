@@ -13,7 +13,7 @@ export const LawyerProfilePicture: FC = () => {
 		<Box>
 			<Flex direction={"column"}>
 				<Avatar size={"2xl"} src={profileSrc} name={lawyer.name} />
-				<Button size={"xs"} mt={3} colorScheme="blackAlpha">
+				<Button size={"sm"} mt={2} colorScheme="blackAlpha">
 					Update Profile Picture
 				</Button>
 			</Flex>

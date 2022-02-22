@@ -2,7 +2,7 @@ import { FormControl, Input, Stack, Textarea } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { cityLabel, getErrorMessage } from "../../../../utils/helpers"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { useCityListQuery } from "../../../shared/city/cityList.query"
 import { ICity } from "../../../shared/city/ICity"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
@@ -91,7 +91,7 @@ export const LawyerDetailsUpdateDrawer: FC<IProps> = ({ lawyer, isOpen, onClose 
 					<Select<ICity, false>
 						options={cities}
 						defaultValue={lawyer.city}
-						getOptionLabel={cityLabel}
+						getOptionLabel={(option) => option.name}
 						getOptionValue={(city) => `${city.id}`}
 						onChange={(selected) => selected && setValue("cityId", selected.id)}
 					/>
