@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import { CenteredSpinner } from "../../../shared/components/ui/CenterSpinner"
-import { normalizeDateTime } from "../../../../utils/helpers"
+import { getLawyerProfileUrl, normalizeDateTime } from "../../../../utils/helpers"
 import { useAdminAuth } from "../../useAdminAuth"
 import { VerifyLawyerButton } from "../lawyerVerify/VerifyLawyerButton"
 import { useLawyerStore } from "./useLawyerStore"
@@ -49,7 +49,7 @@ export const LawyerListView: FC = () => {
 								<Avatar
 									size={"sm"}
 									name={lawyer.name}
-									src="https://bit.ly/tioluwani-kolawole"
+									src={getLawyerProfileUrl(lawyer.id)}
 								/>
 								<Text>{lawyer.name}</Text>
 							</Flex>

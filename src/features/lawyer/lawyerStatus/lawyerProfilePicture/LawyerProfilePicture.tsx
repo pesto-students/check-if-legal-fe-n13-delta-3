@@ -1,7 +1,6 @@
 import { Avatar, Box, Button, Flex, useDisclosure } from "@chakra-ui/react"
 import { FC, useCallback, useState } from "react"
-import { API_URL } from "../../../../configs"
-import { getErrorMessage } from "../../../../utils/helpers"
+import { getErrorMessage, getLawyerProfileUrl } from "../../../../utils/helpers"
 import { FileUploadModal } from "../../../shared/components/fileUploadModal/FileUploadModal"
 import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
@@ -43,7 +42,7 @@ export const LawyerProfilePicture: FC = () => {
 
 	if (!lawyer) return null
 	const acceptFileExts = [".jpg", ".JPG", ".jpeg", ".JPEG"]
-	const profileSrc = `${API_URL}/static/lawyerPictures/${lawyer.id}.jpg`
+	const profileSrc = getLawyerProfileUrl(lawyer.id)
 
 	return (
 		<Box>

@@ -1,5 +1,6 @@
-import { Avatar, Box, Button, chakra, Stack, Text } from "@chakra-ui/react"
+import { Avatar, Box, Button, chakra, Heading, Stack, Text } from "@chakra-ui/react"
 import { FC } from "react"
+import { getLawyerProfileUrl } from "../../../utils/helpers"
 import { BasicDrawer } from "../../shared/components/ui/BasicDrawer"
 import { IPaperType } from "../../shared/paperType/IPaperType"
 import { IUserOffering } from "../IUserOffering"
@@ -19,13 +20,19 @@ export const OfferingDetailsDrawer: FC<IProps> = ({
 }) => {
 	return (
 		<BasicDrawer
-			headingText={offering.lawyer.name}
+			headingText="Lawyer Details"
 			size={"sm"}
 			onClose={onClose}
 			isOpen={isOpen}
 		>
 			<Stack maxWidth={"sm"} marginX={"auto"}>
-				<Avatar size={"xl"} my={2} />
+				<Avatar
+					size={"2xl"}
+					my={2}
+					name={offering.lawyer.name}
+					src={getLawyerProfileUrl(offering.lawyer.id)}
+				/>
+				<Heading>{offering.lawyer.name}</Heading>
 				<Box>
 					<Text fontWeight={"semibold"}>Description:</Text>
 					<Text>{offering.lawyer.description}</Text>
@@ -35,12 +42,17 @@ export const OfferingDetailsDrawer: FC<IProps> = ({
 					<Text>{offering.lawyer.address}</Text>
 				</Box>
 				<Box>
-					<Text fontWeight={"bold"}>
-						INR <chakra.span fontSize="2xl">{offering.price}</chakra.span>
-					</Text>
-					<chakra.span fontWeight={"normal"}>
-						For {paperType.name} Review
-					</chakra.span>
+					{offering.price && (
+						<>
+							<Text fontWeight={"bold"}>
+								INR <chakra.span fontSize="2xl">{offering.price}</chakra.span>
+							</Text>
+							<chakra.span fontWeight={"normal"}>
+								For {paperType.name} Review
+							</chakra.span>
+						</>
+					)}
+
 					<Text>{offering.expectedTimeInHours} Hours expected duration</Text>
 				</Box>
 				<Box>
