@@ -20,7 +20,7 @@ interface IProps {
 }
 
 export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
-	const { data, isLoading } = useReviewDetailsQuery({ token, reviewId })
+	const { data, isLoading } = useReviewDetailsQuery({ token, isLawyer, reviewId })
 
 	if (isLoading) return <CenteredSpinner />
 	if (!data) return <Box>Review not found</Box>

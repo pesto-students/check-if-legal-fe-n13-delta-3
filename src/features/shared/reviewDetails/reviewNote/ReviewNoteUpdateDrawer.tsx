@@ -16,15 +16,25 @@ interface IFormData {
 interface IProps {
 	reviewId: number
 	isOpen: boolean
+	isLawyer: boolean
 	onClose: () => void
 }
 
-export const ReviewNoteUpdateDrawer: FC<IProps> = ({ reviewId, isOpen, onClose }) => {
+export const ReviewNoteUpdateDrawer: FC<IProps> = ({
+	reviewId,
+	isLawyer,
+	isOpen,
+	onClose,
+}) => {
 	const { token } = useUserAuth()
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const { data, refetch, isError, error } = useReviewDetailsQuery({ reviewId, token })
+	const { data, refetch, isError, error } = useReviewDetailsQuery({
+		reviewId,
+		isLawyer,
+		token,
+	})
 	const review = data?.review
 
 	const { register, handleSubmit, formState } = useForm<IFormData>({

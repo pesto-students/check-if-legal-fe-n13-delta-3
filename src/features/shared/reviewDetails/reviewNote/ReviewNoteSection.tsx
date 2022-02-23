@@ -25,7 +25,11 @@ export const ReviewNoteSection: FC<IProps> = ({ reviewId, isLawyer, ...rest }) =
 			<Heading size={"md"}>Review Note</Heading>
 
 			{toShowUpdateDrawer && (
-				<ReviewNoteUpdateDrawer reviewId={reviewId} {...updateDrawer} />
+				<ReviewNoteUpdateDrawer
+					isLawyer={isLawyer}
+					reviewId={reviewId}
+					{...updateDrawer}
+				/>
 			)}
 
 			{review.userNote && (

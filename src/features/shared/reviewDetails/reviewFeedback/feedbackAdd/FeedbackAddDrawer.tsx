@@ -1,13 +1,13 @@
 import { FormControl, Stack, Textarea } from "@chakra-ui/react"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
-import { useUserAuth } from "../../../../user/useUserAuth"
+import { storage } from "../../../../../utils/storage"
 import { DrawerForm } from "../../../components/ui/DrawerForm"
 import { InputLabel } from "../../../components/ui/InputLabel"
 import { useErrorToast } from "../../../hooks/useErrorToast"
 import { useSuccessToast } from "../../../hooks/useSuccessToast"
-import { apiReviewFeedbackAdd } from "./feedbackAdd.api"
 import { useReviewDetailsData } from "../../reviewDetails.query"
+import { apiReviewFeedbackAdd } from "./feedbackAdd.api"
 
 interface IFormData {
 	description: string
@@ -20,7 +20,9 @@ interface IProps {
 }
 
 export const FeedbackAddDrawer: FC<IProps> = ({ reviewId, isOpen, onClose }) => {
-	const { token } = useUserAuth()
+	const auth = storage.getAuth()
+	const token = auth?.token
+
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
@@ -30,6 +32,8 @@ export const FeedbackAddDrawer: FC<IProps> = ({ reviewId, isOpen, onClose }) => 
 	})
 
 	const onSubmit = handleSubmit((data) => {
+		if (!token) return
+
 		apiReviewFeedbackAdd({ ...data, reviewId, token })
 			.then(() => {
 				successToast("Review feedback added successfully")

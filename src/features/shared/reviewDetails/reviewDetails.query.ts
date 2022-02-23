@@ -11,8 +11,8 @@ import { IReviewPayment } from "./reviewPayment/IReviewPayment"
 interface IDataShape {
 	review: IReview
 	documentList: string[]
-	payment?: IReviewPayment | null
-	feedbackList?: IReviewFeedback[]
+	payment: IReviewPayment | null
+	feedbackList: IReviewFeedback[]
 }
 
 function getQueryKey(reviewId: number) {
@@ -21,13 +21,19 @@ function getQueryKey(reviewId: number) {
 
 export function useReviewDetailsQuery({
 	reviewId,
+	isLawyer,
 	token,
 }: {
 	reviewId: number
+	isLawyer: boolean
 	token: string
 }) {
 	return useQuery<IDataShape, Error>(getQueryKey(reviewId), async () => {
-		const payment = await apiReviewPaymentGet({ reviewId, token })
+		let payment = null
+		if (!isLawyer) {
+			payment = await apiReviewPaymentGet({ reviewId, token })
+		}
+
 		const [review, documentList, feedbackList] = await Promise.all([
 			apiReviewGet({ id: reviewId, token }),
 			apiReviewDocumentList({ reviewId, token }),
