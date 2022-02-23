@@ -1,11 +1,11 @@
 import { Box, Flex, ListItem, Text, UnorderedList, useDisclosure } from "@chakra-ui/react"
 import _ from "lodash"
 import { FC, useState } from "react"
-import { normalizeDateTime } from "../../../../../utils/helpers"
-import { DeleteIconButton } from "../../../components/ui/DeleteIconButton"
-import { useReviewDetailsData } from "../../reviewDetails.query"
-import { FeedbackDeleteDialog } from "../feedbackDelete/FeedbackDeleteDialog"
-import { IReviewFeedback } from "../IReviewFeedback"
+import { normalizeDateTime } from "../../../../utils/helpers"
+import { DeleteIconButton } from "../../components/ui/DeleteIconButton"
+import { useReviewDetailsData } from "../reviewDetails.query"
+import { FeedbackDeleteDialog } from "./feedbackDelete/FeedbackDeleteDialog"
+import { IReviewFeedback } from "./IReviewFeedback"
 
 interface IProps {
 	reviewId: number

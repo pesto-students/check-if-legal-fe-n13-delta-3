@@ -33,7 +33,7 @@ export const ReviewClose: FC<IProps> = ({ reviewId, ...rest }) => {
 			.then(() => {
 				disclosure.onClose()
 				successToast("Review marked as completed successfully")
-				navigate("/lawyer/review")
+				navigate("/lawyer")
 			})
 			.catch((err) => errorToast(getErrorMessage(err)))
 			.finally(() => setIsLoading(false))

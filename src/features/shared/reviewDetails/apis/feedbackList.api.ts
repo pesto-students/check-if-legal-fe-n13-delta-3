@@ -1,5 +1,5 @@
-import { HttpApi, HttpMethod } from "../../../../../core/http"
-import { IReviewFeedback } from "../IReviewFeedback"
+import { HttpApi, HttpMethod } from "../../../../core/http"
+import { IReviewFeedback } from "../reviewFeedback/IReviewFeedback"
 
 export async function apiReviewFeedbackList({
 	reviewId,

@@ -12,6 +12,7 @@ import { ReviewDocuments } from "./reviewDocuments/ReviewDocuments"
 import { ReviewFeedback } from "./reviewFeedback/ReviewFeedback"
 import { ReviewNoteSection } from "./reviewNote/ReviewNoteSection"
 import { ReviewPayment } from "./reviewPayment/ReviewPayment"
+import { ReviewRating } from "./reviewRating/ReviewRating"
 
 interface IProps {
 	token: string
@@ -44,6 +45,7 @@ export const ReviewDetails: FC<IProps> = ({ token, reviewId, isLawyer }) => {
 				<ReviewFeedback reviewId={reviewId} isLawyer={isLawyer} />
 				{!isLawyer && <ReviewCancel reviewId={reviewId} />}
 				{isLawyer && <ReviewClose reviewId={reviewId} />}
+				<ReviewRating reviewId={reviewId} isLawyer={isLawyer} />
 			</Flex>
 		</Box>
 	)
