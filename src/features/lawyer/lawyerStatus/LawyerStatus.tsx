@@ -8,8 +8,9 @@ import {
 	Text,
 	useDisclosure,
 } from "@chakra-ui/react"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { Navigate, NavLink } from "react-router-dom"
+import { storage } from "../../../utils/storage"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { useLawyerQuery } from "../lawyer.query"
 import { useLawyerAuth } from "../useLawyerAuth"
@@ -18,9 +19,15 @@ import { LawyerProfilePicture } from "./lawyerProfilePicture/LawyerProfilePictur
 import { LawyerProofs } from "./lawyerProofs/components/LawyerProofs"
 
 export const LawyerStatus: FC = () => {
-	const { token } = useLawyerAuth()
+	const { token, isVerified } = useLawyerAuth()
 	const { data: lawyer, isLoading } = useLawyerQuery({ token })
 	const updateDrawer = useDisclosure()
+
+	useEffect(() => {
+		if (lawyer && !isVerified !== lawyer.isVerified) {
+			storage.setIsVerified(lawyer.isVerified)
+		}
+	}, [lawyer, isVerified])
 
 	if (isLoading) return <CenteredSpinner />
 	if (!lawyer) return <Navigate to={"/lawyer/register"} />
@@ -28,7 +35,11 @@ export const LawyerStatus: FC = () => {
 
 	return (
 		<Center>
-			<Box padding={10} maxW={"2xl"} textAlign={{ base: "left", md: "center" }}>
+			<Box
+				padding={{ base: 4, md: 10 }}
+				maxW={"2xl"}
+				textAlign={{ base: "left", md: "center" }}
+			>
 				<Heading size={"xl"}>Waiting for Verification</Heading>
 				<Text mt={1}>
 					It usually takes 3-4 business days for verification process. You might get
