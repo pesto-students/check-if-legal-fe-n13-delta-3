@@ -8,9 +8,10 @@ export async function apiReviewPaymentGet({
 	reviewId: number
 	token: string
 }) {
-	const httpApi = new HttpApi<IReviewPayment>(
+	const httpApi = new HttpApi<IReviewPayment | null>(
 		HttpMethod.GET,
 		`/review/${reviewId}/payment`,
 	)
-	return await httpApi.send({ body: { reviewId }, token })
+	const payment = await httpApi.send({ body: { reviewId }, token })
+	return payment || null
 }

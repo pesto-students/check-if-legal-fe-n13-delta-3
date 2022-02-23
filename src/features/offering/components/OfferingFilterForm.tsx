@@ -22,8 +22,14 @@ export const OfferingFilterForm: FC = () => {
 
 	return (
 		<Center>
-			<Box padding={10}>
-				<Stack boxSize={"sm"}>
+			<Box
+				bgColor={{ base: undefined, sm: "gray.50" }}
+				mt={16}
+				borderRadius="xl"
+				px={10}
+				py={5}
+			>
+				<Stack boxSize={"xs"}>
 					<Box textAlign={"center"}>
 						<Heading as="h1" size="lg" color={"gray.700"}>
 							Review Legal Papers

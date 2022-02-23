@@ -1,11 +1,19 @@
-import { Box, Button, Flex, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react"
+import {
+	Box,
+	Button,
+	Flex,
+	Heading,
+	Radio,
+	RadioGroup,
+	Stack,
+	Text,
+} from "@chakra-ui/react"
 import { FC, useState } from "react"
 import { GoogleLogin, GoogleLoginResponse } from "react-google-login"
 import { FcGoogle } from "react-icons/fc"
 import { GOOGLE_CLIENT_ID } from "../../../../configs"
 import { getErrorMessage } from "../../../../utils/helpers"
 import { IAuthPayload } from "../../../../utils/types"
-import { Title } from "../../../shared/components/ui/Title"
 import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { userGoogleAuthApi } from "../apis/userGoogleAuth.api"
 import { DemoLogin } from "./UserDemoLogin"
@@ -33,7 +41,7 @@ export const UserSignInWithGoogle: FC<IProps> = ({ onLoginSuccess }) => {
 		<Box textAlign={"center"}>
 			<Box>
 				<Flex direction={"column"} gap={4} alignItems="center">
-					<Title>Sign in to your Account</Title>
+					<Heading>Sign in to your Account</Heading>
 					<Text color="gray.600">
 						If you do not have an existing account, a fresh new account will be
 						created based on your Google account info
@@ -56,9 +64,9 @@ export const UserSignInWithGoogle: FC<IProps> = ({ onLoginSuccess }) => {
 						clientId={GOOGLE_CLIENT_ID}
 						render={(renderProps) => (
 							<Button
-								width={"sm"}
-								backgroundColor={"white"}
-								_hover={{ backgroundColor: "gray.50" }}
+								width={{ base: "xs", sm: "sm" }}
+								backgroundColor={{ base: undefined, sm: "white" }}
+								_hover={{ backgroundColor: { base: undefined, sm: "gray.50" } }}
 								leftIcon={<FcGoogle />}
 								{...renderProps}
 							>

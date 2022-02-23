@@ -1,13 +1,13 @@
 import { HttpApi, HttpMethod } from "../../../../core/http"
 
-export async function lawyerProofsUploadApi({
+export async function apiLawyerPictureUpload({
 	formData,
 	token,
 }: {
 	formData: FormData
 	token: string
 }) {
-	const httpApi = new HttpApi(HttpMethod.POST, `/lawyer/self/proof`, {
+	const httpApi = new HttpApi(HttpMethod.POST, `/lawyer/self/picture`, {
 		isFormData: true,
 	})
 	await httpApi.send({ body: formData, token })

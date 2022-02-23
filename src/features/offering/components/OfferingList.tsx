@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Flex, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { getErrorMessage } from "../../../utils/helpers"
+import { getErrorMessage, getLawyerProfileUrl } from "../../../utils/helpers"
 import { storage } from "../../../utils/storage"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { ErrorText } from "../../shared/components/ui/ErrorText"
@@ -72,9 +72,13 @@ export const OfferingList: FC = () => {
 					borderColor={"gray.300"}
 					borderRadius={"lg"}
 				>
-					<Flex gridGap="4">
+					<Flex direction={{ base: "column", md: "row" }} gridGap="4">
 						<Box>
-							<Avatar />
+							<Avatar
+								size={"lg"}
+								name={offering.lawyer.name}
+								src={getLawyerProfileUrl(offering.lawyer.id)}
+							/>
 						</Box>
 						<Box flexGrow={"1"}>
 							<Heading size={"md"}>{offering.lawyer.name}</Heading>
@@ -98,7 +102,11 @@ export const OfferingList: FC = () => {
 								</Button>
 							</Box>
 						</Box>
-						<Box textAlign={"center"} my="auto" px={"4"}>
+						<Box
+							textAlign={{ base: "left", md: "center" }}
+							my="auto"
+							px={{ md: "4" }}
+						>
 							<PriceBox price={offering.price} paperType={paperType} />
 							{token && (
 								<Box>

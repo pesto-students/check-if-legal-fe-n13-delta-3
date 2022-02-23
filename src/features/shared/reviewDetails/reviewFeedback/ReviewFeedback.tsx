@@ -1,7 +1,7 @@
 import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
 import { FeedbackAddDrawer } from "./feedbackAdd/FeedbackAddDrawer"
-import { FeedbackList } from "./feedbackList/FeedbackList"
+import { FeedbackList } from "./FeedbackList"
 
 interface IProps extends ComponentProps<typeof Box> {
 	reviewId: number

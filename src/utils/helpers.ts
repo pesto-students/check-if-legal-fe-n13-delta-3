@@ -1,3 +1,4 @@
+import { API_URL } from "../configs"
 import { ICity } from "../features/shared/city/ICity"
 import { ReviewStatus } from "../features/shared/review/IReview"
 
@@ -39,4 +40,8 @@ export function getReviewStatusText(status: ReviewStatus) {
 	else if (status === ReviewStatus.PENDING_FOR_REVIEW) return "In Review"
 	else if (status === ReviewStatus.CLOSED) return "Completed"
 	else throw new Error("Unknown Review Status")
+}
+
+export function getLawyerProfileUrl(lawyerId: number) {
+	return `${API_URL}/static/lawyerPictures/${lawyerId}.jpg`
 }

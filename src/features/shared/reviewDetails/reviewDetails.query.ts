@@ -1,18 +1,21 @@
 import { useCallback } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import { IReview } from "../review/IReview"
-import { apiReviewDocumentList } from "./apis/apiReviewDocumentList"
-import { apiReviewGet } from "./apis/apiReviewGet"
+import { apiReviewDocumentList } from "./apis/reviewDocumentList.api"
+import { apiReviewGet } from "./apis/reviewGet.api"
 import { apiReviewPaymentGet } from "./apis/reviewPaymentGet.api"
-import { apiReviewFeedbackList } from "./reviewFeedback/feedbackList/feedbackList.api"
+import { apiReviewFeedbackList } from "./apis/feedbackList.api"
 import { IReviewFeedback } from "./reviewFeedback/IReviewFeedback"
 import { IReviewPayment } from "./reviewPayment/IReviewPayment"
+import { IReviewRating } from "./reviewRating/IReviewRating"
+import { apiReviewRatingGet } from "./apis/reviewRatingGet.api"
 
 interface IDataShape {
 	review: IReview
 	documentList: string[]
-	payment?: IReviewPayment | null
-	feedbackList?: IReviewFeedback[]
+	payment: IReviewPayment | null
+	feedbackList: IReviewFeedback[]
+	rating: IReviewRating | null
 }
 
 function getQueryKey(reviewId: number) {
@@ -21,20 +24,27 @@ function getQueryKey(reviewId: number) {
 
 export function useReviewDetailsQuery({
 	reviewId,
+	isLawyer,
 	token,
 }: {
 	reviewId: number
+	isLawyer: boolean
 	token: string
 }) {
 	return useQuery<IDataShape, Error>(getQueryKey(reviewId), async () => {
-		const payment = await apiReviewPaymentGet({ reviewId, token })
-		const [review, documentList, feedbackList] = await Promise.all([
+		let payment: IReviewPayment | null = null
+		if (!isLawyer) {
+			payment = await apiReviewPaymentGet({ reviewId, token })
+		}
+
+		const [review, documentList, feedbackList, rating] = await Promise.all([
 			apiReviewGet({ id: reviewId, token }),
 			apiReviewDocumentList({ reviewId, token }),
 			apiReviewFeedbackList({ reviewId, token }),
+			apiReviewRatingGet({ reviewId, token }),
 		])
 
-		return { review, documentList, payment, feedbackList }
+		return { review, documentList, payment, feedbackList, rating }
 	})
 }
 

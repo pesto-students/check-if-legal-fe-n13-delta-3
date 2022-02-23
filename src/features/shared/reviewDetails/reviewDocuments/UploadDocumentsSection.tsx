@@ -11,13 +11,14 @@ import { apiReviewDocumentsUpload } from "./reviewDocumentsUpload.api"
 
 interface IProps {
 	reviewId: number
+	isLawyer: boolean
 }
 
-export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
+export const UploadDocumentsSection: FC<IProps> = ({ reviewId, isLawyer }) => {
 	const { token } = useUserAuth()
 	const [isLoading, setIsLoading] = useState(false)
 
-	const { data, refetch } = useReviewDetailsQuery({ reviewId, token })
+	const { data, refetch } = useReviewDetailsQuery({ reviewId, isLawyer, token })
 	const documents = data?.documentList
 
 	const fileUploadModal = useDisclosure()

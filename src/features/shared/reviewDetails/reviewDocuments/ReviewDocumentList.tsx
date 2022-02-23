@@ -100,7 +100,7 @@ export const ReviewDocumentList: FC<IProps> = ({ reviewId, isLawyer }) => {
 
 			{fileForDelete && (
 				<DeleteItemDialog
-					title="Mark Review as Completed"
+					title={`Delete Document: ${fileForDelete}`}
 					onCancel={deleteDialog.onClose}
 					onDelete={() => handleOnDelete(fileForDelete)}
 					isLoading={isLoading}

@@ -9,9 +9,9 @@ import { ICity } from "../../../shared/city/ICity"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
 import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../../shared/hooks/useSuccessToast"
+import { useLawyerData } from "../../lawyer.query"
 import { useLawyerAuth } from "../../useLawyerAuth"
-import { useLawyerStore } from "../../useLawyerStore"
-import { lawyerRegisterApi } from "../lawyerRegisterApi"
+import { apiLawyerRegister } from "../lawyerRegister.api"
 
 interface IFormData {
 	name: string
@@ -26,15 +26,15 @@ export const LawyerRegisterForm: FC = () => {
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const { fetchLawyer } = useLawyerStore()
+	const { refetch } = useLawyerData()
 	const { data: cities } = useCityListQuery()
 	const { register, handleSubmit, formState, setValue } = useForm<IFormData>()
 
 	const onSubmit = handleSubmit((data) => {
-		lawyerRegisterApi(data, token)
+		apiLawyerRegister(data, token)
 			.then(() => {
 				successToast("Registered request sent successfully")
-				fetchLawyer({ token })
+				refetch()
 			})
 			.catch((err) => errorToast(getErrorMessage(err)))
 	})

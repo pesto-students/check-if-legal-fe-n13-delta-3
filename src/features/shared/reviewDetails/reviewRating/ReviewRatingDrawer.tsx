@@ -1,16 +1,19 @@
 import { FormControl, Stack, Textarea } from "@chakra-ui/react"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { AiFillStar, AiOutlineStar } from "react-icons/ai"
+import ReactRating from "react-rating"
 import { useUserAuth } from "../../../user/useUserAuth"
 import { DrawerForm } from "../../components/ui/DrawerForm"
 import { InputLabel } from "../../components/ui/InputLabel"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
 import { useReviewDetailsQuery } from "../reviewDetails.query"
-import { apiReviewNoteUpdate } from "./reviewNoteUpdate.api"
+import { apiReviewRatingUpsert } from "./reviewRatingUpsert.api"
 
 interface IFormData {
-	userNote: string
+	rating: number
+	comment: string
 }
 
 interface IProps {
@@ -20,7 +23,7 @@ interface IProps {
 	onClose: () => void
 }
 
-export const ReviewNoteUpdateDrawer: FC<IProps> = ({
+export const ReviewRatingDrawer: FC<IProps> = ({
 	reviewId,
 	isLawyer,
 	isOpen,
@@ -35,16 +38,21 @@ export const ReviewNoteUpdateDrawer: FC<IProps> = ({
 		isLawyer,
 		token,
 	})
-	const review = data?.review
+	const rating = data?.rating
 
-	const { register, handleSubmit, formState } = useForm<IFormData>({
-		defaultValues: { userNote: review?.userNote ?? "" },
+	const { register, handleSubmit, formState, setValue } = useForm<IFormData>()
+
+	useEffect(() => {
+		if (rating) {
+			setValue("rating", rating.rating)
+			setValue("comment", rating.comment ?? "")
+		}
 	})
 
 	const onSubmit = handleSubmit((data) => {
-		apiReviewNoteUpdate({ ...data, reviewId }, token)
+		apiReviewRatingUpsert({ ...data, reviewId }, token)
 			.then(() => {
-				successToast("Review note updated successfully")
+				successToast("Rating updated successfully")
 				refetch()
 				onClose()
 			})
@@ -56,7 +64,7 @@ export const ReviewNoteUpdateDrawer: FC<IProps> = ({
 	return (
 		<DrawerForm
 			size={"sm"}
-			headingText="Update Review Note"
+			headingText="Review Rating"
 			onSubmit={onSubmit}
 			isSubmitting={formState.isSubmitting}
 			submitLabel={"Save"}
@@ -64,13 +72,21 @@ export const ReviewNoteUpdateDrawer: FC<IProps> = ({
 			isOpen={isOpen}
 		>
 			<Stack maxWidth={"sm"} marginX={"auto"}>
-				{/* Note */}
+				<InputLabel label="Rating" />
+				<ReactRating
+					initialRating={rating?.rating ?? 0}
+					onChange={(value) => setValue("rating", value)}
+					emptySymbol={<AiOutlineStar size={"2em"} color="#f59e0b" />}
+					fullSymbol={<AiFillStar size={"2em"} color="#f59e0b" />}
+				/>
+
+				{/* Comment */}
 				<FormControl>
-					<InputLabel label="User Note" />
+					<InputLabel label="Comment" />
 					<Textarea
 						autoFocus
-						defaultValue={review?.userNote ?? ""}
-						{...register("userNote")}
+						defaultValue={rating?.comment ?? ""}
+						{...register("comment")}
 					/>
 				</FormControl>
 			</Stack>
