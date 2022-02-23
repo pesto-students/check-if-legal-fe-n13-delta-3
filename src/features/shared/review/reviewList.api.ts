@@ -1,7 +1,13 @@
 import { HttpApi, HttpMethod } from "../../../core/http"
 import { IReview } from "./IReview"
 
-export async function reviewListApi({ token }: { token: string }) {
+export async function apiReviewList({
+	token,
+	pageNo,
+}: {
+	token: string
+	pageNo: number
+}) {
 	const httpApi = new HttpApi<IReview[]>(HttpMethod.GET, "/review")
-	return await httpApi.send({ token })
+	return await httpApi.send({ query: { pageNo }, token })
 }

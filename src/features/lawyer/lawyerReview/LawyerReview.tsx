@@ -1,15 +1,15 @@
 import { FC } from "react"
 import { AuthRole } from "../../../utils/enums"
 import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
+import { ReviewListView } from "../../shared/review/ReviewListView"
 import { useVerifiedLawyerAuth } from "../useVerifiedLawyerAuth"
-import { ReviewListView } from "./ReviewListView"
 
 export const LawyerReview: FC = () => {
-	useVerifiedLawyerAuth()
+	const { token } = useVerifiedLawyerAuth()
 
 	return (
 		<SidebarLayout role={AuthRole.LAWYER} headingText="Reviews">
-			<ReviewListView />
+			<ReviewListView token={token} isLawyer />
 		</SidebarLayout>
 	)
 }

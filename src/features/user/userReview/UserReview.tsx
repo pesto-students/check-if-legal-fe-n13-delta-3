@@ -2,12 +2,12 @@ import { Box, Button } from "@chakra-ui/react"
 import { FC } from "react"
 import { NavLink } from "react-router-dom"
 import { AuthRole } from "../../../utils/enums"
+import { ReviewListView } from "../../shared/review/ReviewListView"
 import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
 import { useUserAuth } from "../useUserAuth"
-import { ReviewListView } from "./ReviewListView"
 
 export const UserReview: FC = () => {
-	useUserAuth()
+	const { token } = useUserAuth()
 
 	return (
 		<SidebarLayout role={AuthRole.USER} headingText="Reviews">
@@ -19,7 +19,7 @@ export const UserReview: FC = () => {
 				</NavLink>
 			</Box>
 
-			<ReviewListView />
+			<ReviewListView token={token} isLawyer={false} />
 		</SidebarLayout>
 	)
 }
