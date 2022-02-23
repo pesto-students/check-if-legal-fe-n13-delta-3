@@ -102,7 +102,11 @@ export const OfferingList: FC = () => {
 								</Button>
 							</Box>
 						</Box>
-						<Box textAlign={"center"} my="auto" px={"4"}>
+						<Box
+							textAlign={{ base: "left", md: "center" }}
+							my="auto"
+							px={{ md: "4" }}
+						>
 							<PriceBox price={offering.price} paperType={paperType} />
 							{token && (
 								<Box>
