@@ -35,7 +35,8 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"prettier:fix": "prettier --write './src/**/*.+(js|jsx|ts|tsx|json|scss|md)'"
 	},
 	"engines": {
 		"node": "14.17.0"
