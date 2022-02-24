@@ -58,8 +58,14 @@ export const FeatureSection: FC = () => {
 	]
 
 	return (
-		<Container maxW={"6xl"} bg={"white"} justifyContent="center" alignItems="center">
-			<Box my={12} py={12} bg={"gray.800"} rounded="xl" id="feature">
+		<Container
+			maxW={"6xl"}
+			bg={"white"}
+			justifyContent="center"
+			alignItems="center"
+			id="feature"
+		>
+			<Box my={12} py={12} bg={"gray.800"} rounded="xl">
 				<Box maxW="7xl" mx="auto" px={{ base: 4, lg: 8 }}>
 					<Box textAlign={{ lg: "center" }}>
 						<chakra.h2

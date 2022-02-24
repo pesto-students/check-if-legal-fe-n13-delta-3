@@ -27,7 +27,7 @@ export const Header: FC<IProps> = ({ onOpen }) => {
 	const navItems = [
 		{ href: "offering", name: "Verify Papers", onClick: onOpen },
 		{ href: "#feature", name: "Features", samePage: true },
-		{ href: "for-lawyer", name: "For Lawyers", samePage: true },
+		{ href: "#for-lawyer", name: "For Lawyers", samePage: true },
 	]
 
 	return (
