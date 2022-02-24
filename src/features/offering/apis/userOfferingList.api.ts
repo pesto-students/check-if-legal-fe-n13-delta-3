@@ -6,16 +6,19 @@ export async function apiUserOfferingList({
 	paperTypeId,
 	cityId,
 	languageId,
+	pageNo,
+	limit,
 }: {
 	paperTypeId: number
 	languageId: number
 	cityId: number
 	token?: string
+	pageNo?: number
+	limit?: number
 }) {
 	const httpApi = new HttpApi<IUserOffering[]>(HttpMethod.GET, "/user/offering")
-	const response = await httpApi.send({
-		query: { paperTypeId, languageId, cityId },
+	return await httpApi.send({
+		query: { paperTypeId, languageId, cityId, pageNo, limit },
 		token,
 	})
-	return response
 }
