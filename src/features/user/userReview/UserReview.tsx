@@ -14,7 +14,7 @@ export const UserReview: FC = () => {
 		<SidebarLayout role={AuthRole.USER} headingText="Reviews">
 			<Box m={4}>
 				<Button size={"sm"} colorScheme="blue" onClick={offeringSearchDrawer.onOpen}>
-					New Review
+					Create New Review
 				</Button>
 			</Box>
 

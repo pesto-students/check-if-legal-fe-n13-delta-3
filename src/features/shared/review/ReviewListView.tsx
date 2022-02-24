@@ -3,6 +3,7 @@ import {
 	Box,
 	Center,
 	Flex,
+	Heading,
 	Table,
 	Tbody,
 	Td,
@@ -31,7 +32,7 @@ interface IProps {
 
 export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 	const navigate = useNavigate()
-	const limit = 15
+	const limit = 10
 	const pagination = usePagination(limit)
 
 	const { data, isLoading } = useReviewListQuery({
@@ -50,7 +51,48 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 
 	return (
 		<Box>
-			<Table size="sm" fontSize={"lg"} mt={4}>
+			{/** For Mobile */}
+			<Box display={{ sm: "none" }}>
+				{reviews?.map((review) => {
+					const name = isLawyer ? review.user?.name : review.lawyer?.name
+					const profileUrl =
+						(!isLawyer && getLawyerProfileUrl(review.lawyerId)) || undefined
+
+					return (
+						<Box
+							key={review.id}
+							m={4}
+							p={4}
+							border="1px"
+							borderColor={"gray.300"}
+							borderRadius={"lg"}
+							onClick={() => {
+								navigate(`/user/review/${review.id}/details`)
+							}}
+						>
+							<Flex direction={"column"} gridGap="3">
+								<Box>
+									<Avatar size={"lg"} name={name} src={profileUrl} />
+								</Box>
+								<Box flexGrow={"1"}>
+									<Heading size={"md"}>{name}</Heading>
+									<Text>Paper Type: {review.paperType.name}</Text>
+									<Text>
+										Review Status: {getReviewStatusText(review.status)}
+									</Text>
+									<Text>Price: {formatInr(review.price)} INR</Text>
+									<Text>
+										Last Modified: {normalizeDateTime(review.updatedAt)}
+									</Text>
+								</Box>
+							</Flex>
+						</Box>
+					)
+				})}
+			</Box>
+
+			{/** For Desktop */}
+			<Table display={{ base: "none", sm: "table" }} size="sm" fontSize={"lg"} mt={4}>
 				<Thead>
 					<Tr>
 						<Th>Paper Type</Th>
@@ -78,7 +120,7 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 								}}
 							>
 								<Td fontWeight={"semibold"}>{review.paperType.name}</Td>
-								<Td>
+								<Td fontWeight={"semibold"}>
 									<Flex gap={4} alignItems="center">
 										<Avatar size={"sm"} name={name} src={profileUrl} />
 										<Text>{name}</Text>
