@@ -9,7 +9,7 @@ export const LawyerRegisterLayout: FC = ({ children }) => {
 				maxW={"6xl"}
 				columns={{ base: 1, md: 2 }}
 				spacing={{ base: 10, lg: 32 }}
-				p={8}
+				p={{ base: 4, sm: 8 }}
 			>
 				<Stack>
 					<Heading lineHeight={1.1} fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}>
