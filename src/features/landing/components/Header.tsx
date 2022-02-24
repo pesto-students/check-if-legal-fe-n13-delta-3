@@ -11,6 +11,7 @@ import {
 	useDisclosure,
 	VStack,
 } from "@chakra-ui/react"
+import { NavHashLink } from "@xzar90/react-router-hash-link"
 import { FC, Fragment } from "react"
 import { AiOutlineMenu } from "react-icons/ai"
 import { NavLink } from "react-router-dom"
@@ -20,10 +21,9 @@ export const Header: FC = () => {
 	const mobileNav = useDisclosure()
 
 	const navItems = [
-		{ href: "/#/offering", name: "Verify Papers" },
+		{ href: "offering", name: "Verify Papers" },
 		{ href: "#feature", name: "Features", samePage: true },
-		{ href: "#about", name: "About Us", samePage: true },
-		{ href: "#for-lawyer", name: "For Lawyers", samePage: true },
+		{ href: "for-lawyer", name: "For Lawyers", samePage: true },
 	]
 
 	return (
@@ -51,14 +51,17 @@ export const Header: FC = () => {
 							mr={1}
 							display={{ base: "none", md: "inline-flex" }}
 						>
-							{navItems.map((item, i) => (
-								<chakra.a href={item.href} key={i}>
-									<Button variant="ghost">{item.name}</Button>
-								</chakra.a>
-							))}
+							{navItems.map((item, i) => {
+								const Link = item.samePage ? NavHashLink : NavLink
+								return (
+									<Link to={item.href} key={i} smooth>
+										<Button variant="ghost">{item.name}</Button>
+									</Link>
+								)
+							})}
 						</HStack>
 						<NavLink to={"login"}>
-							<Button colorScheme="blue" size="md">
+							<Button colorScheme="blue" size="md" mx={{ base: 1, sm: 4 }}>
 								Sign In
 							</Button>
 						</NavLink>
@@ -93,15 +96,18 @@ export const Header: FC = () => {
 									onClick={mobileNav.onClose}
 								/>
 
-								{navItems.map((item, i) => (
-									<Fragment key={i}>
-										<NavLink to={item.href}>
-											<Button w="full" variant="ghost">
-												{item.name}
-											</Button>
-										</NavLink>
-									</Fragment>
-								))}
+								{navItems.map((item, i) => {
+									const Link = item.samePage ? NavHashLink : NavLink
+									return (
+										<Fragment key={i}>
+											<Link to={item.href} smooth onClick={mobileNav.onClose}>
+												<Button w="full" variant="ghost">
+													{item.name}
+												</Button>
+											</Link>
+										</Fragment>
+									)
+								})}
 							</VStack>
 						</Box>
 					</HStack>
