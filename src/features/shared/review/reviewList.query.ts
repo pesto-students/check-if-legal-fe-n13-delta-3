@@ -13,10 +13,18 @@ function getQueryKey(page: number) {
 	return ["reviews", page]
 }
 
-export function useReviewListQuery({ token, pageNo }: { token: string; pageNo: number }) {
+export function useReviewListQuery({
+	token,
+	pageNo,
+	limit,
+}: {
+	token: string
+	pageNo: number
+	limit: number
+}) {
 	return useQuery<IDataShape, Error>(getQueryKey(pageNo), async () => {
 		const [reviews, countReviews] = await Promise.all([
-			apiReviewList({ token, pageNo }),
+			apiReviewList({ token, pageNo, limit }),
 			apiReviewListCountGet({ token }),
 		])
 		return { reviews, countReviews }
