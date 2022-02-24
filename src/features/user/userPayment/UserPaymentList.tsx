@@ -1,7 +1,7 @@
 import { Box, Center, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { formatInr } from "../../../utils/helpers"
+import { formatInr, getTransactionId, normalizeDateTime } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { PaginationBox } from "../../shared/components/ui/PaginationBox"
 import { usePagination } from "../../shared/hooks/usePagination"
@@ -34,10 +34,11 @@ export const PaymentListView: FC = () => {
 			<Table size="sm" fontSize={"lg"} mt={4}>
 				<Thead>
 					<Tr>
-						<Th>reviewId</Th>
-						<Th>orderId</Th>
-						<Th>Paid Amount</Th>
-						<Th>status</Th>
+						<Th>Transaction ID</Th>
+						<Th>Intent ID</Th>
+						<Th>Status</Th>
+						<Th isNumeric>Amount</Th>
+						<Th isNumeric>Last Issue At</Th>
 					</Tr>
 				</Thead>
 				<Tbody>
@@ -50,10 +51,11 @@ export const PaymentListView: FC = () => {
 								navigate(`/user/review/${payment.reviewId}/details`)
 							}}
 						>
+							<Td>{getTransactionId(payment)}</Td>
 							<Td>{payment.reviewId}</Td>
-							<Td>{payment.orderId}</Td>
-							<Td>{formatInr(payment.amountInPaisa)}</Td>
 							<Td>{payment.status}</Td>
+							<Td isNumeric>{formatInr(payment.amountInPaisa / 100)}</Td>
+							<Td isNumeric>{normalizeDateTime(payment.updatedAt)}</Td>
 						</Tr>
 					))}
 				</Tbody>

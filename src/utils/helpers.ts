@@ -1,6 +1,7 @@
 import { API_URL } from "../configs"
 import { ICity } from "../features/shared/city/ICity"
 import { ReviewStatus } from "../features/shared/review/IReview"
+import { IReviewPayment } from "../features/shared/reviewDetails/reviewPayment/IReviewPayment"
 
 export function getErrorMessage(err: unknown) {
 	if (err instanceof Error) return err.message
@@ -44,4 +45,8 @@ export function getReviewStatusText(status: ReviewStatus) {
 
 export function getLawyerProfileUrl(lawyerId: number) {
 	return `${API_URL}/static/lawyerPictures/${lawyerId}.jpg`
+}
+
+export function getTransactionId(payment: IReviewPayment) {
+	return payment.orderId.split("_")[1]?.toUpperCase()
 }
