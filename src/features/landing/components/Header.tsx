@@ -16,12 +16,16 @@ import { FC, Fragment } from "react"
 import { AiOutlineMenu } from "react-icons/ai"
 import { NavLink } from "react-router-dom"
 
-export const Header: FC = () => {
+interface IProps {
+	onOpen: () => void
+}
+
+export const Header: FC<IProps> = ({ onOpen }) => {
 	const bg = "white"
 	const mobileNav = useDisclosure()
 
 	const navItems = [
-		{ href: "offering", name: "Verify Papers" },
+		{ href: "offering", name: "Verify Papers", onClick: onOpen },
 		{ href: "#feature", name: "Features", samePage: true },
 		{ href: "for-lawyer", name: "For Lawyers", samePage: true },
 	]
@@ -52,9 +56,17 @@ export const Header: FC = () => {
 							display={{ base: "none", md: "inline-flex" }}
 						>
 							{navItems.map((item, i) => {
+								if (item.onClick) {
+									return (
+										<Button key={i} variant="ghost" onClick={item.onClick}>
+											{item.name}
+										</Button>
+									)
+								}
+
 								const Link = item.samePage ? NavHashLink : NavLink
 								return (
-									<Link to={item.href} key={i} smooth>
+									<Link to={item.href} key={i}>
 										<Button variant="ghost">{item.name}</Button>
 									</Link>
 								)
@@ -97,6 +109,19 @@ export const Header: FC = () => {
 								/>
 
 								{navItems.map((item, i) => {
+									if (item.onClick) {
+										return (
+											<Button
+												key={i}
+												w="full"
+												variant="ghost"
+												onClick={item.onClick}
+											>
+												{item.name}
+											</Button>
+										)
+									}
+
 									const Link = item.samePage ? NavHashLink : NavLink
 									return (
 										<Fragment key={i}>
