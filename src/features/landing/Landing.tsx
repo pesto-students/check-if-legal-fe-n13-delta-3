@@ -1,6 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react"
 import { FC } from "react"
-import { OfferingSearchForm } from "../shared/offering/OfferingSearchForm"
+import { OfferingSearchDrawer } from "../shared/offering/OfferingSearchDrawer"
 import { FeatureSection } from "./components/FeatureSection"
 import { Footer } from "./components/Footer"
 import { ForLawyerSection } from "./components/ForLawyerSection"
@@ -17,7 +17,7 @@ export const Landing: FC = () => {
 			<FeatureSection />
 			<ForLawyerSection />
 			<Footer />
-			<OfferingSearchForm {...offeringSearchForm} />
+			<OfferingSearchDrawer {...offeringSearchForm} />
 		</>
 	)
 }

@@ -25,7 +25,7 @@ interface IFormData {
 	city: ICity
 }
 
-export const OfferingSearchForm: FC<IProps> = ({ isOpen, onClose }) => {
+export const OfferingSearchDrawer: FC<IProps> = ({ isOpen, onClose }) => {
 	const { data: cities, isLoading: isCitiesLoading } = useCityListQuery()
 	const { data: languages, isLoading: isLanguagesLoading } = useLanguageListQuery()
 	const { data: paperTypes, isLoading: isPaperTypesLoading } = usePaperTypeListQuery()

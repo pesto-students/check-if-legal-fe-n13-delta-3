@@ -1,25 +1,25 @@
-import { Box, Button } from "@chakra-ui/react"
+import { Box, Button, useDisclosure } from "@chakra-ui/react"
 import { FC } from "react"
-import { NavLink } from "react-router-dom"
 import { AuthRole } from "../../../utils/enums"
-import { ReviewListView } from "../../shared/review/ReviewListView"
 import { SidebarLayout } from "../../shared/components/sidebarLayout/SidebarLayout"
+import { OfferingSearchDrawer } from "../../shared/offering/OfferingSearchDrawer"
+import { ReviewListView } from "../../shared/review/ReviewListView"
 import { useUserAuth } from "../useUserAuth"
 
 export const UserReview: FC = () => {
 	const { token } = useUserAuth()
+	const offeringSearchDrawer = useDisclosure()
 
 	return (
 		<SidebarLayout role={AuthRole.USER} headingText="Reviews">
 			<Box m={4}>
-				<NavLink to={"/offering"}>
-					<Button size={"sm"} colorScheme="blue">
-						New Review
-					</Button>
-				</NavLink>
+				<Button size={"sm"} colorScheme="blue" onClick={offeringSearchDrawer.onOpen}>
+					New Review
+				</Button>
 			</Box>
 
 			<ReviewListView token={token} isLawyer={false} />
+			<OfferingSearchDrawer {...offeringSearchDrawer} />
 		</SidebarLayout>
 	)
 }
