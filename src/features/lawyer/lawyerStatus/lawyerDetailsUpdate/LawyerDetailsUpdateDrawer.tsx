@@ -81,8 +81,14 @@ export const LawyerDetailsUpdateDrawer: FC<IProps> = ({ lawyer, isOpen, onClose 
 
 				{/* Contact No */}
 				<FormControl>
-					<InputLabel label="Contact No" />
-					<Input isRequired defaultValue={lawyer.phone} {...register("phone")} />
+					<InputLabel label="Mobile No" />
+					<Input
+						type={"tel"}
+						isRequired
+						maxLength={10}
+						defaultValue={lawyer.phone}
+						{...register("phone")}
+					/>
 				</FormControl>
 
 				{/* City */}
@@ -99,7 +105,7 @@ export const LawyerDetailsUpdateDrawer: FC<IProps> = ({ lawyer, isOpen, onClose 
 
 				{/* Office Address */}
 				<FormControl>
-					<InputLabel label="Office Address" />
+					<InputLabel label="Registered Address" />
 					<Textarea
 						isRequired
 						defaultValue={lawyer.address}
@@ -109,7 +115,7 @@ export const LawyerDetailsUpdateDrawer: FC<IProps> = ({ lawyer, isOpen, onClose 
 
 				{/* Description */}
 				<FormControl>
-					<InputLabel label="About (Bio)" />
+					<InputLabel label="About" />
 					<Textarea
 						isRequired
 						defaultValue={lawyer.description ?? ""}

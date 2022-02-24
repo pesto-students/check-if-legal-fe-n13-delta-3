@@ -3,7 +3,7 @@ import { FC } from "react"
 
 export const LawyerRegisterLayout: FC = ({ children }) => {
 	return (
-		<Box position={"relative"}>
+		<Box position={"relative"} bg={"gray.50"} minH={"100vh"}>
 			<Container
 				as={SimpleGrid}
 				maxW={"6xl"}
@@ -21,7 +21,7 @@ export const LawyerRegisterLayout: FC = ({ children }) => {
 					</Text>
 				</Stack>
 				<Stack
-					bg={"gray.50"}
+					bg={"white"}
 					rounded={"xl"}
 					p={{ base: 4, sm: 6, md: 8 }}
 					spacing={{ base: 8 }}

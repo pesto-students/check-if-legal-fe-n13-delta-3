@@ -50,10 +50,18 @@ export const LawyerRegisterForm: FC = () => {
 							<Input isRequired autoFocus {...register("name")} />
 						</FormControl>
 
-						{/* Contact No */}
+						{/* Mobile No */}
 						<FormControl>
-							<InputLabel label="Contact No" />
-							<Input isRequired {...register("phone")} />
+							<InputLabel
+								label="Mobile No"
+								suffixLabel="(Can be used for verification)"
+							/>
+							<Input
+								type={"tel"}
+								isRequired
+								maxLength={10}
+								{...register("phone")}
+							/>
 						</FormControl>
 
 						{/* City */}
@@ -71,13 +79,13 @@ export const LawyerRegisterForm: FC = () => {
 
 						{/* Office Address */}
 						<FormControl>
-							<InputLabel label="Office Address" />
+							<InputLabel label="Registered Address" />
 							<Textarea isRequired {...register("address")} />
 						</FormControl>
 
 						{/* Description */}
 						<FormControl>
-							<InputLabel label="About (Bio)" />
+							<InputLabel label="About" suffixLabel="(Your Description)" />
 							<Textarea isRequired {...register("description")} />
 						</FormControl>
 
