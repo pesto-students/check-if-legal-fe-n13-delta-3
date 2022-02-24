@@ -6,7 +6,6 @@ import {
 	Flex,
 	Heading,
 	IconButton,
-	useColorModeValue,
 	useDisclosure,
 } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
@@ -35,10 +34,14 @@ export const SidebarLayout: FC<IProps> = ({ children, role, headingText, ...rest
 					justify="space-between"
 					w="full"
 					px="4"
-					bg={useColorModeValue("white", "gray.800")}
+					bgColor={"rgba(255, 255, 255, .8)"}
+					backdropFilter={"blur(20px)"}
 					borderBottomWidth="1px"
 					borderColor="blackAlpha.300"
 					h="14"
+					position={"fixed"}
+					top={0}
+					zIndex={10}
 				>
 					<Heading size={"lg"}>{headingText ?? "Heading"}</Heading>
 					<IconButton
@@ -49,7 +52,7 @@ export const SidebarLayout: FC<IProps> = ({ children, role, headingText, ...rest
 						size="sm"
 					/>
 				</Flex>
-
+				<Box pt={"35px"}>&nbsp;</Box>
 				<Box as="main" {...rest}>
 					{children}
 				</Box>

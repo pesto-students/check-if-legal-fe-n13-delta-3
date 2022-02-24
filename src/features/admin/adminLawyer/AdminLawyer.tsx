@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react"
 import { FC } from "react"
-import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebarLayout/SidebarLayout"
 import { AuthRole } from "../../../utils/enums"
 import { useAdminAuth } from "../useAdminAuth"
 import { LawyerListView } from "./lawyerList/LawyerListView"

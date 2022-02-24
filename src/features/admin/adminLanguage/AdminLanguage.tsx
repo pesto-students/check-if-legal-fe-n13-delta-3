@@ -1,7 +1,7 @@
 import { Box, Button, useDisclosure } from "@chakra-ui/react"
 import { FC } from "react"
 import { AuthRole } from "../../../utils/enums"
-import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebarLayout/SidebarLayout"
 import { useAdminAuth } from "../useAdminAuth"
 import { LanguageAddDrawer } from "./languageAdd/LanguageAddDrawer"
 import { LanguageDeleteDialog } from "./languageDelete/LanguageDeleteDialog"

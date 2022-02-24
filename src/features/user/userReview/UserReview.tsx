@@ -3,7 +3,7 @@ import { FC } from "react"
 import { NavLink } from "react-router-dom"
 import { AuthRole } from "../../../utils/enums"
 import { ReviewListView } from "../../shared/review/ReviewListView"
-import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebarLayout/SidebarLayout"
 import { useUserAuth } from "../useUserAuth"
 
 export const UserReview: FC = () => {
