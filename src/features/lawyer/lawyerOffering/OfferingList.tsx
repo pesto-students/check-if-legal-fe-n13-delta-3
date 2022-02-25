@@ -11,11 +11,13 @@ import {
 	Flex,
 	Button,
 } from "@chakra-ui/react"
+import _ from "lodash"
 import { FC } from "react"
 import { formatInr } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
 import { DeleteIconButton } from "../../shared/components/ui/DeleteIconButton"
 import { EditIconButton } from "../../shared/components/ui/EditIconButton"
+import { EmptyState } from "../../shared/components/ui/EmptyState"
 import { useOfferingDeleteStore } from "./offeringDelete/useOfferingDeleteStore"
 import { useOfferingUpdateStore } from "./offeringUpdate/useOfferingUpdateStore"
 import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
@@ -27,7 +29,11 @@ export const OfferingList: FC = () => {
 	const { setSelectedOffering: setSelectedOfferingForUpdate, setIsDrawerOpen } =
 		useOfferingUpdateStore()
 
-	if (isOfferingsLoading || !offerings) return <CenteredSpinner />
+	if (isOfferingsLoading) return <CenteredSpinner />
+
+	if (_.isEmpty(offerings)) {
+		return <EmptyState headingText="No Offerings" />
+	}
 
 	return (
 		<Box>
@@ -90,7 +96,7 @@ export const OfferingList: FC = () => {
 					</Tr>
 				</Thead>
 				<Tbody>
-					{offerings.map((offering) => (
+					{offerings?.map((offering) => (
 						<Tr
 							key={offering.id}
 							cursor="pointer"

@@ -23,6 +23,7 @@ import {
 	normalizeDateTime,
 } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { EmptyState } from "../components/ui/EmptyState"
 import { InputLabel } from "../components/ui/InputLabel"
 import { PaginationBox } from "../components/ui/PaginationBox"
 import { usePagination } from "../hooks/usePagination"
@@ -64,6 +65,10 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 	if (isLoading) return <CenteredSpinner />
 	const reviews = data?.reviews
 	const toShowPagination = pagination.totalItems > limit
+
+	if (_.isEmpty(reviews)) {
+		return <EmptyState headingText="No Reviews" />
+	}
 
 	return (
 		<Box>

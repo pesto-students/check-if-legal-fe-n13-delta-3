@@ -8,11 +8,13 @@ import {
 	Text,
 	useDisclosure,
 } from "@chakra-ui/react"
+import _ from "lodash"
 import { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getErrorMessage, getLawyerProfileUrl } from "../../../utils/helpers"
 import { storage } from "../../../utils/storage"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { EmptyState } from "../../shared/components/ui/EmptyState"
 import { ErrorText } from "../../shared/components/ui/ErrorText"
 import { PaginationBox } from "../../shared/components/ui/PaginationBox"
 import { useErrorToast } from "../../shared/hooks/useErrorToast"
@@ -83,15 +85,18 @@ export const OfferingList: FC = () => {
 	if (error) return <ErrorText text={getErrorMessage(error)} />
 
 	const offerings = data?.offerings
-	if (!offerings) return <Box>No Offerings</Box>
 	const toShowPagination = pagination.totalItems > limit
+
+	if (_.isEmpty(offerings)) {
+		return <EmptyState headingText="No Lawyers Found" />
+	}
 
 	return (
 		<Box>
 			<Heading size={"lg"} m={2}>
 				Select Lawyer for Review
 			</Heading>
-			{offerings.map((offering) => (
+			{offerings?.map((offering) => (
 				<Box
 					key={offering.id}
 					m={2}

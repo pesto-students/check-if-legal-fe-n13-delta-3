@@ -12,11 +12,13 @@ import {
 	Thead,
 	Tr,
 } from "@chakra-ui/react"
+import _ from "lodash"
 import { FC, useEffect } from "react"
 import { AiOutlineStar } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 import { getLawyerProfileUrl, normalizeDate } from "../../../utils/helpers"
 import { CenteredSpinner } from "../components/ui/CenterSpinner"
+import { EmptyState } from "../components/ui/EmptyState"
 import { PaginationBox } from "../components/ui/PaginationBox"
 import { usePagination } from "../hooks/usePagination"
 import { useRatingListQuery } from "./ratingList.query"
@@ -44,6 +46,10 @@ export const RatingListView: FC<IProps> = ({ token, isLawyer }) => {
 	if (isLoading) return <CenteredSpinner />
 	const ratings = data?.ratings
 	const toShowPagination = pagination.totalItems > limit
+
+	if (_.isEmpty(ratings)) {
+		return <EmptyState headingText="No Ratings" />
+	}
 
 	return (
 		<Box>

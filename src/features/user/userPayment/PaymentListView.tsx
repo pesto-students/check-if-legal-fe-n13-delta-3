@@ -10,10 +10,12 @@ import {
 	Thead,
 	Tr,
 } from "@chakra-ui/react"
+import _ from "lodash"
 import { FC, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { formatInr, getTransactionId, normalizeDateTime } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { EmptyState } from "../../shared/components/ui/EmptyState"
 import { PaginationBox } from "../../shared/components/ui/PaginationBox"
 import { usePagination } from "../../shared/hooks/usePagination"
 import { useUserAuth } from "../useUserAuth"
@@ -38,6 +40,10 @@ export const PaymentListView: FC = () => {
 	if (isLoading) return <CenteredSpinner />
 	const payments = data?.payments
 	const toShowPagination = pagination.totalItems > limit
+
+	if (_.isEmpty(payments)) {
+		return <EmptyState headingText="No Payments" />
+	}
 
 	return (
 		<Box>
