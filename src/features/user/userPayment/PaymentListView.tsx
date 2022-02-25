@@ -1,4 +1,15 @@
-import { Box, Center, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react"
+import {
+	Box,
+	Center,
+	Heading,
+	Table,
+	Tbody,
+	Td,
+	Text,
+	Th,
+	Thead,
+	Tr,
+} from "@chakra-ui/react"
 import { FC, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { formatInr, getTransactionId, normalizeDateTime } from "../../../utils/helpers"
@@ -30,8 +41,33 @@ export const PaymentListView: FC = () => {
 
 	return (
 		<Box>
+			{/** For Mobile */}
+			<Box display={{ sm: "none" }}>
+				{payments?.map((payment) => (
+					<Box
+						key={payment.id}
+						m={4}
+						p={4}
+						border="1px"
+						borderColor={"gray.300"}
+						borderRadius={"lg"}
+						onClick={() => {
+							navigate(`/user/review/${payment.reviewId}/details`)
+						}}
+					>
+						<Heading size={"md"}>
+							{formatInr(payment.amountInPaisa / 100)} INR
+						</Heading>
+						<Text>Transaction Id: {getTransactionId(payment)}</Text>
+						<Text>Intent Id: {payment.reviewId}</Text>
+						<Text>Status: {payment.status}</Text>
+						<Text>Last Issue At: {normalizeDateTime(payment.updatedAt)}</Text>
+					</Box>
+				))}
+			</Box>
+
 			{/** For Desktop */}
-			<Table size="sm" fontSize={"lg"} mt={4}>
+			<Table size="sm" fontSize={"lg"} mt={4} display={{ base: "none", sm: "table" }}>
 				<Thead>
 					<Tr>
 						<Th>Transaction ID</Th>
@@ -51,10 +87,12 @@ export const PaymentListView: FC = () => {
 								navigate(`/user/review/${payment.reviewId}/details`)
 							}}
 						>
-							<Td>{getTransactionId(payment)}</Td>
+							<Td py={4}>{getTransactionId(payment)}</Td>
 							<Td>{payment.reviewId}</Td>
 							<Td>{payment.status}</Td>
-							<Td isNumeric>{formatInr(payment.amountInPaisa / 100)}</Td>
+							<Td isNumeric fontWeight={"semibold"}>
+								{formatInr(payment.amountInPaisa / 100)} INR
+							</Td>
 							<Td isNumeric>{normalizeDateTime(payment.updatedAt)}</Td>
 						</Tr>
 					))}

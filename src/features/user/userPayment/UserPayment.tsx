@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { AuthRole } from "../../../utils/enums"
 import { SidebarLayout } from "../../shared/components/sidebarLayout/SidebarLayout"
-import { PaymentListView } from "./UserPaymentList"
+import { PaymentListView } from "./PaymentListView"
 
 export const UserPayment: FC = () => {
 	return (
