@@ -12,7 +12,9 @@ import {
 	Thead,
 	Tr,
 } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
+import { Select } from "chakra-react-select"
+import _ from "lodash"
+import { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {
 	formatInr,
@@ -21,8 +23,12 @@ import {
 	normalizeDateTime,
 } from "../../../utils/helpers"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { InputLabel } from "../components/ui/InputLabel"
 import { PaginationBox } from "../components/ui/PaginationBox"
 import { usePagination } from "../hooks/usePagination"
+import { IPaperType } from "../paperType/IPaperType"
+import { usePaperTypeListQuery } from "../paperType/paperTypeList.query"
+import { ReviewStatus } from "./IReview"
 import { useReviewListQuery } from "./reviewList.query"
 
 interface IProps {
@@ -31,15 +37,25 @@ interface IProps {
 }
 
 export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
-	const navigate = useNavigate()
 	const limit = 10
 	const pagination = usePagination(limit)
+	const navigate = useNavigate()
 
-	const { data, isLoading } = useReviewListQuery({
+	const { data: paperTypes } = usePaperTypeListQuery()
+	const [paperType, setPaperType] = useState<IPaperType>()
+	const [status, setStatus] = useState<ReviewStatus>()
+
+	const { data, isLoading, refetch } = useReviewListQuery({
 		token,
 		pageNo: pagination.currentPage,
 		limit,
+		paperTypeId: paperType?.id,
+		status,
 	})
+
+	useEffect(() => {
+		refetch()
+	}, [paperType, status, refetch])
 
 	useEffect(() => {
 		if (data?.countReviews) pagination.setTotalItems(data.countReviews)
@@ -51,6 +67,31 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 
 	return (
 		<Box>
+			<Flex m={4} gap={4} direction={{ base: "column", sm: "row" }}>
+				<Box width={{ base: "full", sm: "sm" }}>
+					<InputLabel label="Paper Type Filter" />
+					<Select<IPaperType, false>
+						options={paperTypes}
+						getOptionLabel={(option) => option.name}
+						getOptionValue={(option) => `${option.id}`}
+						onChange={(selected) => setPaperType(selected ?? undefined)}
+						isClearable
+					/>
+				</Box>
+
+				<Box width={{ base: "full", sm: "sm" }}>
+					<InputLabel label="Review Status Filter" />
+					<Select<{ label: string; value: ReviewStatus }, false>
+						options={_.values(ReviewStatus).map((el) => ({
+							label: getReviewStatusText(el),
+							value: el,
+						}))}
+						onChange={(selected) => setStatus(selected?.value ?? undefined)}
+						isClearable
+					/>
+				</Box>
+			</Flex>
+
 			{/** For Mobile */}
 			<Box display={{ sm: "none" }}>
 				{reviews?.map((review) => {
