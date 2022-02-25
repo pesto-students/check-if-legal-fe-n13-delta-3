@@ -93,49 +93,6 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 				</Box>
 			</Flex>
 
-			{/** For Mobile */}
-			<Box display={{ sm: "none" }}>
-				{reviews?.map((review) => {
-					const name = isLawyer ? review.user?.name : review.lawyer?.name
-					const profileUrl =
-						(!isLawyer && getLawyerProfileUrl(review.lawyerId)) || undefined
-
-					return (
-						<Box
-							key={review.id}
-							m={4}
-							p={4}
-							border="1px"
-							borderColor={"gray.300"}
-							borderRadius={"lg"}
-							onClick={() => {
-								const role = isLawyer ? "lawyer" : "user"
-								navigate(`/${role}/review/${review.id}/details`)
-							}}
-						>
-							<Flex direction={"column"} gridGap="3">
-								<Flex gap={4} alignItems="center">
-									<Avatar size={"lg"} name={name} src={profileUrl} />
-									<Box>
-										<Heading size={"md"}>{name}</Heading>
-										<Text>For {review.paperType.name}</Text>
-									</Box>
-								</Flex>
-								<Box flexGrow={"1"}>
-									<Text>
-										Review Status: {getReviewStatusText(review.status)}
-									</Text>
-									<Text>Price: {formatInr(review.price)} INR</Text>
-									<Text>
-										Last Modified: {normalizeDateTime(review.updatedAt)}
-									</Text>
-								</Box>
-							</Flex>
-						</Box>
-					)
-				})}
-			</Box>
-
 			{reviews ? (
 				<>
 					<ListMobileView
