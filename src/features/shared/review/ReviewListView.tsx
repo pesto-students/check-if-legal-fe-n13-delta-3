@@ -15,7 +15,7 @@ import {
 import { Select } from "chakra-react-select"
 import _ from "lodash"
 import { FC, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { NavigateFunction, useNavigate } from "react-router-dom"
 import {
 	formatInr,
 	getLawyerProfileUrl,
@@ -29,7 +29,7 @@ import { PaginationBox } from "../components/ui/PaginationBox"
 import { usePagination } from "../hooks/usePagination"
 import { IPaperType } from "../paperType/IPaperType"
 import { usePaperTypeListQuery } from "../paperType/paperTypeList.query"
-import { ReviewStatus } from "./IReview"
+import { IReview, ReviewStatus } from "./IReview"
 import { useReviewListQuery } from "./reviewList.query"
 
 interface IProps {
@@ -65,10 +65,6 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 	if (isLoading) return <CenteredSpinner />
 	const reviews = data?.reviews
 	const toShowPagination = pagination.totalItems > limit
-
-	if (_.isEmpty(reviews)) {
-		return <EmptyState headingText="No Reviews" />
-	}
 
 	return (
 		<Box>
@@ -140,49 +136,23 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 				})}
 			</Box>
 
-			{/** For Desktop */}
-			<Table display={{ base: "none", sm: "table" }} size="sm" fontSize={"lg"} mt={4}>
-				<Thead>
-					<Tr>
-						<Th>Paper Type</Th>
-						<Th> {isLawyer ? "User" : "Lawyer"}</Th>
-						<Th>Status</Th>
-						<Th isNumeric>Price (INR)</Th>
-						<Th isNumeric>Last Modified</Th>
-					</Tr>
-				</Thead>
-				<Tbody>
-					{reviews?.map((review) => {
-						const name = isLawyer ? review.user?.name : review.lawyer?.name
-						const profileUrl =
-							(!isLawyer && getLawyerProfileUrl(review.lawyerId)) || undefined
+			{reviews ? (
+				<>
+					<ListMobileView
+						isLawyer={isLawyer}
+						reviews={reviews}
+						navigate={navigate}
+					/>
+					<ListDesktopView
+						isLawyer={isLawyer}
+						reviews={reviews}
+						navigate={navigate}
+					/>
+				</>
+			) : (
+				<EmptyState headingText="No Reviews" />
+			)}
 
-						return (
-							<Tr
-								key={review.id}
-								as={Tr}
-								cursor="pointer"
-								_hover={{ backgroundColor: "gray.100" }}
-								onClick={() => {
-									const role = isLawyer ? "lawyer" : "user"
-									navigate(`/${role}/review/${review.id}/details`)
-								}}
-							>
-								<Td fontWeight={"semibold"}>{review.paperType.name}</Td>
-								<Td fontWeight={"semibold"}>
-									<Flex gap={4} alignItems="center">
-										<Avatar size={"sm"} name={name} src={profileUrl} />
-										<Text>{name}</Text>
-									</Flex>
-								</Td>
-								<Td>{getReviewStatusText(review.status)}</Td>
-								<Td isNumeric>{formatInr(review.price)}</Td>
-								<Td isNumeric>{normalizeDateTime(review.updatedAt)}</Td>
-							</Tr>
-						)
-					})}
-				</Tbody>
-			</Table>
 			{toShowPagination && (
 				<Center my={4}>
 					<PaginationBox size={"sm"} {...pagination} />
@@ -191,3 +161,96 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 		</Box>
 	)
 }
+
+const ListDesktopView: FC<{
+	isLawyer: boolean
+	reviews: IReview[]
+	navigate: NavigateFunction
+}> = ({ isLawyer, reviews, navigate }) => (
+	<Table display={{ base: "none", sm: "table" }} size="sm" fontSize={"lg"} mt={4}>
+		<Thead>
+			<Tr>
+				<Th>Paper Type</Th>
+				<Th> {isLawyer ? "User" : "Lawyer"}</Th>
+				<Th>Status</Th>
+				<Th isNumeric>Price (INR)</Th>
+				<Th isNumeric>Last Modified</Th>
+			</Tr>
+		</Thead>
+		<Tbody>
+			{reviews.map((review) => {
+				const name = isLawyer ? review.user?.name : review.lawyer?.name
+				const profileUrl =
+					(!isLawyer && getLawyerProfileUrl(review.lawyerId)) || undefined
+
+				return (
+					<Tr
+						key={review.id}
+						as={Tr}
+						cursor="pointer"
+						_hover={{ backgroundColor: "gray.100" }}
+						onClick={() => {
+							const role = isLawyer ? "lawyer" : "user"
+							navigate(`/${role}/review/${review.id}/details`)
+						}}
+					>
+						<Td fontWeight={"semibold"}>{review.paperType.name}</Td>
+						<Td fontWeight={"semibold"}>
+							<Flex gap={4} alignItems="center">
+								<Avatar size={"sm"} name={name} src={profileUrl} />
+								<Text>{name}</Text>
+							</Flex>
+						</Td>
+						<Td>{getReviewStatusText(review.status)}</Td>
+						<Td isNumeric>{formatInr(review.price)}</Td>
+						<Td isNumeric>{normalizeDateTime(review.updatedAt)}</Td>
+					</Tr>
+				)
+			})}
+		</Tbody>
+	</Table>
+)
+
+const ListMobileView: FC<{
+	isLawyer: boolean
+	reviews: IReview[]
+	navigate: NavigateFunction
+}> = ({ isLawyer, reviews, navigate }) => (
+	<Box display={{ sm: "none" }}>
+		{reviews?.map((review) => {
+			const name = isLawyer ? review.user?.name : review.lawyer?.name
+			const profileUrl =
+				(!isLawyer && getLawyerProfileUrl(review.lawyerId)) || undefined
+
+			return (
+				<Box
+					key={review.id}
+					m={4}
+					p={4}
+					border="1px"
+					borderColor={"gray.300"}
+					borderRadius={"lg"}
+					onClick={() => {
+						const role = isLawyer ? "lawyer" : "user"
+						navigate(`/${role}/review/${review.id}/details`)
+					}}
+				>
+					<Flex direction={"column"} gridGap="3">
+						<Flex gap={4} alignItems="center">
+							<Avatar size={"lg"} name={name} src={profileUrl} />
+							<Box>
+								<Heading size={"md"}>{name}</Heading>
+								<Text>For {review.paperType.name}</Text>
+							</Box>
+						</Flex>
+						<Box flexGrow={"1"}>
+							<Text>Review Status: {getReviewStatusText(review.status)}</Text>
+							<Text>Price: {formatInr(review.price)} INR</Text>
+							<Text>Last Modified: {normalizeDateTime(review.updatedAt)}</Text>
+						</Box>
+					</Flex>
+				</Box>
+			)
+		})}
+	</Box>
+)
