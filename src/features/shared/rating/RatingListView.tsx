@@ -3,6 +3,7 @@ import {
 	Box,
 	Center,
 	Flex,
+	Heading,
 	Table,
 	Tbody,
 	Td,
@@ -12,8 +13,9 @@ import {
 	Tr,
 } from "@chakra-ui/react"
 import { FC, useEffect } from "react"
+import { AiOutlineStar } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
-import { getLawyerProfileUrl, normalizeDateTime } from "../../../utils/helpers"
+import { getLawyerProfileUrl, normalizeDate } from "../../../utils/helpers"
 import { CenteredSpinner } from "../components/ui/CenterSpinner"
 import { PaginationBox } from "../components/ui/PaginationBox"
 import { usePagination } from "../hooks/usePagination"
@@ -46,22 +48,22 @@ export const RatingListView: FC<IProps> = ({ token, isLawyer }) => {
 	return (
 		<Box>
 			{/** For Mobile */}
-			{/* <Box display={{ sm: "none" }}>
-				{ratings?.map((review) => {
-					const name = isLawyer ? review.user?.name : review.lawyer?.name
+			<Box display={{ sm: "none" }}>
+				{ratings?.map((el) => {
+					const name = isLawyer ? el.review.user?.name : el.review.lawyer?.name
 					const profileUrl =
-						(!isLawyer && getLawyerProfileUrl(review.lawyerId)) || undefined
-
+						(!isLawyer && getLawyerProfileUrl(el.review.lawyerId)) || undefined
 					return (
 						<Box
-							key={review.id}
+							key={el.id}
 							m={4}
 							p={4}
 							border="1px"
 							borderColor={"gray.300"}
 							borderRadius={"lg"}
 							onClick={() => {
-								navigate(`/user/review/${review.id}/details`)
+								const role = isLawyer ? "lawyer" : "user"
+								navigate(`/${role}/review/${el.reviewId}/details`)
 							}}
 						>
 							<Flex direction={"column"} gridGap="3">
@@ -70,20 +72,24 @@ export const RatingListView: FC<IProps> = ({ token, isLawyer }) => {
 								</Box>
 								<Box flexGrow={"1"}>
 									<Heading size={"md"}>{name}</Heading>
-									<Text>Paper Type: {review.paperType.name}</Text>
+									<Flex alignItems={"center"} gap={1}>
+										<AiOutlineStar />
+										<Text>
+											<b>{el.rating}</b>/5
+										</Text>
+									</Flex>
+									<Text>{el.comment}</Text>
 									<Text>
-										Review Status: {getReviewStatusText(review.status)}
+										For Review of <b>{el.review.paperType.name}</b>
 									</Text>
-									<Text>Price: {formatInr(review.price)} INR</Text>
-									<Text>
-										Last Modified: {normalizeDateTime(review.updatedAt)}
-									</Text>
+
+									<Text>Date: {normalizeDate(el.createdAt)}</Text>
 								</Box>
 							</Flex>
 						</Box>
 					)
 				})}
-			</Box> */}
+			</Box>
 
 			{/** For Desktop */}
 			<Table display={{ base: "none", sm: "table" }} size="sm" fontSize={"lg"} mt={4}>
@@ -121,10 +127,13 @@ export const RatingListView: FC<IProps> = ({ token, isLawyer }) => {
 								</Td>
 								<Td>{el.review.paperType.name}</Td>
 								<Td>
-									<b>{el.rating}</b>&nbsp;/ 5
+									<Flex>
+										<AiOutlineStar />
+										&nbsp;<b>{el.rating}</b>&nbsp;/ 5
+									</Flex>
 								</Td>
 								<Td>{el.comment}</Td>
-								<Td>{normalizeDateTime(el.createdAt)}</Td>
+								<Td>{normalizeDate(el.createdAt)}</Td>
 							</Tr>
 						)
 					})}
