@@ -108,7 +108,8 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 							borderColor={"gray.300"}
 							borderRadius={"lg"}
 							onClick={() => {
-								navigate(`/user/review/${review.id}/details`)
+								const role = isLawyer ? "lawyer" : "user"
+								navigate(`/${role}/review/${review.id}/details`)
 							}}
 						>
 							<Flex direction={"column"} gridGap="3">
@@ -153,11 +154,11 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 							<Tr
 								key={review.id}
 								as={Tr}
-								href={`/review/${review.id}`}
 								cursor="pointer"
 								_hover={{ backgroundColor: "gray.100" }}
 								onClick={() => {
-									navigate(`/user/review/${review.id}/details`)
+									const role = isLawyer ? "lawyer" : "user"
+									navigate(`/${role}/review/${review.id}/details`)
 								}}
 							>
 								<Td fontWeight={"semibold"}>{review.paperType.name}</Td>
