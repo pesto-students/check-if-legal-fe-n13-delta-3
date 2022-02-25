@@ -8,6 +8,7 @@ import { NotFound } from "./features/defaults/NotFound"
 import { Landing } from "./features/landing/Landing"
 import { LawyerOffering } from "./features/lawyer/lawyerOffering/LawyerOffering"
 import { LawyerPayout } from "./features/lawyer/lawyerPayout/LawyerPayout"
+import { LawyerRating } from "./features/lawyer/lawyerRating/LawyerRating"
 import { LawyerRegister } from "./features/lawyer/lawyerRegister/LawyerRegister"
 import { LawyerReview } from "./features/lawyer/lawyerReview/LawyerReview"
 import { LawyerReviewDetails } from "./features/lawyer/lawyerReviewDetails/LawyerReviewDetails"
@@ -17,6 +18,7 @@ import { UserLogin } from "./features/login/userLogin/UserLogin"
 import { Logout } from "./features/logout/Logout"
 import { Offering } from "./features/offering/Offering"
 import { UserPayment } from "./features/user/userPayment/UserPayment"
+import { UserRating } from "./features/user/userRating/UserRating"
 import { UserReview } from "./features/user/userReview/UserReview"
 import { UserReviewDetails } from "./features/user/userReviewDetails/UserReviewDetails"
 import { AuthRole } from "./utils/enums"
@@ -46,6 +48,7 @@ export function AppRouter() {
 					<Route index element={<UserReview />} />
 					<Route path="review/:id/details" element={<UserReviewDetails />} />
 					<Route path="payment" element={<UserPayment />} />
+					<Route path="rating" element={<UserRating />} />
 				</Route>
 
 				<Route path="lawyer" element={<PrivateOutlet role={AuthRole.LAWYER} />}>
@@ -53,8 +56,9 @@ export function AppRouter() {
 					<Route path="register" element={<LawyerRegister />} />
 					<Route path="status" element={<LawyerStatus />} />
 					<Route path="offering" element={<LawyerOffering />} />
-					<Route path="payout" element={<LawyerPayout />} />
 					<Route path="review/:id/details" element={<LawyerReviewDetails />} />
+					<Route path="rating" element={<LawyerRating />} />
+					<Route path="payout" element={<LawyerPayout />} />
 				</Route>
 
 				<Route path="*" element={<NotFound />} />
