@@ -32,7 +32,7 @@ export const DemoLogin: FC<IProps> = ({ isLawyer, onLoginSuccess }) => {
 			isLoading={isLoading}
 			isDisabled={isLoading}
 		>
-			<Text>Try as demo {isLawyer ? "Lawyer" : "User"}</Text>
+			<Text id="login-demo">Try as demo {isLawyer ? "Lawyer" : "User"}</Text>
 		</Button>
 	)
 }
