@@ -1,16 +1,14 @@
-import { ComponentProps, FC } from "react"
-
 import {
-	chakra,
 	Box,
+	Button,
+	chakra,
+	Container,
 	Flex,
-	useColorModeValue,
 	Icon,
 	SimpleGrid,
-	Button,
 	VStack,
-	Container,
 } from "@chakra-ui/react"
+import { ComponentProps, FC } from "react"
 import { NavLink } from "react-router-dom"
 
 export const ForLawyerSection: FC = () => {
@@ -45,7 +43,7 @@ export const ForLawyerSection: FC = () => {
 							mb={6}
 							fontSize={{ base: "lg", md: "xl" }}
 							textAlign={{ base: "center", sm: "left" }}
-							color={useColorModeValue("gray.600", "gray.500")}
+							color={"gray.600"}
 						>
 							Let's put our heads together to build a successful partnership to
 							benefit both your customers and your business and profession.

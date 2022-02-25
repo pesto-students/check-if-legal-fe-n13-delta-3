@@ -7,7 +7,6 @@ import {
 	Image,
 	Stack,
 	Text,
-	useColorModeValue,
 } from "@chakra-ui/react"
 import { FC } from "react"
 
@@ -48,7 +47,7 @@ export const HeroSection: FC<IProps> = ({ onOpen }) => {
 					px={{ base: 0, lg: 24 }}
 					mb={6}
 					fontSize={{ base: "lg", md: "xl" }}
-					color={useColorModeValue("gray.600", "gray.300")}
+					color={"gray.600"}
 				>
 					Check if Legal is a online legal paper verification platform, where you are
 					allowed to select from expert and verified lawyers based on your city.
@@ -87,8 +86,8 @@ export const HeroSection: FC<IProps> = ({ onOpen }) => {
 					w="full"
 					rounded="lg"
 					shadow="2xl"
-					src="https://kutty.netlify.app/hero.jpg"
-					alt="Hellonext feedback boards software screenshot"
+					src="./assets/hero-image.png"
+					alt="Check If Legal Hero Image"
 				/>
 			</Box>
 		</Container>
