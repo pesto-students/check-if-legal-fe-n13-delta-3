@@ -11,18 +11,22 @@ import {
 	useDisclosure,
 	VStack,
 } from "@chakra-ui/react"
+import { NavHashLink } from "@xzar90/react-router-hash-link"
 import { FC, Fragment } from "react"
 import { AiOutlineMenu } from "react-icons/ai"
 import { NavLink } from "react-router-dom"
 
-export const Header: FC = () => {
+interface IProps {
+	onOpen: () => void
+}
+
+export const Header: FC<IProps> = ({ onOpen }) => {
 	const bg = "white"
 	const mobileNav = useDisclosure()
 
 	const navItems = [
-		{ href: "/#/offering", name: "Verify Papers" },
+		{ href: "offering", name: "Verify Papers", onClick: onOpen },
 		{ href: "#feature", name: "Features", samePage: true },
-		{ href: "#about", name: "About Us", samePage: true },
 		{ href: "#for-lawyer", name: "For Lawyers", samePage: true },
 	]
 
@@ -51,14 +55,25 @@ export const Header: FC = () => {
 							mr={1}
 							display={{ base: "none", md: "inline-flex" }}
 						>
-							{navItems.map((item, i) => (
-								<chakra.a href={item.href} key={i}>
-									<Button variant="ghost">{item.name}</Button>
-								</chakra.a>
-							))}
+							{navItems.map((item, i) => {
+								if (item.onClick) {
+									return (
+										<Button key={i} variant="ghost" onClick={item.onClick}>
+											{item.name}
+										</Button>
+									)
+								}
+
+								const Link = item.samePage ? NavHashLink : NavLink
+								return (
+									<Link to={item.href} key={i}>
+										<Button variant="ghost">{item.name}</Button>
+									</Link>
+								)
+							})}
 						</HStack>
 						<NavLink to={"login"}>
-							<Button colorScheme="blue" size="md">
+							<Button colorScheme="blue" size="md" mx={{ base: 1, sm: 4 }}>
 								Sign In
 							</Button>
 						</NavLink>
@@ -93,15 +108,31 @@ export const Header: FC = () => {
 									onClick={mobileNav.onClose}
 								/>
 
-								{navItems.map((item, i) => (
-									<Fragment key={i}>
-										<NavLink to={item.href}>
-											<Button w="full" variant="ghost">
+								{navItems.map((item, i) => {
+									if (item.onClick) {
+										return (
+											<Button
+												key={i}
+												w="full"
+												variant="ghost"
+												onClick={item.onClick}
+											>
 												{item.name}
 											</Button>
-										</NavLink>
-									</Fragment>
-								))}
+										)
+									}
+
+									const Link = item.samePage ? NavHashLink : NavLink
+									return (
+										<Fragment key={i}>
+											<Link to={item.href} smooth onClick={mobileNav.onClose}>
+												<Button w="full" variant="ghost">
+													{item.name}
+												</Button>
+											</Link>
+										</Fragment>
+									)
+								})}
 							</VStack>
 						</Box>
 					</HStack>

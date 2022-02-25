@@ -1,4 +1,4 @@
-import { Box, Heading, Link, Text } from "@chakra-ui/react"
+import { Box, Button, Heading, Text } from "@chakra-ui/react"
 import { FC } from "react"
 import { NavLink } from "react-router-dom"
 import { formatInr } from "../../../utils/helpers"
@@ -21,9 +21,11 @@ export const PriceBox: FC<IProps> = ({ price, paperType }) => {
 
 	return (
 		<Box>
-			<Link as={NavLink} to="/login" state={"/offering"}>
-				Login to get price
-			</Link>
+			<NavLink to="/login" state={"/offering"}>
+				<Button colorScheme={"blue"} size="sm">
+					Login to get price
+				</Button>
+			</NavLink>
 		</Box>
 	)
 }

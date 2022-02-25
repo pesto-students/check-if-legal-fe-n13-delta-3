@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { AuthRole } from "../../../utils/enums"
-import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebarLayout/SidebarLayout"
 import { useVerifiedLawyerAuth } from "../useVerifiedLawyerAuth"
 import { Bank } from "./bank/Bank"
 

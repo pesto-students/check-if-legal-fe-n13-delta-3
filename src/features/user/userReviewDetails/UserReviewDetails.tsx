@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react"
 import { FC } from "react"
 import { useParams } from "react-router-dom"
 import { AuthRole } from "../../../utils/enums"
-import { SidebarLayout } from "../../shared/components/sidebar/SidebarLayout"
+import { SidebarLayout } from "../../shared/components/sidebarLayout/SidebarLayout"
 import { ReviewDetails } from "../../shared/reviewDetails/ReviewDetails"
 import { useUserAuth } from "../useUserAuth"
 

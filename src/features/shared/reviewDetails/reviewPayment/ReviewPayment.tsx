@@ -27,8 +27,8 @@ export const ReviewPayment: FC<IProps> = ({ reviewId, ...rest }) => {
 			{isPaymentPaid && (
 				<Box mt={1}>
 					<Text>Payment Status: PAID</Text>
-					<Text>Payment Id: {reviewId}</Text>
-					<Text>Transaction Id: {payment.orderId.split("_")[1]?.toUpperCase()}</Text>
+					<Text>Intent ID: {reviewId}</Text>
+					<Text>Transaction ID: {payment.orderId.split("_")[1]?.toUpperCase()}</Text>
 				</Box>
 			)}
 			{!isPaymentPaid && (

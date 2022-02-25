@@ -1,11 +1,24 @@
-import { Avatar, Box, Button, Flex, Heading, Text, useDisclosure } from "@chakra-ui/react"
+import {
+	Avatar,
+	Box,
+	Button,
+	Center,
+	Flex,
+	Heading,
+	Text,
+	useDisclosure,
+} from "@chakra-ui/react"
+import _ from "lodash"
 import { FC, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getErrorMessage, getLawyerProfileUrl } from "../../../utils/helpers"
 import { storage } from "../../../utils/storage"
 import { CenteredSpinner } from "../../shared/components/ui/CenterSpinner"
+import { EmptyState } from "../../shared/components/ui/EmptyState"
 import { ErrorText } from "../../shared/components/ui/ErrorText"
+import { PaginationBox } from "../../shared/components/ui/PaginationBox"
 import { useErrorToast } from "../../shared/hooks/useErrorToast"
+import { usePagination } from "../../shared/hooks/usePagination"
 import { useSuccessToast } from "../../shared/hooks/useSuccessToast"
 import { apiReviewCreate } from "../apis/reviewCreate.api"
 import { IUserOffering } from "../IUserOffering"
@@ -17,6 +30,9 @@ import { PriceBox } from "./PriceBox"
 export const OfferingList: FC = () => {
 	const authPayload = storage.getAuth()
 	const token = authPayload?.token
+
+	const limit = 10
+	const pagination = usePagination(limit)
 
 	const [isLoading, setIsLoading] = useState(false)
 	const navigate = useNavigate()
@@ -31,11 +47,22 @@ export const OfferingList: FC = () => {
 	const paperType = useUserOfferingStore((st) => st.paperType)
 
 	const {
-		data: offerings,
+		data,
 		isLoading: isOfferingsLoading,
 		error,
 		refetch,
-	} = useUserOfferingsQuery({ city, paperType, language, token })
+	} = useUserOfferingsQuery({
+		city,
+		paperType,
+		language,
+		token,
+		pageNo: pagination.currentPage,
+		limit,
+	})
+
+	useEffect(() => {
+		if (data?.countOfferings) pagination.setTotalItems(data.countOfferings)
+	}, [data?.countOfferings, pagination])
 
 	useEffect(() => {
 		refetch()
@@ -56,14 +83,20 @@ export const OfferingList: FC = () => {
 
 	if (isOfferingsLoading) return <CenteredSpinner />
 	if (error) return <ErrorText text={getErrorMessage(error)} />
-	if (!offerings) return <Box>No Offerings</Box>
+
+	const offerings = data?.offerings
+	const toShowPagination = pagination.totalItems > limit
+
+	if (_.isEmpty(offerings)) {
+		return <EmptyState headingText="No Lawyers Found" />
+	}
 
 	return (
 		<Box>
 			<Heading size={"lg"} m={2}>
 				Select Lawyer for Review
 			</Heading>
-			{offerings.map((offering) => (
+			{offerings?.map((offering) => (
 				<Box
 					key={offering.id}
 					m={2}
@@ -127,6 +160,12 @@ export const OfferingList: FC = () => {
 					</Flex>
 				</Box>
 			))}
+
+			{toShowPagination && (
+				<Center my={4}>
+					<PaginationBox size={"sm"} {...pagination} />
+				</Center>
+			)}
 
 			{selectedOffering && paperType && (
 				<OfferingDetailsDrawer

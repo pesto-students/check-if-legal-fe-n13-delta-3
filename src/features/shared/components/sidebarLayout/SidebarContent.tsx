@@ -92,6 +92,7 @@ function getNavItems(role: AuthRole) {
 			{ name: "Reviews", icon: MdDocumentScanner, link: "/lawyer" },
 			{ name: "Payouts", icon: AiFillBank, link: "/lawyer/payout" },
 			{ name: "Offerings", icon: MdLocalOffer, link: "/lawyer/offering" },
+			{ name: "Ratings", icon: MdReviews, link: "/lawyer/rating" },
 		)
 	}
 

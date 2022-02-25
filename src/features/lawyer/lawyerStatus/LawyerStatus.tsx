@@ -24,7 +24,7 @@ export const LawyerStatus: FC = () => {
 	const updateDrawer = useDisclosure()
 
 	useEffect(() => {
-		if (lawyer && !isVerified !== lawyer.isVerified) {
+		if (lawyer && isVerified !== lawyer.isVerified) {
 			storage.setIsVerified(lawyer.isVerified)
 		}
 	}, [lawyer, isVerified])
