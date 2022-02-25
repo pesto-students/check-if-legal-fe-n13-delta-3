@@ -67,17 +67,19 @@ export const RatingListView: FC<IProps> = ({ token, isLawyer }) => {
 							}}
 						>
 							<Flex direction={"column"} gridGap="3">
-								<Box>
+								<Flex gap={4} alignItems="center">
 									<Avatar size={"lg"} name={name} src={profileUrl} />
-								</Box>
+									<Box>
+										<Heading size={"md"}>{name}</Heading>
+										<Flex alignItems={"center"} gap={1}>
+											<AiOutlineStar />
+											<Text fontSize={"lg"}>
+												<b>{el.rating}</b>/5
+											</Text>
+										</Flex>
+									</Box>
+								</Flex>
 								<Box flexGrow={"1"}>
-									<Heading size={"md"}>{name}</Heading>
-									<Flex alignItems={"center"} gap={1}>
-										<AiOutlineStar />
-										<Text>
-											<b>{el.rating}</b>/5
-										</Text>
-									</Flex>
 									<Text>{el.comment}</Text>
 									<Text>
 										For Review of <b>{el.review.paperType.name}</b>

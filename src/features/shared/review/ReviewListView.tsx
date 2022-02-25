@@ -113,12 +113,14 @@ export const ReviewListView: FC<IProps> = ({ token, isLawyer }) => {
 							}}
 						>
 							<Flex direction={"column"} gridGap="3">
-								<Box>
+								<Flex gap={4} alignItems="center">
 									<Avatar size={"lg"} name={name} src={profileUrl} />
-								</Box>
+									<Box>
+										<Heading size={"md"}>{name}</Heading>
+										<Text>For {review.paperType.name}</Text>
+									</Box>
+								</Flex>
 								<Box flexGrow={"1"}>
-									<Heading size={"md"}>{name}</Heading>
-									<Text>Paper Type: {review.paperType.name}</Text>
 									<Text>
 										Review Status: {getReviewStatusText(review.status)}
 									</Text>
