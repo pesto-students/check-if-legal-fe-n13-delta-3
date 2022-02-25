@@ -1,46 +1,101 @@
-# Getting Started with Create React App
+<!-- PROJECT LOGO -->
+<p align="center">
+    <img src="./public/assets/logo-light.png" alt="Logo"  >
+</p>
+Check if Legal is a online legal paper verification platform, where you are allowed to select from expert and verified lawyers based on your city.
+<br />
+<br />
+This repo contains front-end source code.<br/>
+For back-end repository <a href="https://github.com/pesto-students/check-if-legal-be-n13-delta-3">click here</a>.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- TABLE OF CONTENTS -->
+<br/>
 
-## Available Scripts
+# Table of Contents
 
-In the project directory, you can run:
+1. [Demo](#demo)
+2. [Installation](#installation)
+3. [Technology Stack](#technology-stack)
+4. [Authors](#authors)
+5. [License](#license)
 
-### `yarn start`
+<br/>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Demo
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+[Live Demo](https://checkiflegal.in/)
 
-### `yarn test`
+<br/>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Please Note:
 
-### `yarn build`
+-  We recommend using this app in latest browser with javascript support.
+-  Try demo credentials if you not comfortable with Google SignIn OAuth.
+-  Payment Gateway is in test mode, so use <code>4111 1111 1111</code> as card no to continue.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br/>
+Test Credentials:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+-  For Admin
+   -  Username: admin
+   -  Password: admin
+-  For User/Lawyer
+   -  Click on "Try as Demo" button
+      <br/>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Installation
 
-### `yarn eject`
+1. Clone the repo
+   ```sh
+   git clone https://github.com/pesto-students/check-if-legal-fe-n13-delta-3.git
+   ```
+2. Set environment variables
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+REACT_APP_API_BASE_URL=https://api.checkiflegal.com/<br />
+REACT_APP_GOOGLE_CLIENT_ID=<br />
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. Run
+   ```sh
+   npm start
+   ```
+5. Open http://localhost:3000 to view it in the browser
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+6. Run Test cases
+   ```sh
+   npm test
+   ```
+   <br/>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# Technology Stack
 
-## Learn More
+We tried to use a completely modern tech stack while testing out some new technologies that we had never used before. This resulted in a fast, performant, and easily-extensible web app that should be fairly future-proof for the coming next several years. We used:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+-  [React JS](https://reactjs.org/)
+-  [TypeScript](https://www.typescriptlang.org/)
+-  [Chakra UI](https://chakra-ui.com)
+-  [Axios](https://axios-http.com/docs/intro)
+-  [Zustand](https://zustand.surge.sh/) (Client State)
+-  [React Query](https://react-query.tanstack.com/) (Server State)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<br/>
+
+# Authors
+
+-  [Kunal Gosrani](https://github.com/kunalgosrani)
+-  [Sai Tharun](https://github.com/saitharunsai)
+
+<br/>
+
+# Mentor
+
+-  [Rachit Srivastava](https://github.com/rachit1994)
+
+<br/>
+
+# License
+
+[MIT](https://opensource.org/licenses/MIT)

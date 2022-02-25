@@ -22,7 +22,7 @@ import { useOfferingDeleteStore } from "./offeringDelete/useOfferingDeleteStore"
 import { useOfferingUpdateStore } from "./offeringUpdate/useOfferingUpdateStore"
 import { useLawyerOfferingStore } from "./useLawyerOfferingStore"
 
-export const OfferingList: FC = () => {
+export const LawyerOfferingList: FC = () => {
 	const { offerings, isOfferingsLoading } = useLawyerOfferingStore()
 	const { setSelectedOffering: setSelectedOfferingForDelete, setIsDeleteDialogOpen } =
 		useOfferingDeleteStore()
