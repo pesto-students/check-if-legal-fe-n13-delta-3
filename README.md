@@ -37,6 +37,7 @@ Please Note:
 Test Credentials:
 
 -  For Admin
+   -  [Admin Login Page Link](https://checkiflegal.in/#/login/admin)
    -  Username: admin
    -  Password: admin
 -  For User/Lawyer
