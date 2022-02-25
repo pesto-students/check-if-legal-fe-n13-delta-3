@@ -1,9 +1,12 @@
 <!-- PROJECT LOGO -->
-<br />
 <p align="center">
-    <img src="./public/assets/logo-light.png" alt="Logo" width="400" height="200" >
+    <img src="./public/assets/logo-light.png" alt="Logo"  >
 </p>
 Check if Legal is a online legal paper verification platform, where you are allowed to select from expert and verified lawyers based on your city.
+<br />
+<br />
+This repo contains front-end source code.<br/>
+For back-end repository <a href="https://github.com/pesto-students/check-if-legal-be-n13-delta-3">click here</a>.
 
 <!-- TABLE OF CONTENTS -->
 <br/>
@@ -72,6 +75,7 @@ REACT_APP_GOOGLE_CLIENT_ID=<br />
 We tried to use a completely modern tech stack while testing out some new technologies that we had never used before. This resulted in a fast, performant, and easily-extensible web app that should be fairly future-proof for the coming next several years. We used:
 
 -  [React JS](https://reactjs.org/)
+-  [TypeScript](https://www.typescriptlang.org/)
 -  [Chakra UI](https://chakra-ui.com)
 -  [Axios](https://axios-http.com/docs/intro)
 -  [Zustand](https://zustand.surge.sh/) (Client State)
