@@ -1,14 +1,14 @@
 import { useCallback } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import { IReview } from "../review/IReview"
+import { apiReviewFeedbackList } from "./apis/feedbackList.api"
 import { apiReviewDocumentList } from "./apis/reviewDocumentList.api"
 import { apiReviewGet } from "./apis/reviewGet.api"
 import { apiReviewPaymentGet } from "./apis/reviewPaymentGet.api"
-import { apiReviewFeedbackList } from "./apis/feedbackList.api"
+import { apiReviewRatingGet } from "./apis/reviewRatingGet.api"
 import { IReviewFeedback } from "./reviewFeedback/IReviewFeedback"
 import { IReviewPayment } from "./reviewPayment/IReviewPayment"
 import { IReviewRating } from "./reviewRating/IReviewRating"
-import { apiReviewRatingGet } from "./apis/reviewRatingGet.api"
 
 interface IDataShape {
 	review: IReview
@@ -18,7 +18,7 @@ interface IDataShape {
 	rating: IReviewRating | null
 }
 
-function getQueryKey(reviewId: number) {
+function getQueryKey(reviewId: number): [string, number] {
 	return ["review", reviewId]
 }
 
@@ -60,7 +60,6 @@ export function useReviewDetailsData({ reviewId }: { reviewId: number }) {
 	const state = queryClient.getQueryState<IDataShape>(queryKey)
 	const refetch = useCallback(() => {
 		queryClient.invalidateQueries(queryKey)
-		queryClient.refetchQueries(queryKey)
 	}, [queryClient, queryKey])
 
 	return { data, state, refetch }
