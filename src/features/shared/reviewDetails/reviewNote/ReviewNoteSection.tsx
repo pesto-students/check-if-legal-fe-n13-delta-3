@@ -12,7 +12,7 @@ export const ReviewNoteSection: FC<IProps> = ({ reviewId, isLawyer, ...rest }) =
 	const { data } = useReviewDetailsData({ reviewId })
 	const updateDrawer = useDisclosure()
 
-	if (!data) return null
+	if (!data?.review) return null
 	const review = data.review
 
 	const toShowUpdateDrawer = !isLawyer
@@ -25,11 +25,7 @@ export const ReviewNoteSection: FC<IProps> = ({ reviewId, isLawyer, ...rest }) =
 			<Heading size={"md"}>Review Note</Heading>
 
 			{toShowUpdateDrawer && (
-				<ReviewNoteUpdateDrawer
-					isLawyer={isLawyer}
-					reviewId={reviewId}
-					{...updateDrawer}
-				/>
+				<ReviewNoteUpdateDrawer reviewId={reviewId} {...updateDrawer} />
 			)}
 
 			{review.userNote && (

@@ -18,9 +18,7 @@ export const ReviewDocuments: FC<IProps> = ({ reviewId, isLawyer, ...rest }) => 
 		<Box {...rest}>
 			<Heading size={"md"}>Documents</Heading>
 			<ReviewDocumentList reviewId={reviewId} isLawyer={isLawyer} />
-			{toShowUploadSection && (
-				<UploadDocumentsSection reviewId={reviewId} isLawyer={isLawyer} />
-			)}
+			{toShowUploadSection && <UploadDocumentsSection reviewId={reviewId} />}
 		</Box>
 	)
 }
