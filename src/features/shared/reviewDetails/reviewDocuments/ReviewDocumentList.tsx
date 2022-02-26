@@ -48,6 +48,7 @@ export const ReviewDocumentList: FC<IProps> = ({ reviewId, isLawyer }) => {
 		apiReviewDocumentDelete({ reviewId, fileName, token })
 			.then(() => {
 				successToast("Document deleted")
+				deleteDialog.onClose()
 				refetch()
 			})
 			.catch((err) => errorToast(getErrorMessage(err)))
