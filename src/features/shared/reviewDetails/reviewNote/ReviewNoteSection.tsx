@@ -1,5 +1,6 @@
 import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { ComponentProps, FC } from "react"
+import { ReviewStatus } from "../../review/IReview"
 import { useReviewDetailsData } from "../reviewDetails.query"
 import { ReviewNoteUpdateDrawer } from "./ReviewNoteUpdateDrawer"
 
@@ -12,24 +13,21 @@ export const ReviewNoteSection: FC<IProps> = ({ reviewId, isLawyer, ...rest }) =
 	const { data } = useReviewDetailsData({ reviewId })
 	const updateDrawer = useDisclosure()
 
-	if (!data) return null
+	if (!data?.review) return null
 	const review = data.review
+	const isReviewOpen = review.status !== ReviewStatus.CLOSED
 
 	const toShowUpdateDrawer = !isLawyer
-	const toShowAltText = !review.userNote && isLawyer
-	const toShowAddReviewButton = !review.userNote && !isLawyer
-	const toShowUpdateButton = review.userNote && !isLawyer
+	const toShowAltText = !review.userNote && (!isReviewOpen || isLawyer)
+	const toShowAddReviewButton = !review.userNote && !isLawyer && isReviewOpen
+	const toShowUpdateButton = review.userNote && !isLawyer && isReviewOpen
 
 	return (
 		<Box {...rest}>
 			<Heading size={"md"}>Review Note</Heading>
 
 			{toShowUpdateDrawer && (
-				<ReviewNoteUpdateDrawer
-					isLawyer={isLawyer}
-					reviewId={reviewId}
-					{...updateDrawer}
-				/>
+				<ReviewNoteUpdateDrawer reviewId={reviewId} {...updateDrawer} />
 			)}
 
 			{review.userNote && (

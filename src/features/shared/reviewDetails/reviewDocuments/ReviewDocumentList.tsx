@@ -1,6 +1,6 @@
 import { Box, Flex, Table, Tbody, Td, Text, Tr, useDisclosure } from "@chakra-ui/react"
 import _ from "lodash"
-import { FC, useState } from "react"
+import { FC, useCallback, useState } from "react"
 import { BsFileEarmarkImage } from "react-icons/bs"
 import { downloadFileFromBase64 } from "../../../../utils/fileDownload/downloadFileFromBase64"
 import { getErrorMessage } from "../../../../utils/helpers"
@@ -34,27 +34,33 @@ export const ReviewDocumentList: FC<IProps> = ({ reviewId, isLawyer }) => {
 	const [isLoading, setIsLoading] = useState(false)
 	const deleteDialog = useDisclosure()
 
-	const handleOnDownload = (fileName: string) => {
-		if (!token) return
+	const handleOnDownload = useCallback(
+		(fileName: string) => {
+			if (!token) return
 
-		apiReviewDocumentGet({ reviewId, fileName, token })
-			.then(({ base64File }) => downloadFileFromBase64(base64File, fileName))
-			.catch((err) => errorToast(getErrorMessage(err)))
-	}
+			apiReviewDocumentGet({ reviewId, fileName, token })
+				.then(({ base64File }) => downloadFileFromBase64(base64File, fileName))
+				.catch((err) => errorToast(getErrorMessage(err)))
+		},
+		[token, reviewId, errorToast],
+	)
 
-	const handleOnDelete = (fileName: string) => {
-		if (!token) return
+	const handleOnDelete = useCallback(
+		(fileName: string) => {
+			if (!token) return
 
-		setIsLoading(true)
-		apiReviewDocumentDelete({ reviewId, fileName, token })
-			.then(() => {
-				successToast("Document deleted")
-				deleteDialog.onClose()
-				refetch()
-			})
-			.catch((err) => errorToast(getErrorMessage(err)))
-			.finally(() => setIsLoading(false))
-	}
+			setIsLoading(true)
+			apiReviewDocumentDelete({ reviewId, fileName, token })
+				.then(() => {
+					successToast("Document deleted")
+					deleteDialog.onClose()
+					refetch()
+				})
+				.catch((err) => errorToast(getErrorMessage(err)))
+				.finally(() => setIsLoading(false))
+		},
+		[token, reviewId, refetch, deleteDialog, errorToast, successToast],
+	)
 
 	if (_.isEmpty(documents)) {
 		if (!isLawyer && data?.review.status !== ReviewStatus.CLOSED) return null

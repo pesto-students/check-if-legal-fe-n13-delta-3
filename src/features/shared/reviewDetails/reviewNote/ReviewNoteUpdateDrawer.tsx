@@ -6,7 +6,7 @@ import { DrawerForm } from "../../components/ui/DrawerForm"
 import { InputLabel } from "../../components/ui/InputLabel"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
-import { useReviewDetailsQuery } from "../reviewDetails.query"
+import { useReviewDetailsData } from "../reviewDetails.query"
 import { apiReviewNoteUpdate } from "./reviewNoteUpdate.api"
 
 interface IFormData {
@@ -16,25 +16,15 @@ interface IFormData {
 interface IProps {
 	reviewId: number
 	isOpen: boolean
-	isLawyer: boolean
 	onClose: () => void
 }
 
-export const ReviewNoteUpdateDrawer: FC<IProps> = ({
-	reviewId,
-	isLawyer,
-	isOpen,
-	onClose,
-}) => {
+export const ReviewNoteUpdateDrawer: FC<IProps> = ({ reviewId, isOpen, onClose }) => {
 	const { token } = useUserAuth()
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const { data, refetch, isError, error } = useReviewDetailsQuery({
-		reviewId,
-		isLawyer,
-		token,
-	})
+	const { data, refetch } = useReviewDetailsData({ reviewId })
 	const review = data?.review
 
 	const { register, handleSubmit, formState } = useForm<IFormData>({
@@ -51,7 +41,7 @@ export const ReviewNoteUpdateDrawer: FC<IProps> = ({
 			.catch((err) => errorToast(err))
 	})
 
-	if (isError) return <p>{error}</p>
+	if (!review) return null
 
 	return (
 		<DrawerForm

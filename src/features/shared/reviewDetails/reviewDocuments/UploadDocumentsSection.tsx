@@ -6,19 +6,18 @@ import { useUserAuth } from "../../../user/useUserAuth"
 import { FileUploadModal } from "../../components/fileUploadModal/FileUploadModal"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
-import { useReviewDetailsQuery } from "../reviewDetails.query"
+import { useReviewDetailsData } from "../reviewDetails.query"
 import { apiReviewDocumentsUpload } from "./reviewDocumentsUpload.api"
 
 interface IProps {
 	reviewId: number
-	isLawyer: boolean
 }
 
-export const UploadDocumentsSection: FC<IProps> = ({ reviewId, isLawyer }) => {
+export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 	const { token } = useUserAuth()
 	const [isLoading, setIsLoading] = useState(false)
 
-	const { data, refetch } = useReviewDetailsQuery({ reviewId, isLawyer, token })
+	const { data, refetch } = useReviewDetailsData({ reviewId })
 	const documents = data?.documentList
 
 	const fileUploadModal = useDisclosure()
