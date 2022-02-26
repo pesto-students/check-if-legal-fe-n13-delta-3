@@ -58,10 +58,10 @@ export function useReviewDetailsData({ reviewId }: { reviewId: number }) {
 
 	const data = queryClient.getQueryData<IDataShape>(queryKey)
 	const state = queryClient.getQueryState<IDataShape>(queryKey)
-	const refetch = useCallback(
-		() => queryClient.refetchQueries(queryKey),
-		[queryClient, queryKey],
-	)
+	const refetch = useCallback(() => {
+		queryClient.invalidateQueries(queryKey)
+		queryClient.refetchQueries(queryKey)
+	}, [queryClient, queryKey])
 
 	return { data, state, refetch }
 }
