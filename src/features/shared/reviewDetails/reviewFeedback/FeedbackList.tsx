@@ -34,7 +34,7 @@ export const FeedbackList: FC<IProps> = ({ reviewId, isLawyer }) => {
 					}
 
 					return (
-						<ListItem my={4}>
+						<ListItem my={4} key={feedback.id}>
 							<Flex fontSize={"lg"} gap={2} alignItems="center">
 								<Text fontWeight={"bold"}>
 									{normalizeDateTime(feedback.createdAt)}
