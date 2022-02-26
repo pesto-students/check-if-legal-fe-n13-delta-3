@@ -10,6 +10,7 @@ import DeleteItemDialog from "../../components/ui/DeleteItemDialog"
 import { DownloadIconButton } from "../../components/ui/DownloadIconButton"
 import { useErrorToast } from "../../hooks/useErrorToast"
 import { useSuccessToast } from "../../hooks/useSuccessToast"
+import { ReviewStatus } from "../../review/IReview"
 import { useReviewDetailsData } from "../reviewDetails.query"
 import { apiReviewDocumentDelete } from "./reviewDocumentDelete.api"
 import { apiReviewDocumentGet } from "./reviewDocumentGet.api"
@@ -56,10 +57,10 @@ export const ReviewDocumentList: FC<IProps> = ({ reviewId, isLawyer }) => {
 	}
 
 	if (_.isEmpty(documents)) {
-		if (!isLawyer) return null
+		if (!isLawyer && data?.review.status !== ReviewStatus.CLOSED) return null
 		return (
 			<Box>
-				<Text>No documents uploaded</Text>
+				<Text>No uploaded documents</Text>
 			</Box>
 		)
 	}
