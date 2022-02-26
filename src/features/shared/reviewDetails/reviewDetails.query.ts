@@ -31,21 +31,25 @@ export function useReviewDetailsQuery({
 	isLawyer: boolean
 	token: string
 }) {
-	return useQuery<IDataShape, Error>(getQueryKey(reviewId), async () => {
-		let payment: IReviewPayment | null = null
-		if (!isLawyer) {
-			payment = await apiReviewPaymentGet({ reviewId, token })
-		}
+	return useQuery<IDataShape, Error>(
+		getQueryKey(reviewId),
+		async () => {
+			let payment: IReviewPayment | null = null
+			if (!isLawyer) {
+				payment = await apiReviewPaymentGet({ reviewId, token })
+			}
 
-		const [review, documentList, feedbackList, rating] = await Promise.all([
-			apiReviewGet({ id: reviewId, token }),
-			apiReviewDocumentList({ reviewId, token }),
-			apiReviewFeedbackList({ reviewId, token }),
-			apiReviewRatingGet({ reviewId, token }),
-		])
+			const [review, documentList, feedbackList, rating] = await Promise.all([
+				apiReviewGet({ id: reviewId, token }),
+				apiReviewDocumentList({ reviewId, token }),
+				apiReviewFeedbackList({ reviewId, token }),
+				apiReviewRatingGet({ reviewId, token }),
+			])
 
-		return { review, documentList, payment, feedbackList, rating }
-	})
+			return { review, documentList, payment, feedbackList, rating }
+		},
+		{ cacheTime: 0 },
+	)
 }
 
 export function useReviewDetailsData({ reviewId }: { reviewId: number }) {
