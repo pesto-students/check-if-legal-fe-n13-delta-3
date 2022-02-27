@@ -3,7 +3,7 @@ import { mimeType } from "./mimeTypes"
 import fileSaver from "file-saver"
 
 export function downloadFileFromBase64(base64: string, fileName: string) {
-	const ext = fileName.split(".").pop()
+	const ext = fileName.split(".").pop()?.toLowerCase()
 	if (!ext) throw new Error("File name is invalid")
 
 	const contentType = (mimeType as any)[ext]
