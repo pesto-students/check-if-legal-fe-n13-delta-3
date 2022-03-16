@@ -1,6 +1,7 @@
 import { FormControl, Stack, Textarea } from "@chakra-ui/react"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { useUserAuth } from "../../../user/useUserAuth"
 import { DrawerForm } from "../../components/ui/DrawerForm"
 import { InputLabel } from "../../components/ui/InputLabel"
@@ -31,14 +32,15 @@ export const ReviewNoteUpdateDrawer: FC<IProps> = ({ reviewId, isOpen, onClose }
 		defaultValues: { userNote: review?.userNote ?? "" },
 	})
 
-	const onSubmit = handleSubmit((data) => {
-		apiReviewNoteUpdate({ ...data, reviewId }, token)
-			.then(() => {
-				successToast("Review note updated successfully")
-				refetch()
-				onClose()
-			})
-			.catch((err) => errorToast(err))
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await apiReviewNoteUpdate({ ...data, reviewId }, token)
+			successToast("Review note updated successfully")
+			refetch()
+			onClose()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	if (!review) return null

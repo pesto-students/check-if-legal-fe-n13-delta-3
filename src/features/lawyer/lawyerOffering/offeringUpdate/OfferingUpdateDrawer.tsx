@@ -2,6 +2,7 @@ import { FormControl, Input, Stack, Textarea } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
@@ -47,19 +48,18 @@ export const OfferingUpdateDrawer: FC = () => {
 		setErrorText(undefined)
 	}
 
-	const onSubmit = handleSubmit((data) => {
+	const onSubmit = handleSubmit(async (data) => {
 		if (data.expectedTimeInHours) data.expectedTimeInHours = +data.expectedTimeInHours
 		if (data.price) data.price = +data.price
 
-		offeringUpdateApi({ ...data, id: selectedOffering.id }, token)
-			.then(() => {
-				reset()
-				onDrawerClose()
-				fetchOfferings({ token })
-			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+		try {
+			await offeringUpdateApi({ ...data, id: selectedOffering.id }, token)
+			reset()
+			onDrawerClose()
+			fetchOfferings({ token })
+		} catch (err) {
+			setErrorText(getErrorMessage(err))
+		}
 	})
 
 	const paperTypeOptions = paperTypes.map((el) => ({ label: el.name, value: el.id }))

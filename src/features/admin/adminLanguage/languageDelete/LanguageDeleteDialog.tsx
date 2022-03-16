@@ -1,10 +1,11 @@
 import { FC, useState } from "react"
-import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
 import { getErrorMessage } from "../../../../utils/helpers"
-import { useAdminAuth } from "../../useAdminAuth"
-import { useLanguageDeleteStore } from "./useLanguageDeleteStore"
-import { languageDeleteApi } from "./languageDeleteApi"
+import DeleteItemDialog from "../../../shared/components/ui/DeleteItemDialog"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useLanguageListData } from "../../../shared/language/languageList.query"
+import { useAdminAuth } from "../../useAdminAuth"
+import { languageDeleteApi } from "./languageDeleteApi"
+import { useLanguageDeleteStore } from "./useLanguageDeleteStore"
 
 export const LanguageDeleteDialog: FC = () => {
 	const { token } = useAdminAuth()
@@ -14,7 +15,7 @@ export const LanguageDeleteDialog: FC = () => {
 		useLanguageDeleteStore()
 
 	const [isLoading, setIsLoading] = useState(false)
-	const [errorMessage, setErrorMessage] = useState<string>()
+	const errorToast = useErrorToast()
 
 	if (!selectedLanguage) return null
 
@@ -25,7 +26,7 @@ export const LanguageDeleteDialog: FC = () => {
 				setIsDeleteDialogOpen(false)
 				refetchLanguages()
 			})
-			.catch((error) => setErrorMessage(getErrorMessage(error)))
+			.catch((error) => errorToast(getErrorMessage(error)))
 			.finally(() => setIsLoading(false))
 	}
 
@@ -37,11 +38,9 @@ export const LanguageDeleteDialog: FC = () => {
 			isOpen={isDeleteDialogOpen}
 			onCancel={() => {
 				setIsDeleteDialogOpen(false)
-				setErrorMessage(undefined)
 			}}
 			onDelete={handleLanguageDelete}
 			isLoading={isLoading}
-			errorMessage={errorMessage}
 		/>
 	)
 }

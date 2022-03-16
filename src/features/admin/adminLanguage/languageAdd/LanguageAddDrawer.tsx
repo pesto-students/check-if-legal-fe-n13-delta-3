@@ -1,9 +1,10 @@
 import { FormControl, Input, Stack } from "@chakra-ui/react"
-import { ComponentProps, FC, useState } from "react"
+import { ComponentProps, FC } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useLanguageListData } from "../../../shared/language/languageList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { languageAddApi } from "./languageAddApi"
@@ -19,21 +20,20 @@ export const LanguageAddDrawer: FC<IProps> = (props) => {
 	const { token } = useAdminAuth()
 	const { refetch: refetchLanguages } = useLanguageListData()
 
-	const [errorText, setErrorText] = useState<string>()
+	const errorToast = useErrorToast()
 	const { register, handleSubmit, formState, reset } = useForm<IFormData>({
 		defaultValues: { name: "" },
 	})
 
-	const onSubmit = handleSubmit((data) => {
-		languageAddApi(data, token)
-			.then(() => {
-				props.onClose()
-				reset()
-				refetchLanguages()
-			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await languageAddApi(data, token)
+			props.onClose()
+			reset()
+			refetchLanguages()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (
@@ -51,8 +51,6 @@ export const LanguageAddDrawer: FC<IProps> = (props) => {
 					<InputLabel label="Name" />
 					<Input isRequired autoFocus {...register("name")} />
 				</FormControl>
-
-				{errorText && <ErrorText text={errorText} />}
 			</Stack>
 		</DrawerForm>
 	)

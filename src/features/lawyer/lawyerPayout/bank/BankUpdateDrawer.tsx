@@ -34,15 +34,16 @@ export const BankUpdateDrawer: FC<IProps> = (props) => {
 		}
 	})
 
-	const onSubmit = handleSubmit((data) => {
-		apiLawyerBankUpsert(data, token)
-			.then(() => {
-				successToast("Bank details updated successfully")
-				props.onClose()
-				reset()
-				refetchBankDetails()
-			})
-			.catch((err) => errorToast(getErrorMessage(err)))
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await apiLawyerBankUpsert(data, token)
+			successToast("Bank details updated successfully")
+			props.onClose()
+			reset()
+			refetchBankDetails()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (

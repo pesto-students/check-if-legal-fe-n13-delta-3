@@ -1,9 +1,10 @@
 import { FormControl, Input, Stack } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { FC, useCallback } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { usePaperTypeListData } from "../../../shared/paperType/paperTypeList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { paperTypeUpdateApi } from "./paperTypeUpdateApi"
@@ -15,32 +16,29 @@ interface IFormData {
 
 export const PaperTypeUpdateDrawer: FC = () => {
 	const { token } = useAdminAuth()
-
 	const { refetch: refetchPaperTypes } = usePaperTypeListData()
 	const { selectedPaperType, isDrawerOpen, setIsDrawerOpen } = usePaperTypeUpdateStore()
 
-	const [errorText, setErrorText] = useState<string>()
+	const errorToast = useErrorToast()
 	const { register, handleSubmit, formState, reset } = useForm<IFormData>({
 		defaultValues: { name: selectedPaperType?.name },
 	})
 
-	if (!selectedPaperType) return null
-
-	const onDrawerClose = () => {
+	const onDrawerClose = useCallback(() => {
 		setIsDrawerOpen(false)
 		reset()
-		setErrorText(undefined)
-	}
+	}, [setIsDrawerOpen, reset])
 
-	const onSubmit = handleSubmit((data) => {
-		paperTypeUpdateApi({ ...data, id: selectedPaperType.id }, token)
-			.then(() => {
-				onDrawerClose()
-				refetchPaperTypes()
-			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+	if (!selectedPaperType) return null
+
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await paperTypeUpdateApi({ ...data, id: selectedPaperType.id }, token)
+			onDrawerClose()
+			refetchPaperTypes()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (
@@ -64,8 +62,6 @@ export const PaperTypeUpdateDrawer: FC = () => {
 						{...register("name")}
 					/>
 				</FormControl>
-
-				{errorText && <ErrorText text={errorText} />}
 			</Stack>
 		</DrawerForm>
 	)

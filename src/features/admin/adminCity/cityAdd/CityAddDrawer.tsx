@@ -2,6 +2,7 @@ import { FormControl, Input, Stack } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { ComponentProps, FC } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { useCityListData } from "../../../shared/city/cityList.query"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
@@ -30,15 +31,17 @@ export const CityAddDrawer: FC<IProps> = (props) => {
 		defaultValues: { name: "" },
 	})
 
-	const onSubmit = handleSubmit((data) => {
-		apiCityAdd(data, token)
-			.then(() => {
-				successToast("City added successfully")
-				props.onClose()
-				reset()
-				refetchCities()
-			})
-			.catch((err) => errorToast(err instanceof Error ? err.message : "Unknown Error"))
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await apiCityAdd(data, token)
+			successToast("City added successfully")
+			props.onClose()
+			reset()
+
+			refetchCities()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	if (!states) return null

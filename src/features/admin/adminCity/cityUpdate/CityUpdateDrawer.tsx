@@ -40,15 +40,17 @@ export const CityUpdateDrawer: FC<IProps> = ({ city, isOpen, onClose }) => {
 		setValue("stateId", city.stateId)
 	}, [city, setValue])
 
-	const onSubmit = handleSubmit((data) => {
-		apiCityUpdate({ id: city.id }, data, token)
-			.then(() => {
-				successToast("City updated successfully")
-				onClose()
-				reset()
-				refetchCities()
-			})
-			.catch((err) => errorToast(getErrorMessage(err)))
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await apiCityUpdate({ id: city.id }, data, token)
+			successToast("City updated successfully")
+			onClose()
+			reset()
+
+			refetchCities()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (
