@@ -1,9 +1,10 @@
 import { Box, Button, Flex, FormControl, Heading, Input, Stack } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { ErrorText } from "../../shared/components/ui/ErrorText"
+import { getErrorMessage } from "../../../utils/helpers"
 import { InputLabel } from "../../shared/components/ui/InputLabel"
+import { useErrorToast } from "../../shared/hooks/useErrorToast"
 import { adminLoginApi } from "./adminLoginApi"
 
 interface IFormData {
@@ -14,17 +15,17 @@ interface IFormData {
 export const AdminLoginForm: FC = () => {
 	const navigate = useNavigate()
 
+	const errorToast = useErrorToast()
 	const { register, handleSubmit, formState } = useForm<IFormData>({
 		defaultValues: { password: "", username: "" },
 	})
-	const [errorText, setErrorText] = useState<string>()
 
 	const onSubmit = handleSubmit(async (data) => {
 		try {
 			await adminLoginApi(data)
 			navigate("/admin")
 		} catch (err) {
-			setErrorText(err instanceof Error ? err.message : "Unknown Error")
+			errorToast(getErrorMessage(err))
 		}
 	})
 
@@ -51,8 +52,6 @@ export const AdminLoginForm: FC = () => {
 							<Input type="password" isRequired {...register("password")} />
 						</FormControl>
 					</Flex>
-
-					{errorText && <ErrorText text={errorText} />}
 
 					<Box py="2">
 						{/* Submit Button */}

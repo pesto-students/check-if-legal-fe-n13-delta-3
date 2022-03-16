@@ -36,21 +36,23 @@ export const OfferingAddDrawer: FC<IProps> = (props) => {
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
 
-	const onSubmit = handleSubmit((data) => {
-		const payload = {
-			...data,
-			price: +data.price,
-			expectedTimeInHours: +data.expectedTimeInHours,
-		}
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			const payload = {
+				...data,
+				price: +data.price,
+				expectedTimeInHours: +data.expectedTimeInHours,
+			}
 
-		offeringAddApi(payload, token)
-			.then(() => {
-				successToast("Offering added successfully")
-				props.onClose()
-				reset()
-				fetchOfferings({ token })
-			})
-			.catch((err) => errorToast(getErrorMessage(err)))
+			await offeringAddApi(payload, token)
+			successToast("Offering added successfully")
+			props.onClose()
+			reset()
+
+			fetchOfferings({ token })
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (

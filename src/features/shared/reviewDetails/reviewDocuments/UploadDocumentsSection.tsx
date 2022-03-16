@@ -25,24 +25,22 @@ export const UploadDocumentsSection: FC<IProps> = ({ reviewId }) => {
 	const successToast = useSuccessToast()
 
 	const onDrop = useCallback(
-		(files: File[]) => {
+		async (files: File[]) => {
 			setIsLoading(true)
 
-			const formData = new FormData()
 			try {
+				const formData = new FormData()
 				for (const file of files) formData.append("documents", file)
+
+				await apiReviewDocumentsUpload({ id: reviewId, formData, token })
+				successToast("Documents uploaded successfully")
+				fileUploadModal.onClose()
+				refetch()
 			} catch (err) {
 				errorToast(getErrorMessage(err))
+			} finally {
+				setIsLoading(false)
 			}
-
-			apiReviewDocumentsUpload({ id: reviewId, formData, token })
-				.then(() => {
-					successToast("Documents uploaded successfully")
-					fileUploadModal.onClose()
-					refetch()
-				})
-				.catch((err) => errorToast(getErrorMessage(err)))
-				.finally(() => setIsLoading(false))
 		},
 		[reviewId, token, errorToast, successToast, refetch, fileUploadModal],
 	)

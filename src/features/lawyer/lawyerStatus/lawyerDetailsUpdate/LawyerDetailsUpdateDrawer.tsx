@@ -30,12 +30,11 @@ interface IProps {
 
 export const LawyerDetailsUpdateDrawer: FC<IProps> = ({ lawyer, isOpen, onClose }) => {
 	const { token } = useLawyerAuth()
-
 	const { refetch } = useLawyerData()
 	const { data: cities } = useCityListQuery()
+
 	const errorToast = useErrorToast()
 	const successToast = useSuccessToast()
-
 	const { register, handleSubmit, formState, setValue, reset } = useForm<IFormData>()
 
 	useEffect(() => {
@@ -46,15 +45,16 @@ export const LawyerDetailsUpdateDrawer: FC<IProps> = ({ lawyer, isOpen, onClose 
 		setValue("phone", lawyer.phone)
 	}, [setValue, lawyer])
 
-	const onSubmit = handleSubmit((data) => {
-		return lawyerUpdateApi(data, token)
-			.then(() => {
-				successToast("Updated successfully")
-				onClose()
-				reset()
-				refetch()
-			})
-			.catch((error) => errorToast(getErrorMessage(error)))
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await lawyerUpdateApi(data, token)
+			successToast("Updated successfully")
+			onClose()
+			reset()
+			refetch()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (

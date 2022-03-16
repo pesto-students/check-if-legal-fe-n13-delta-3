@@ -3,6 +3,7 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { AiFillStar, AiOutlineStar } from "react-icons/ai"
 import ReactRating from "react-rating"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { useUserAuth } from "../../../user/useUserAuth"
 import { DrawerForm } from "../../components/ui/DrawerForm"
 import { InputLabel } from "../../components/ui/InputLabel"
@@ -49,14 +50,15 @@ export const ReviewRatingDrawer: FC<IProps> = ({
 		}
 	})
 
-	const onSubmit = handleSubmit((data) => {
-		apiReviewRatingUpsert({ ...data, reviewId }, token)
-			.then(() => {
-				successToast("Rating updated successfully")
-				refetch()
-				onClose()
-			})
-			.catch((err) => errorToast(err))
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await apiReviewRatingUpsert({ ...data, reviewId }, token)
+			successToast("Rating updated successfully")
+			refetch()
+			onClose()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	if (isError) return <p>{error}</p>

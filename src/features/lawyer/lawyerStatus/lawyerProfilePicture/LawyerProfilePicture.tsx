@@ -18,24 +18,23 @@ export const LawyerProfilePicture: FC = () => {
 	const successToast = useSuccessToast()
 
 	const onDrop = useCallback(
-		(files: File[]) => {
+		async (files: File[]) => {
 			setIsLoading(true)
 
-			const formData = new FormData()
 			try {
+				const formData = new FormData()
 				for (const file of files) formData.append("picture", file)
+
+				await apiLawyerPictureUpload({ formData, token })
+				successToast("Profile picture updated successfully")
+				fileUploadModal.onClose()
+
+				window.location.reload()
 			} catch (err) {
 				errorToast(getErrorMessage(err))
+			} finally {
+				setIsLoading(false)
 			}
-
-			apiLawyerPictureUpload({ formData, token })
-				.then(() => {
-					successToast("Profile picture updated successfully")
-					fileUploadModal.onClose()
-					window.location.reload()
-				})
-				.catch((err) => errorToast(getErrorMessage(err)))
-				.finally(() => setIsLoading(false))
 		},
 		[token, errorToast, successToast, fileUploadModal],
 	)

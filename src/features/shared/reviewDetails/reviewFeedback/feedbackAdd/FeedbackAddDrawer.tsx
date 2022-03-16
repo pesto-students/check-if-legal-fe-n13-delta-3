@@ -1,6 +1,7 @@
 import { FormControl, Stack, Textarea } from "@chakra-ui/react"
 import { FC } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../../utils/helpers"
 import { storage } from "../../../../../utils/storage"
 import { DrawerForm } from "../../../components/ui/DrawerForm"
 import { InputLabel } from "../../../components/ui/InputLabel"
@@ -31,17 +32,17 @@ export const FeedbackAddDrawer: FC<IProps> = ({ reviewId, isOpen, onClose }) => 
 		defaultValues: { description: "" },
 	})
 
-	const onSubmit = handleSubmit((data) => {
+	const onSubmit = handleSubmit(async (data) => {
 		if (!token) return
-
-		apiReviewFeedbackAdd({ ...data, reviewId, token })
-			.then(() => {
-				successToast("Review feedback added successfully")
-				refetch()
-				onClose()
-				reset()
-			})
-			.catch((err) => errorToast(err))
+		try {
+			await apiReviewFeedbackAdd({ ...data, reviewId, token })
+			successToast("Review feedback added successfully")
+			refetch()
+			onClose()
+			reset()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (

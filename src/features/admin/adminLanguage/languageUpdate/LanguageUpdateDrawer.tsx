@@ -1,9 +1,10 @@
 import { FormControl, Input, Stack } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { FC } from "react"
 import { useForm } from "react-hook-form"
+import { getErrorMessage } from "../../../../utils/helpers"
 import { DrawerForm } from "../../../shared/components/ui/DrawerForm"
-import { ErrorText } from "../../../shared/components/ui/ErrorText"
 import { InputLabel } from "../../../shared/components/ui/InputLabel"
+import { useErrorToast } from "../../../shared/hooks/useErrorToast"
 import { useLanguageListData } from "../../../shared/language/languageList.query"
 import { useAdminAuth } from "../../useAdminAuth"
 import { languageUpdateApi } from "./languageUpdateApi"
@@ -19,7 +20,7 @@ export const LanguageUpdateDrawer: FC = () => {
 	const { refetch: refetchLanguages } = useLanguageListData()
 	const { selectedLanguage, isDrawerOpen, setIsDrawerOpen } = useLanguageUpdateStore()
 
-	const [errorText, setErrorText] = useState<string>()
+	const errorToast = useErrorToast()
 	const { register, handleSubmit, formState, reset } = useForm<IFormData>({
 		defaultValues: { name: selectedLanguage?.name },
 	})
@@ -29,18 +30,16 @@ export const LanguageUpdateDrawer: FC = () => {
 	const onDrawerClose = () => {
 		setIsDrawerOpen(false)
 		reset()
-		setErrorText(undefined)
 	}
 
-	const onSubmit = handleSubmit((data) => {
-		languageUpdateApi({ ...data, id: selectedLanguage.id }, token)
-			.then(() => {
-				onDrawerClose()
-				refetchLanguages()
-			})
-			.catch((err) =>
-				setErrorText(err instanceof Error ? err.message : "Unknown Error"),
-			)
+	const onSubmit = handleSubmit(async (data) => {
+		try {
+			await languageUpdateApi({ ...data, id: selectedLanguage.id }, token)
+			onDrawerClose()
+			refetchLanguages()
+		} catch (err) {
+			errorToast(getErrorMessage(err))
+		}
 	})
 
 	return (
@@ -64,8 +63,6 @@ export const LanguageUpdateDrawer: FC = () => {
 						{...register("name")}
 					/>
 				</FormControl>
-
-				{errorText && <ErrorText text={errorText} />}
 			</Stack>
 		</DrawerForm>
 	)

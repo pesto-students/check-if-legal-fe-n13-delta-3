@@ -6,8 +6,8 @@ import { FileUploadModal } from "../../../../shared/components/fileUploadModal/F
 import { useErrorToast } from "../../../../shared/hooks/useErrorToast"
 import { useSuccessToast } from "../../../../shared/hooks/useSuccessToast"
 import { useLawyerAuth } from "../../../useLawyerAuth"
-import { useLawyerProofData } from "../lawyerProof.query"
 import { apiLawyerProofsUpload } from "../apis/lawyerProofsUpload.api"
+import { useLawyerProofData } from "../lawyerProof.query"
 
 export const UploadProofs: FC = () => {
 	const { token } = useLawyerAuth()
@@ -19,24 +19,22 @@ export const UploadProofs: FC = () => {
 	const successToast = useSuccessToast()
 
 	const onDrop = useCallback(
-		(files: File[]) => {
+		async (files: File[]) => {
 			setIsLoading(true)
 
-			const formData = new FormData()
 			try {
+				const formData = new FormData()
 				for (const file of files) formData.append("proofs", file)
+				await apiLawyerProofsUpload({ formData, token })
+
+				successToast("Documents uploaded successfully")
+				fileUploadModal.onClose()
+				refetch()
 			} catch (err) {
 				errorToast(getErrorMessage(err))
+			} finally {
+				setIsLoading(false)
 			}
-
-			apiLawyerProofsUpload({ formData, token })
-				.then(() => {
-					successToast("Documents uploaded successfully")
-					fileUploadModal.onClose()
-					refetch()
-				})
-				.catch((err) => errorToast(getErrorMessage(err)))
-				.finally(() => setIsLoading(false))
 		},
 		[token, errorToast, successToast, refetch, fileUploadModal],
 	)
